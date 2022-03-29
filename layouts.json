@@ -1,19 +1,24 @@
 {        
-"Layout 1" : 
+    "Layout 1" : 
     {
        "widget-cluster-map" : 
             {
                 "Calender" : 
                 [
-                    [0,0], [9,11]
+                    [0,0], [11, 9]
                 ],
                 "Timeline" : 
                 [
-                    [10, 0], [19, 11], [5, 12], [15, 17]
+                    [0, 10], [11, 19], [12, 5], [17, 15]
                 ]
 
             },
-        "settings" : {}
+        "settings" : {},
+        "parameters" : {
+            "Calendar" : {
+                
+            }
+        }
             
     }
 
