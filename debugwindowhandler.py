@@ -5,10 +5,12 @@ from graphics import GraphWin, Point, Rectangle, Text
 import os
 
 ##CONSTS
-cluster_resolution = 44
+cluster_resolution = 88
 
 class Cluster():
-    def __init__(self, anchor : Point, end : Point, display_number : int):
+    def __init__(self, anchor : Point, end : Point, display_number : int, x : int, y : int):
+        self.row = y
+        self.column = x
         self.anchor = anchor
         self.end = end
         self.display_number = display_number
@@ -16,8 +18,17 @@ class Cluster():
     def out(self):
         return "(" + str(self.anchor.x) + "|" + str(self.anchor.y) + ")-(" + str(self.end.x) + "|" + str(self.end.y) + ")"
 
+    @property
+    def gridcoords(self):
+        return str(self.column) + "|" + str(self.row)
+
     def give_widget(self, obj):
         self.widget = obj
+
+    @property
+    def rect(self):
+        return Rectangle(p1=self.anchor, p2=self.end)
+
 
 
 class DISPLAY():
@@ -35,6 +46,7 @@ class DISPLAY():
         self.clusters = []
         for i in range(height):
             self.clusters.append([None for i in range(width)])
+        print(self.clusters)
         for row in range(len(self.matrix)):
             for element in range(len(self.matrix[row])):
                 display_id = self.matrix[row][element]
@@ -43,7 +55,8 @@ class DISPLAY():
                 if self.matrix[row][element] == -1:
                     pointAnchor = Point(x = element * cluster_resolution, y = row * cluster_resolution)
                     pointStretcher = Point(x = (element + 1) * cluster_resolution, y = (row + 1) * cluster_resolution)
-                    self.clusters[row][element] = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=self.matrix[row][element])
+                    cluster : Cluster = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=self.matrix[row][element], x = element, y = row)
+                    self.clusters[element][row] = cluster
                     obj = Rectangle(p1 = pointAnchor, p2 = pointStretcher)
                     obj.setFill("black")
                     obj.draw(self.wallpaper)
@@ -52,8 +65,9 @@ class DISPLAY():
                     pointStretcher = Point(x = (element + 1) * cluster_resolution, y = (row + 1) * cluster_resolution)
                     obj = Rectangle(p1 = pointAnchor, p2 = pointStretcher)
                     obj.draw(self.wallpaper)
-                    self.clusters[row][element] = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=self.matrix[row][element])
-                    txt = Text(p = Point((pointAnchor.x + pointStretcher.x) / 2, (pointAnchor.y + pointStretcher.y) / 2) , text = "(" + str(row) + "|" + str(element) + ")")
+                    cluster : Cluster = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=self.matrix[row][element], x = element, y = row)
+                    self.clusters[element][row] = cluster
+                    txt = Text(p = Point((pointAnchor.x + pointStretcher.x) / 2, (pointAnchor.y + pointStretcher.y) / 2) , text = str(cluster.gridcoords))
                     txt.draw(self.wallpaper)
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
             for display_coordinates in json.loads(jfile.read())["displays"]:
@@ -65,29 +79,19 @@ class DISPLAY():
                 rect.setOutline("red")
                 rect.draw(self.wallpaper)
 
-        for row in range(len(self.clusters)):
-            for element in range(len(self.clusters[row])):
-                rect = Rectangle(p1 = self.clusters[row][element].anchor, p2 = self.clusters[row][element].end)
-                rect.setFill("blue")
-                rect.draw(self.wallpaper)
+        
 
     def load_layout(self, name:str):
-        with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
-            layout = json.loads(jfile.read())[name]
-            for widget in layout["widget-cluster-map"].keys():
-                coords = layout["widget-cluster-map"][widget]
-                rects_owned = int(len(coords) / 2)
-                print(widget + " " + str(rects_owned))
-                if rects_owned == 1:
-                    start_cluster : Cluster = self.clusters[coords[0][0]][coords[0][1]]
-                    print(start_cluster.out())
-                    print(coords[1][0])
-                    print(coords[1][1])
-                    end_cluster : Cluster = self.clusters[coords[1][0]][coords[1][1]]
-                    print(end_cluster.out())
-                    bounds = Rectangle(p1 = start_cluster.anchor, p2 = end_cluster.end)
-                    bounds.setFill("blue")
-                    bounds.draw(self.wallpaper)
+        #for row in range(len(self.clusters)):
+        #    for element in range(len(self.clusters[row])):
+        #        rect = Rectangle(p1 = self.clusters[row][element].anchor, p2 = self.clusters[row][element].end)
+        #        rect.setFill("blue")
+        #        rect.draw(self.wallpaper)
+        #with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
+        print(self.clusters[5][4].gridcoords)
+        cluster : Cluster = self.clusters[5][4]
+        cluster.rect.draw(self.wallpaper)
+            
                     
 
                 
