@@ -3,7 +3,7 @@ import json
 import os
 
 def jget(filename : str, setting_name : str):
-    with open(str(os.path.dirname(os.path.abspath(__file__))) + + r"/" + filename + ".json", "r") as jfile:
+    with open(str(os.path.dirname(os.path.abspath(__file__)))+ r"/" + filename + ".json", "r") as jfile:
         try:
             return json.loads(jfile.read())[setting_name]
         except:
@@ -44,9 +44,24 @@ def get_all_keys(filename : str):
 
 class NOTIFIER():
     def __init__(self):
-        self.allowed_prefixes = ["user", "layout"]
+        self.allowed_prefixes = ["user", "layout", "debug", "ram"]
         for key in get_all_keys(filename="usersettings"):
             setattr(self, "Listeners_user_" + key, [])
+        for key in get_all_keys(filename="debugsettings"):
+            setattr(self, "Listeners_debug_" + key, [])
+        
+
+    def get(self, name : str):
+        if name.split(".")[0] not in self.allowed_prefixes:
+            raise ValueError(name.split(".")[0] + " not in allowed prefixes")
+        if name.split(".")[0] == "debug":
+            return jget(filename="debugsettings", setting_name = name.split(".")[1])
+        elif name.split(".")[0] == "user":
+            return jget(filename="usersettings", setting_name = name.split(".")[1])
+        elif name.split(".")[0] == "ram":
+            return jget(filename="ramdata", setting_name=name.split(".")[1])
+        elif name.split(".") == "layout":
+            return jget(filename="layouts", setting_name=self.get("ram.currently_loaded_layout"))["settings"][name.split(".")[1]]
         
     def change(self, name : str, value):
         prefix = name.split(".")[0]
@@ -78,19 +93,26 @@ class NOTIFIER():
                 jdumpset("usersettings", changes)
 
     def addListeners(self, name : str, listeners : list):
-        listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name)
+        listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
         for listener in listeners:
             listening.append(listener)
     
     def removeListeners(self, name:str, removers : list):
-        listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name)
+        listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
         for listener in removers:
             listening.remove(removers)
 
+    def addListener(self, listener, names : list):
+        for name in names:
+            listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
+            listening.append(listener)
+
+    def removeListener(self, listener, names : list):
+        for name in names:
+            listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
+            listening.remove(listener)
+
 
 global NotifyService
-NotifyService = None
+NotifyService : NOTIFIER = NOTIFIER()
 
-def _initialize_notifier_():
-    global NotifyService
-    NotifyService = NOTIFIER

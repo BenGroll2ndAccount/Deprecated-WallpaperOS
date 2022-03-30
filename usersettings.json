@@ -1,3 +1,4 @@
 {    
-    "notifications": "low"   
+    "notifications": "low",
+    "darkmode" : false
 }

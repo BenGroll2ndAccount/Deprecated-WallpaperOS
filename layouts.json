@@ -1,25 +1,17 @@
 {        
-    "Layout 1" : 
+    "Preset Layout 1" : 
     {
        "widget-cluster-map" : 
             {
-                "Calender" : 
-                [
-                    [0,0], [11, 9]
+                "Calendar" :  {
+                "coords" : [
+                    [0,0], [5, 10]
                 ],
-                "Timeline" : 
-                [
-                    [0, 10], [11, 19], [12, 5], [17, 15]
-                ]
+                "parameters" : {}
+            }
 
             },
-        "settings" : {},
-        "parameters" : {
-            "Calendar" : {
-                
-            }
-        }
-            
+        "settings" : {}            
     }
 
 }
