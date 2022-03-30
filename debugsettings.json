@@ -3,6 +3,8 @@
     "display-show_widget_color" : true,
     "display-show_cluster_coordinates" : true,
     "display-show_display_boundaries" : true,
+    "display-dark-color" : "Gray10",
+    "display-light-color" : "Gray75",
     "widget-draw_constraints" : false,
     "widget-constraint-color" : "red",
     "ll-draw_rect_rounding_oct" : true

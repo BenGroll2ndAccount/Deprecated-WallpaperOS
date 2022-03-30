@@ -86,6 +86,7 @@ class DISPLAY():
 
     def load_layout(self, name:str):
         currently_loaded_widgets = []
+        NotifyService.change("ram.currently_loaded_layout", name)
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
             layoutdata = json.loads(jfile.read())[name]
         cluster_map = layoutdata["widget-cluster-map"]
