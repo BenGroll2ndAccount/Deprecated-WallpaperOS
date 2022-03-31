@@ -19,7 +19,7 @@ class uCARD(uNODE):
     def constrainmod(self, value : uConstrain):
         self.constraint = value
         if self.child != None:
-            return self.child.constrainmod(uConstrain())
+            return self.child.constrainmod(self.constraint)
         else:
             return 0
 

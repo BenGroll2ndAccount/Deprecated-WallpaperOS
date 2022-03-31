@@ -1,13 +1,15 @@
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
+from layout_parts.Widgets.uNodes.uPBox import uPBOX
 
 class uHEAD(uNODE):
-    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None):
+    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None, header : str = None):
         self.anchor : uPoint = anchor
         self.width : int = width  
         self.height : int = height
         self.child : uNODE = body
+        self.header : str = header
         self.__node_init__(listening=listening, level = 0)
 
     def notify(self, name, value):
@@ -21,7 +23,15 @@ class uHEAD(uNODE):
         return self.child.miscmod()
 
     def draw(self):
+        header_calls = []
+        if self.header != None:
+            childplaceholder = self.child
+            
+
         background_call = udraw_Rectangle(pointA=self.anchor, pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height), filled=True, border_is_highlight=False, fill_match_border=True)
+        list = []
+        list.append(background_call)
         child_calls : list = self.child.draw()
-        child_calls.append(background_call)
-        return child_calls
+        for call in child_calls:
+            list.append(call)
+        return list

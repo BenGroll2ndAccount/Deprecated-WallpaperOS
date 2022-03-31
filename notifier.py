@@ -44,11 +44,15 @@ def get_all_keys(filename : str):
 
 class NOTIFIER():
     def __init__(self):
-        self.allowed_prefixes = ["user", "layout", "debug", "ram"]
+        self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing"]
         for key in get_all_keys(filename="usersettings"):
             setattr(self, "Listeners_user_" + key, [])
         for key in get_all_keys(filename="debugsettings"):
             setattr(self, "Listeners_debug_" + key, [])
+        for key in get_all_keys(filename="ramdata"):
+            setattr(self, "Listeners_ram_" + key, [])
+        for key in get_all_keys(filename="timing"):
+            setattr(self, "Listeners_timing")
         
 
     def get(self, name : str):
@@ -62,6 +66,8 @@ class NOTIFIER():
             return jget(filename="ramdata", setting_name=name.split(".")[1])
         elif name.split(".") == "layout":
             return jget(filename="layouts", setting_name=self.get("ram.currently_loaded_layout"))["settings"][name.split(".")[1]]
+        elif name.split(".") == "timing":
+            return jget(filename="timing", setting_name=name.split(".")[1])
         
     def change(self, name : str, value):
         prefix = name.split(".")[0]
@@ -72,6 +78,9 @@ class NOTIFIER():
             listener.notify(name, value)
         if prefix == "user":
             jset("usersettings", name, value)
+        if name == "ramdata.widget_request_redraw":
+            self.os.draw()
+            jset("ramdata", "widget_request_redraw", False)
 
     def dumpchange(self, changes : dict):
         prefixes = []

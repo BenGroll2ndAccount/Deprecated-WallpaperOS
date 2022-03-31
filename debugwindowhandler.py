@@ -3,6 +3,7 @@ from graphics import GraphWin, Point, Rectangle, Text
 import os
 from layout_parts.Widgets.controllers import Calendar
 from notifier import NotifyService
+from elapsed import *
 
 ##CONSTS
 cluster_resolution = 33
@@ -35,6 +36,7 @@ class Cluster():
 
 class DISPLAY():
     def __init__(self):
+        t = time.time()
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
             self.matrix = json.loads(jfile.read())["clusters"]
             height = len(self.matrix)
@@ -66,8 +68,9 @@ class DISPLAY():
                 else:
                     pointAnchor = Point(x = element * cluster_resolution, y = row * cluster_resolution)
                     pointStretcher = Point(x = (element + 1) * cluster_resolution, y = (row + 1) * cluster_resolution)
-                    obj = Rectangle(p1 = pointAnchor, p2 = pointStretcher)
-                    obj.draw(self.wallpaper)
+                    if NotifyService.get("debug.display-show_enabled_clusters"):
+                        obj = Rectangle(p1 = pointAnchor, p2 = pointStretcher)
+                        obj.draw(self.wallpaper)
                     cluster : Cluster = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=display_id, x = element, y = row)
                     self.clusters[row][element] = cluster
                     if NotifyService.get("debug.display-show_cluster_coordinates"):
@@ -83,8 +86,18 @@ class DISPLAY():
                     rect = Rectangle(p1 = startingPoint, p2=endpoint)
                     rect.setOutline("red")
                     rect.draw(self.wallpaper)
+        print(">>>Created Window<<<", end="")
+        elapsedtime(t)
+        return
+
+    def notify(self, name, value):
+        if name == "ram.widget_request_redraw":
+            if value == True:
+                self.redraw()
 
     def load_layout(self, name:str):
+        t = time.time()
+        print(">>>Loading " + name + "...<<<")
         currently_loaded_widgets = []
         NotifyService.change("ram.currently_loaded_layout", name)
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
@@ -121,6 +134,9 @@ class DISPLAY():
                 cluster.giveWidget(widget)
             currently_loaded_widgets.append(widget)
         self.currently_loaded_widgets = currently_loaded_widgets
+        print(">>>Loaded " + name + "<<<", end="")
+        elapsedtime(t)
+        return
                         
                         
         

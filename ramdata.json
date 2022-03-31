@@ -1,3 +1,4 @@
 {
-    "currently_loaded_layout" : null
+    "currently_loaded_layout" : null,
+    "widget_request_redraw" : false
 }

@@ -1,12 +1,13 @@
 {
     "display-cluster_resolution" : 33,
-    "display-show_widget_color" : true,
-    "display-show_cluster_coordinates" : true,
-    "display-show_display_boundaries" : true,
-    "display-dark-color" : "Gray10",
-    "display-light-color" : "Gray75",
+    "display-show_widget_color" : false,
+    "display-show_enabled_clusters" : false,
+    "display-show_cluster_coordinates" : false,
+    "display-show_display_boundaries" : false,
+    "display-dark_color" : "Gray10",
+    "display-light_color" : "Gray75",
     "widget-draw_constraints" : false,
-    "widget-constraint-color" : "red",
+    "widget-constraint_color" : "red",
     "ll-draw_rect_rounding_oct" : true
     
 }
