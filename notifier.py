@@ -52,7 +52,7 @@ class NOTIFIER():
         for key in get_all_keys(filename="ramdata"):
             setattr(self, "Listeners_ram_" + key, [])
         for key in get_all_keys(filename="timing"):
-            setattr(self, "Listeners_timing")
+            setattr(self, "Listeners_timing_" + key, [])
         
 
     def get(self, name : str):

@@ -9,7 +9,7 @@
                 ],
                 "parameters" : {
                     "header" : null,
-                    "header_content" : "timing.weekday"
+                    "headercontent" : "timing.weekday"
                 }
             }
 

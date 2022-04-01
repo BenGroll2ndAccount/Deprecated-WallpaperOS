@@ -2,10 +2,12 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
 
 from notifier import NotifyService
 
 class uPBOX(uNODE):
+    @log
     def __init__(self, child : uNODE, listening : list = [], modH : int = 100, modV : int = 100, vAlign : str = "center", hAlign : str = "center"):
         allowed_aligns = ["start","center","end"]
         if vAlign not in allowed_aligns:
@@ -19,9 +21,11 @@ class uPBOX(uNODE):
         self.hAlign : str = hAlign
         self.__node_init__(listening=listening, level = 0)
 
+    @log
     def notify(self, name, value):
         pass
 
+    @log
     def constrainmod(self, value : uConstrain):
         self.constraint = uConstrain(pointA=value.pointA, pointB=value.pointB)
         new_const = uConstrain(pointA=uPoint(x = value.pointA.x, y = value.pointA.y), pointB=uPoint(x = value.pointB.x, y=value.pointB.y))
@@ -40,11 +44,14 @@ class uPBOX(uNODE):
                 new_const.pointA.y += pixels_to_remove / 2
                 new_const.pointB.y -= pixels_to_remove / 2
         if self.child != None:
-            return self.child.constrainmod(new_const)
+            lol = self.child.constrainmod(new_const)
+            return 
 
+    @log
     def miscmod(self):
         return self.child.miscmod()
 
+    @log
     def draw(self):
         calls = []
         if NotifyService.get("debug.widget-draw_constraints"):

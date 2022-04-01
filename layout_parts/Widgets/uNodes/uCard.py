@@ -2,7 +2,9 @@ from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
 class uCARD(uNODE):
+    @log
     def __init__(self, rounded : bool = False, rounding : int = False, filled : bool = True, fill_match_border : bool = False, highlight : bool = False, thickness : int = 1, child : uNODE = None, listening : list = None, level : int = 0):
         self.rounded = rounded
         self.rounding = rounding
@@ -13,19 +15,23 @@ class uCARD(uNODE):
         self.thickness = thickness
         self.__node_init__(listening=listening, level = level)
 
+    @log
     def notify(self, name, value):
         pass
 
+    @log
     def constrainmod(self, value : uConstrain):
-        self.constraint = value
+        self.constraint = uConstrain(pointA=uPoint(x = value.pointA.x, y = value.pointA.y), pointB=uPoint(x = value.pointA.x, y = value.pointB.y))
         if self.child != None:
-            return self.child.constrainmod(self.constraint)
+            self.child.constrainmod(self.constraint)
         else:
             return 0
 
+    @log
     def miscmod(self):
         return self.child.miscmod()
 
+    @log
     def draw(self):
         own_draw_calls = []
         if NotifyService.get("debug.widget-draw_constraints"):

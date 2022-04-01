@@ -126,8 +126,9 @@ class DISPLAY():
                                 marker.setFill("blue")
                                 marker.draw(self.wallpaper)
                             clusters_inhibited.append(selected_cluster)
+            widgetparams = layoutdata["widget-cluster-map"][widgetname]["parameters"]
             if widgetname == "Calendar":   
-                widget : Calendar = Calendar(clusters = clusters_inhibited)
+                widget : Calendar = Calendar(clusters = clusters_inhibited, header = widgetparams["header"], headercontent= widgetparams["headercontent"])
             else:
                 widget = None
             for cluster in clusters_inhibited:

@@ -35,7 +35,9 @@ class uNODE():
         if hasattr(self, "child") and self.child != None:
             return self.child.output()
         if hasattr(self, "children") and self.children != None:
-            return [child.output for child in self.children]
+            for child in self.children:
+                wait = child.output()
+            return
 
     @abstractmethod
     def notify(self, name, value):

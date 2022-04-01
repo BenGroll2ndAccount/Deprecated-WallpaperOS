@@ -8,6 +8,7 @@
     "display-light_color" : "Gray75",
     "widget-draw_constraints" : false,
     "widget-constraint_color" : "red",
-    "ll-draw_rect_rounding_oct" : true
+    "ll-draw_rect_rounding_oct" : true,
+    "widget-log_any_function_call" : true
     
 }
