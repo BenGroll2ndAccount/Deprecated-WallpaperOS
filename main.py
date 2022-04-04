@@ -1,10 +1,9 @@
-from re import T
 from debugwindowhandler import DISPLAY
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from notifier import NotifyService
 from graphics import Rectangle
-import time
-from elapsed import *
+from rounded_rectangle import RoundedRectangle
 
 
 
@@ -25,10 +24,9 @@ class OS():
                 for call in currently_drawn_calls:
                     call.undraw()
                 self.draw()
-    
+    @tlog
     def draw(self):
         display = self.displayController
-        t = time.time()
         drawcalls = []
         drawobjs = []
         for widget in display.currently_loaded_widgets:
@@ -46,7 +44,10 @@ class OS():
                 display.wallpaper.plotPixel(x = pixel_to_draw.position.x, y = pixel_to_draw.position.y, color = highlight_color if draw_call.highlight else background_color)
             elif draw_call.__class__.__name__ == "udraw_Rectangle":
                 rectangle : udraw_Rectangle = draw_call
-                obj = Rectangle(p1 = Point(x = rectangle.pointA.x, y = rectangle.pointA.y), p2 = Point(x = rectangle.pointB.x, y = rectangle.pointB.y))
+                if rectangle.rounding > 0:
+                    obj = RoundedRectangle(p1 = rectangle.pointA.to_point(), p2 = rectangle.pointB.to_point(), radius=rectangle.rounding)
+                else:
+                    obj = Rectangle(p1 = Point(x = rectangle.pointA.x, y = rectangle.pointA.y), p2 = Point(x = rectangle.pointB.x, y = rectangle.pointB.y))
                 if rectangle.is_debug:
                     constraints.append(obj)
                 elif rectangle.filled:
@@ -66,13 +67,26 @@ class OS():
                 if not rectangle.is_debug:
                     obj.draw(display.wallpaper)
                 drawobjs.append(obj)
+            elif draw_call.__class__.__name__ == "udraw_Line":
+                line : udraw_Line = draw_call
+                if line.pointA.x == line.pointB.x:
+                    obj = Rectangle(p1=Point(x = line.pointA.x - line.thickness / 2, y = line.pointA.y), p2=Point(x = line.pointA.x + line.thickness / 2, y = line.pointB.y))
+                elif line.pointA.y == line.pointB.y:
+                    obj = Rectangle(p1=Point(x = line.pointA.x, y = line.pointA.y - line.thickness / 2), p2=Point(x = line.pointB.x, y = line.pointA.y + line.thickness / 2))
+                if line.highlight:
+                    obj.setOutline(color = highlight_color)
+                    obj.setFill(color= highlight_color)
+                else:
+                    obj.setOutline(color = background_color)
+                    obj.setFill(color = background_color)
+                obj.draw(display.wallpaper)
+            
         if NotifyService.get("debug.widget-draw_constraints"):
             for call in constraints:
                 call.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
                 call.draw(display.wallpaper)
                 drawobjs.append(call)
         print(">>>(Re)Drawn Display", end="")
-        elapsedtime(t)
         return drawobjs
 
 setattr(NotifyService, "os", OS())

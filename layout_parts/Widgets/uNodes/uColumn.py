@@ -6,9 +6,9 @@ from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
 
 
-class uROW(uNODE):
+class uCOLUMN(uNODE):
     @tlog
-    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 1):
+    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 0):
         allowed_spacings = {"start", "center", "end"}
         if spacing not in allowed_spacings:
             self.spacing = "center"
@@ -17,7 +17,7 @@ class uROW(uNODE):
         self.seperator = seperator
         self.spacing = spacing
         self.container = container
-        self.divider_thickness : int = divider_thickness
+        self.divider_thickness = divider_thickness
         self.include_sides = include_sides
         if container != None:
             children_cont = []
@@ -32,16 +32,16 @@ class uROW(uNODE):
         self.__node_init__(listening=listening, level = 0)
     @tlog
     def notify(name, value):
-        raise NotImplementedError#
+        raise NotImplementedError
 
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
         new_full_constrain = value.copy
-        y_begin = new_full_constrain.pointA.y
-        y_end = new_full_constrain.pointB.y
-        width_to_fill = new_full_constrain.width
-        pixels_seperator = width_to_fill * (self.seperator / 100)
+        x_begin = new_full_constrain.pointA.x
+        x_end = new_full_constrain.pointB.x
+        height_to_fill = new_full_constrain.height
+        pixels_seperator = height_to_fill * (self.seperator / 100)
         seperator_count = len(self.children) - 1 
         seperator_count = seperator_count + 2 if self.include_sides else seperator_count
         if self.divider_thickness > 0:
@@ -51,40 +51,41 @@ class uROW(uNODE):
             divdier_count = 1
             pixels_for_dividers = 0
         pixels_per_seperator = pixels_seperator / seperator_count
-        pixels_per_widget = (width_to_fill - pixels_seperator - pixels_for_dividers) / len(self.children)
+        pixels_per_widget = (height_to_fill - pixels_seperator) / len(self.children)
         constraints = []
         if self.spacing == "center":
             if self.include_sides:
                 for index in range(len(self.children)):
                     childs_constrain = uConstrain(
                         pointA=uPoint(
-                            x = new_full_constrain.pointA.x + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * index + (pixels_for_dividers / divdier_count) * index,
-                            y = y_begin
+                            x = x_begin,
+                            y = new_full_constrain.pointA.y + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * index + (pixels_for_dividers / divdier_count) * index
                         ),
                         pointB=uPoint(
-                            x = new_full_constrain.pointA.x + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * (index + 1) + (pixels_for_dividers / divdier_count) * index,
-                            y = y_end
+                            x = x_end,
+                            y = new_full_constrain.pointA.y + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * (index + 1)+ (pixels_for_dividers / divdier_count) * index
                         )
                     )
                     constraints.append ( childs_constrain.copy )
                     del childs_constrain
         for childex in range(len(self.children)):
             self.children[childex].constrainmod(constraints[childex].copy)
-        divider_x_coords = []
+        
+        divider_y_coords = []
         for idx in range(len(self.children)):
             if not len(self.children) <= idx + 1:
-                x_begin : int= self.children[idx].constraint.pointB.x
-                x_end : int = self.children[idx + 1].constraint.pointA.x
-                x = x_begin + ((x_end - x_begin) / 2)
-                divider_x_coords.append(x)
-        self.divider_xss = divider_x_coords
-        print(self.divider_xss)
+                y_begin : int= self.children[idx].constraint.pointB.y
+                y_end : int = self.children[idx + 1].constraint.pointA.y
+                y = y_begin + ((y_end - y_begin) / 2)
+                divider_y_coords.append(y)
+        self.divider_yss = divider_y_coords
+        print(self.divider_yss)
                     
     @tlog
     def draw(self):
         children_calls = []
-        for x in self.divider_xss:
-            obj = udraw_Line(pointA=uPoint(x = x, y = self.constraint.pointA.y), pointB=uPoint(x = x, y = self.constraint.pointB.y), thickness=self.divider_thickness)
+        for y in self.divider_yss:
+            obj = udraw_Line(pointA=uPoint(y = y, x = self.constraint.pointA.x), pointB=uPoint(y = y, x = self.constraint.pointB.x), thickness=self.divider_thickness)
             children_calls.append(obj)
         for child in self.children:
             for draw_call in child.draw():

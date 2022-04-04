@@ -37,7 +37,6 @@ def jdumpset(filename : str, settings):
 
 def get_all_keys(filename : str):
     path = str(os.path.dirname(os.path.abspath(__file__)))
-    print(path)
     with open(path + "/" + filename + ".json", "r") as jfile:
         directory : dict = json.loads(jfile.read())
         return directory.keys()

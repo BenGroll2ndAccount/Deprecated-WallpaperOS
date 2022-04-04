@@ -18,13 +18,15 @@ class udraw_Line():
             self,
             pointA : uPoint = None,
             pointB: uPoint = None,
-            highlight: bool = True
+            highlight: bool = True,
+            thickness : int = 1
             ):
         if pointA == None or pointB == None:
             raise uDRAWEXCEPTION(widget=self.__class__.__name__, message = "Draw needs both start and endpoint")
         self.pointA = pointA
         self.pointB = pointB
         self.highlight = highlight
+        self.thickness = thickness
 
 class udraw_Rectangle():
     def __init__(
@@ -45,7 +47,14 @@ class udraw_Rectangle():
         self.pointB = pointB
         self.border_is_highlight = border_is_highlight
         self.thickness = thickness
-        self.rounding = rounding
+        rounding_length = 0
+        smaller_side = "h" if (pointB.x - pointA.x) > (pointB.y - pointA.y) else "v"
+        if smaller_side == "h":
+            rounding_length  = pointB.x - pointA.x
+        else:
+            rounding_length = pointB.y - pointA.y
+        total_rounding = rounding_length * (rounding / 100)
+        self.rounding = total_rounding
         self.round_oct = round_oct
         self.filled = filled
         self.fill_border = fill_match_border

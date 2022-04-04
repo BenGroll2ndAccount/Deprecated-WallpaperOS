@@ -2,6 +2,7 @@ import json
 from graphics import GraphWin, Point, Rectangle, Text
 import os
 from layout_parts.Widgets.controllers import Calendar
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
 from notifier import NotifyService
 from elapsed import *
 
@@ -35,6 +36,7 @@ class Cluster():
 
 
 class DISPLAY():
+    @tlog
     def __init__(self):
         t = time.time()
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
@@ -87,14 +89,13 @@ class DISPLAY():
                     rect.setOutline("red")
                     rect.draw(self.wallpaper)
         print(">>>Created Window<<<", end="")
-        elapsedtime(t)
         return
 
     def notify(self, name, value):
         if name == "ram.widget_request_redraw":
             if value == True:
                 self.redraw()
-
+    @tlog
     def load_layout(self, name:str):
         t = time.time()
         print(">>>Loading " + name + "...<<<")
@@ -136,7 +137,6 @@ class DISPLAY():
             currently_loaded_widgets.append(widget)
         self.currently_loaded_widgets = currently_loaded_widgets
         print(">>>Loaded " + name + "<<<", end="")
-        elapsedtime(t)
         return
                         
                         

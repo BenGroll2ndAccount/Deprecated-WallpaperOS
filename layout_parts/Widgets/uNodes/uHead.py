@@ -2,9 +2,10 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
 
 class uHEAD(uNODE):
-    @log
+    @tlog
     def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None, header : str = None, headercontent : str = None):
         self.anchor : uPoint = anchor
         self.width : int = width  
@@ -14,20 +15,20 @@ class uHEAD(uNODE):
         self.headercontent : str = headercontent
         self.__node_init__(listening=listening, level = 0)
 
-    @log
+    @tlog
     def notify(self, name, value):
         pass
 
-    @log
+    @tlog
     def constrainmod(self):
         self.constraint = uConstrain(pointA=uPoint(x=0, y=0), pointB=uPoint(x=self.width, y=self.height))
-        return self.child.constrainmod(uConstrain(pointA=uPoint(x=0, y=0), pointB=uPoint(x=self.width, y=self.height)))
+        self.child.constrainmod(self.constraint.copy)
 
-    @log
+    @tlog
     def miscmod(self):
         return self.child.miscmod()
 
-    @log
+    @tlog
     def draw(self):
         header_calls = []
         if self.header != None:

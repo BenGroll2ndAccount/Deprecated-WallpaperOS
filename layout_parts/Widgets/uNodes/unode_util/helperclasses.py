@@ -13,6 +13,10 @@ class uPoint():
     def out(self):
         return "(" + str(self.x) + "|" + str(self.y) + ")"
 
+    @property
+    def copy(self):
+        return uPoint(x = self.x, y = self.y)
+
 
 
 class uConstrain():
@@ -29,4 +33,8 @@ class uConstrain():
     @property
     def height(self):
         return max(self.pointA.y, self.pointB.y) - min(self.pointA.y, self.pointB.y)
+
+    @property
+    def copy(self):
+        return uConstrain(pointA=uPoint(x = self.pointA.x, y = self.pointA.y), pointB=uPoint(x = self.pointB.x, y = self.pointB.y ))
 

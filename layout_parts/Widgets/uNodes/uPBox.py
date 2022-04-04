@@ -3,11 +3,13 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+
 
 from notifier import NotifyService
 
 class uPBOX(uNODE):
-    @log
+    @tlog
     def __init__(self, child : uNODE, listening : list = [], modH : int = 100, modV : int = 100, vAlign : str = "center", hAlign : str = "center"):
         allowed_aligns = ["start","center","end"]
         if vAlign not in allowed_aligns:
@@ -21,14 +23,14 @@ class uPBOX(uNODE):
         self.hAlign : str = hAlign
         self.__node_init__(listening=listening, level = 0)
 
-    @log
+    @tlog
     def notify(self, name, value):
         pass
 
-    @log
+    @tlog
     def constrainmod(self, value : uConstrain):
-        self.constraint = uConstrain(pointA=value.pointA, pointB=value.pointB)
-        new_const = uConstrain(pointA=uPoint(x = value.pointA.x, y = value.pointA.y), pointB=uPoint(x = value.pointB.x, y=value.pointB.y))
+        self.constraint = value.copy
+        new_const = value.copy
         if self.modH != 100:
             modXfactor = self.modH / 100
             whole_pixels_horizontal = new_const.width
@@ -36,6 +38,11 @@ class uPBOX(uNODE):
             if self.hAlign == "center":
                 new_const.pointA.x += pixels_to_remove / 2
                 new_const.pointB.x -= pixels_to_remove / 2
+            if self.hAlign == "start":
+                new_const.pointB.x -= pixels_to_remove
+            if self.hAlign == "end":
+                new_const.pointA.x += pixels_to_remove
+
         if self.vAlign != 100:
             modYfactor = self.modV / 100
             whole_pixels_vertical = new_const.height
@@ -43,15 +50,22 @@ class uPBOX(uNODE):
             if self.vAlign == "center":
                 new_const.pointA.y += pixels_to_remove / 2
                 new_const.pointB.y -= pixels_to_remove / 2
-        if self.child != None:
-            lol = self.child.constrainmod(new_const)
-            return 
+            if self.vAlign == "start":
+                new_const.pointB.y -= pixels_to_remove
+            if self.vAlign == "end":
+                new_const.pointA.y += pixels_to_remove
+            
 
-    @log
+
+        if self.child != None:
+            self.child.constrainmod(new_const.copy)
+            
+
+    @tlog
     def miscmod(self):
         return self.child.miscmod()
 
-    @log
+    @tlog
     def draw(self):
         calls = []
         if NotifyService.get("debug.widget-draw_constraints"):
