@@ -39,8 +39,6 @@ class uROW(uNODE):
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
         new_full_constrain = value.copy
-        y_begin = new_full_constrain.pointA.y
-        y_end = new_full_constrain.pointB.y
         width_to_fill = new_full_constrain.width
         pixels_seperator = width_to_fill * (self.seperator / 100)
         seperator_count = len(self.children) - 1 
@@ -52,23 +50,30 @@ class uROW(uNODE):
             divdier_count = 1
             pixels_for_dividers = 0
         pixels_per_seperator = pixels_seperator / seperator_count
-        pixels_per_widget = (width_to_fill - pixels_seperator - pixels_for_dividers) / len(self.children)
+        total_flex = 0
+        for child in self.children:
+            total_flex += child.flex
+        pixels_per_flex = (width_to_fill - pixels_seperator - pixels_for_dividers) / total_flex
         constraints = []
+        set_flex = 0
         if self.spacing == "center":
             if self.include_sides:
                 for index in range(len(self.children)):
-                    childs_constrain = uConstrain(
+                    childconst = uConstrain(
                         pointA=uPoint(
-                            x = new_full_constrain.pointA.x + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * index + (pixels_for_dividers / divdier_count) * index,
-                            y = y_begin
+                            x = self.constraint.pointA.x + (index + 1) * pixels_per_seperator + set_flex * pixels_per_flex,
+                            y = self.constraint.pointA.y
                         ),
                         pointB=uPoint(
-                            x = new_full_constrain.pointA.x + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * (index + 1) + (pixels_for_dividers / divdier_count) * index,
-                            y = y_end
+                            x = self.constraint.pointA.x + (index + 1) * pixels_per_seperator + pixels_per_flex * (self.children[index].flex + set_flex),
+                            y = self.constraint.pointB.y
                         )
                     )
-                    constraints.append ( childs_constrain.copy )
-                    del childs_constrain
+                    set_flex += self.children[index].flex
+                    constraints.append(childconst)
+                
+
+
         for childex in range(len(self.children)):
             self.children[childex].constrainmod(constraints[childex].copy)
         divider_x_coords = []

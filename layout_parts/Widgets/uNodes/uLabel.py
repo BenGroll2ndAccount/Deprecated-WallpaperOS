@@ -15,7 +15,7 @@ class uLABEL(uNODE):
         self.text = ""
         self.varname = ""
         self.nice = nice
-        self.flex = 1
+        self.flex = flex
         self.child = None
         self.size = size
         self.highlight = highlight

@@ -5,22 +5,9 @@ from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 
 body = uCOLUMN(
-    divider_thickness=1,
-    seperator = 10,
-    children=[
-    uROW(
-        seperator=20,
-        divider_thickness = 2,
-        children=[
-            uCARD(filled=True, highlight=True),
-            uCARD(filled=True, highlight=True)
-        ]),
-    uROW(
-        seperator=20,
-        divider_thickness = 2,
-        children=[
-            uCARD(filled=True, highlight=True),
-            uCARD(filled=True, highlight=True)
-        ]),
+    seperator = 20,
+    children = [
+        uCARD(filled = True),
+        uCARD(filled = True, flex = 2)
     ]
 )

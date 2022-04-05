@@ -52,23 +52,32 @@ class uCOLUMN(uNODE):
             divdier_count = 1
             pixels_for_dividers = 0
         pixels_per_seperator = pixels_seperator / seperator_count
-        pixels_per_widget = (height_to_fill - pixels_seperator) / len(self.children)
-        constraints = []
+        total_flex = 0
+        for child in self.children:
+            total_flex += child.flex
+        pixels_per_flex = (height_to_fill - pixels_seperator) / total_flex
+        constraints = []    
+        set_flex = 0
         if self.spacing == "center":
             if self.include_sides:
                 for index in range(len(self.children)):
-                    childs_constrain = uConstrain(
+                    childconst = uConstrain(
                         pointA=uPoint(
-                            x = x_begin,
-                            y = new_full_constrain.pointA.y + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * index + (pixels_for_dividers / divdier_count) * index
+                            y = self.constraint.pointA.y + (index + 1) * pixels_per_seperator + set_flex * pixels_per_flex,
+                            x = new_full_constrain.pointA.x
                         ),
                         pointB=uPoint(
-                            x = x_end,
-                            y = new_full_constrain.pointA.y + pixels_per_seperator + (pixels_per_seperator * index) + pixels_per_widget * (index + 1)+ (pixels_for_dividers / divdier_count) * index
+                            y = self.constraint.pointA.y + (index + 1) * pixels_per_seperator + pixels_per_flex * (self.children[index].flex + set_flex),
+                            x = new_full_constrain.pointB.x
                         )
                     )
-                    constraints.append ( childs_constrain.copy )
-                    del childs_constrain
+                    set_flex += self.children[index].flex
+                    constraints.append(childconst)
+
+
+
+
+
         for childex in range(len(self.children)):
             self.children[childex].constrainmod(constraints[childex].copy)
         

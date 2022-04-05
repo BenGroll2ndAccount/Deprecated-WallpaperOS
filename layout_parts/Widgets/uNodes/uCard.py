@@ -6,14 +6,14 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 class uCARD(uNODE):
     @tlog
-    def __init__(self, child : uNODE = None,rounding : int = 0, filled : bool = True, fill_match_border : bool = True, highlight : bool = False, thickness : int = 1,  listening : list = None, level : int = 0, flex = 1):
+    def __init__(self, child : uNODE = None,rounding : int = 0, filled : bool = True, fill_match_border : bool = True, highlight : bool = True, thickness : int = 1,  listening : list = None, level : int = 0, flex = 1):
         self.rounding = rounding
         self.filled = filled
         self.fill_border = fill_match_border
         self.highlight = highlight
         self.child = child
         self.thickness = thickness
-        self.flex = 1
+        self.flex = flex
         self.__node_init__(listening=listening, level = level)
 
     @tlog

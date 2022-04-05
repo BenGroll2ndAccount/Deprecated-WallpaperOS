@@ -12,7 +12,7 @@ class uHEAD(uNODE):
         self.anchor : uPoint = anchor
         self.width : int = width  
         self.height : int = height
-        self.flex = 1
+        self.flex = flex
         self.child : uNODE = body
         self.header : str = header
         self.headercontent : str = headercontent
@@ -27,15 +27,18 @@ class uHEAD(uNODE):
         self.constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         __HEADERSIZE__ : int = NotifyService.get("debug.widget-header_thickness_in_clusters")
         __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
+        new_constraint = None
         if self.header == "t":
-            self.constraint = uConstrain(pointA=uPoint(x=self.anchor.x, y = __HEADERSIZE__ * __HEADERRESOLUTION__), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x, y = __HEADERSIZE__ * __HEADERRESOLUTION__), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         elif self.header == "l":
-            self.constraint = uConstrain(pointA=uPoint(x=self.anchor.x + __HEADERSIZE__ * __HEADERRESOLUTION__, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x + __HEADERSIZE__ * __HEADERRESOLUTION__, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         elif self.header == "r":
-            self.constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width - (__HEADERSIZE__ * __HEADERRESOLUTION__), y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width - (__HEADERSIZE__ * __HEADERRESOLUTION__), y = self.anchor.y + self.height))
         elif self.header == "b":
-            self.constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __HEADERRESOLUTION__)))
-        self.child.constrainmod(self.constraint.copy)
+            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __HEADERRESOLUTION__)))
+        else:
+            return self.child.constrainmod(self.constraint.copy)
+        self.child.constrainmod(new_constraint.copy)
 
     @tlog
     def miscmod(self):
