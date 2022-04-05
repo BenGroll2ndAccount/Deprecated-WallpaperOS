@@ -11,7 +11,7 @@ from notifier import NotifyService
 
 class uLABEL(uNODE):
     @tlog
-    def __init__(self, text : str = "", varname = None, nice : bool = False, size : int = 36, highlight : bool = True, flex = 1):
+    def __init__(self, varname = None, nice : bool = False, size : int = 24, highlight : bool = True, flex = 1):
         self.text = ""
         self.varname = ""
         self.nice = nice
@@ -19,13 +19,16 @@ class uLABEL(uNODE):
         self.child = None
         self.size = size
         self.highlight = highlight
-        if varname != None:
-            varvalue = NotifyService.get(varname)
-            self.text = self.formatt(varname, varvalue)
+        
+        if varname != None and str.startswith(varname, "_"):
+            varvalue = NotifyService.get(varname.split("_")[1])
+            self.text = self.formatt(varname.split("_")[1], varvalue)
+            self.__node_init__(varname.split("_")[1], level = 0)
         else:
-            self.text = text
-        self.__node_init__(listening=[varname] if varname != "" else [], level = 0)
-
+            self.text = varname
+            self.__node_init__(listening = [])
+       
+        
     @tlog
     def notify(self, name, value):
         if name == self.varname:

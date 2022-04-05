@@ -8,8 +8,8 @@
                     [0,0], [11, 19]
                 ],
                 "parameters" : {
-                    "header" : "t",
-                    "headercontent" : "timing.weekday"
+                    "header" : null,
+                    "headercontent" : "Calendar"
                 }
             }
 

@@ -1,4 +1,4 @@
-from layout_parts.Widgets.calendar import body as calendar_body
+from layout_parts.Widgets.Calendar import body as calendar_body
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
 from elapsed import *

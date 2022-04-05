@@ -42,6 +42,6 @@ class uCARD(uNODE):
             child_calls : list = self.child.draw()
         else:
             child_calls = []
-        for call in own_draw_calls:
-            child_calls.append(call)
-        return child_calls
+        for call in child_calls:
+            own_draw_calls.append(call)
+        return own_draw_calls

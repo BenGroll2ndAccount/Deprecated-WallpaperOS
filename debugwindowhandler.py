@@ -6,8 +6,7 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from notifier import NotifyService
 from elapsed import *
 
-##CONSTS
-cluster_resolution = 33
+
 
 class Cluster():
     def __init__(self, anchor : Point, end : Point, display_number : int, x : int, y : int):
@@ -46,7 +45,8 @@ class DISPLAY():
             for row in self.matrix:
                 if len(row) > width:
                     width = len(row)
-            print(str(height * cluster_resolution) + "x" + str(width * cluster_resolution))
+        cluster_resolution = NotifyService.get("debug.display-cluster_resolution")
+        print(str(height * cluster_resolution) + "x" + str(width * cluster_resolution))
         self.wallpaper = GraphWin("WallPaper", width=width * cluster_resolution, height=height * cluster_resolution)
         isDarkMode = NotifyService.get("user.darkmode")
         light_color = NotifyService.get("debug.display-light_color")
@@ -78,11 +78,15 @@ class DISPLAY():
                     if NotifyService.get("debug.display-show_enabled_clusters"):
                         obj = Rectangle(p1 = pointAnchor, p2 = pointStretcher)
                         obj.draw(self.wallpaper)
+                        
                     cluster : Cluster = Cluster(anchor = pointAnchor, end = pointStretcher, display_number=display_id, x = element, y = row)
                     self.clusters[row][element] = cluster
                     if NotifyService.get("debug.display-show_cluster_coordinates"):
                         txt = Text(p = Point((pointAnchor.x + pointStretcher.x) / 2, (pointAnchor.y + pointStretcher.y) / 2) , text = str(cluster.gridcoords))
                         txt.draw(self.wallpaper)
+
+        if NotifyService.get("debug.display-show_display_boundaries") or NotifyService.get("debug.display-show_cluster_coordinates") or NotifyService.get("debug.display-show_enabled_clusters"):
+            input()
         if NotifyService.get("debug.display-show_display_boundaries"):
             with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
                 for display_coordinates in json.loads(jfile.read())["displays"]:
@@ -93,6 +97,7 @@ class DISPLAY():
                     rect = Rectangle(p1 = startingPoint, p2=endpoint)
                     rect.setOutline("red")
                     rect.draw(self.wallpaper)
+            input()
         print(">>>Created Window<<<", end="")
         return
 
