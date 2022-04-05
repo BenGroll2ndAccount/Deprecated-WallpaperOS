@@ -41,4 +41,18 @@ class uConstrain():
     @property
     def center(self):
         return uPoint(x = self.pointA.x + ((self.pointB.x - self.pointA.x) / 2), y = self.pointA.y + ((self.pointB.y - self.pointA.y) / 2))
+    
+    def isSafe(self, other_const):
+        if self.pointA.x < other_const.pointA.x:
+            raise uBUILDTIMEEXCEPTION("Constrain out of bounds. May fix overlap or put it on another level.")
+        if self.pointB.x > other_const.pointB.x:
+            raise uBUILDTIMEEXCEPTION("Constrain out of bounds. May fix overlap or put it on another level.")
+        if self.pointA.y < other_const.pointA.y: 
+            raise uBUILDTIMEEXCEPTION("Constrain out of bounds. May fix overlap or put it on another level.")
+        if self.pointB.y > other_const.pointB.y:
+            raise uBUILDTIMEEXCEPTION("Constrain out of bounds. May fix overlap or put it on another level.")
+        else:
+            return True
+
+
 

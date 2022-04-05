@@ -2,6 +2,7 @@ from layout_parts.Widgets.calendar import body as calendar_body
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
 from elapsed import *
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import uConstrain, uPoint
 
 class WIDGET():
     @property
@@ -11,6 +12,7 @@ class WIDGET():
     def finish(self):
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
+        wait = self.head.constraincheck(uConstrain(pointA=uPoint(0,0), pointB=uPoint(self.head.width+1, self.head.height + 1)))
         print("Calendar")
         print("-------------------")
         print("Type" + " " * (50 - len("Type")) + "Depth" + " " + "Constraints")

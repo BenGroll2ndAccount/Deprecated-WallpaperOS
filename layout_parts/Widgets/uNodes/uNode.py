@@ -59,3 +59,12 @@ class uNODE():
     def __init__(self):
         pass
 
+    def constraincheck(self, parent_const):
+        if self.constraint.isSafe(parent_const):
+            if hasattr(self, "child") and self.child != None:
+                return self.child.constraincheck(self.constraint)
+            if hasattr(self, "children") and self.children != None:
+                for child in self.children:
+                    child.constraincheck(self.constraint)
+                return
+
