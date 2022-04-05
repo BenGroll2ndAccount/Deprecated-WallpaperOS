@@ -2,21 +2,22 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import log
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 
 
 from notifier import NotifyService
 
 class uPBOX(uNODE):
     @tlog
-    def __init__(self, child : uNODE, listening : list = [], modH : int = 100, modV : int = 100, vAlign : str = "center", hAlign : str = "center"):
+    def __init__(self, child : uNODE, listening : list = [], modH : int = 100, modV : int = 100, vAlign : str = "center", hAlign : str = "center", flex = 1):
         allowed_aligns = ["start","center","end"]
         if vAlign not in allowed_aligns:
             raise uPROPERTYEXCEPTION(vAlign + " not a valid align. Valid values include: start, center, end.", self)
         if hAlign not in allowed_aligns:
             raise uPROPERTYEXCEPTION(hAlign + " not a valid align. Valid values include: start, center, end", self)
         self.child : uNODE = child
+        self.flex = flex
         self.modH : int = modH
         self.modV : int = modV
         self.vAlign : str = vAlign

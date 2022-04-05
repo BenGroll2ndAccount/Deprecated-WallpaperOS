@@ -1,9 +1,5 @@
 import time
 from notifier import NotifyService
-
-
-
-
 def log(func):
     def func_wrapper(*args, **kwargs):
         if NotifyService.get("debug.widget-log_any_function_call"):

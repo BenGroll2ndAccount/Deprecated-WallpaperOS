@@ -2,13 +2,13 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from notifier import NotifyService
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import log
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 
 
 class uCOLUMN(uNODE):
     @tlog
-    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 0):
+    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 0, flex = 1):
         allowed_spacings = {"start", "center", "end"}
         if spacing not in allowed_spacings:
             self.spacing = "center"
@@ -19,6 +19,7 @@ class uCOLUMN(uNODE):
         self.container = container
         self.divider_thickness = divider_thickness
         self.include_sides = include_sides
+        self.flex = flex
         if container != None:
             children_cont = []
             for child in children:

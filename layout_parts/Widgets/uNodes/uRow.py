@@ -2,19 +2,20 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from notifier import NotifyService
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import log
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import log
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 
 
 class uROW(uNODE):
     @tlog
-    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 1):
+    def __init__(self, children : list, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 1, flex = 1):
         allowed_spacings = {"start", "center", "end"}
         if spacing not in allowed_spacings:
             self.spacing = "center"
         else:
             self.spacing = spacing
         self.seperator = seperator
+        self.flex = flex
         self.spacing = spacing
         self.container = container
         self.divider_thickness : int = divider_thickness

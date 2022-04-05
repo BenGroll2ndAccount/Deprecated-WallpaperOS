@@ -1,5 +1,5 @@
 {
-    "display-cluster_resolution" : 33,
+    "display-cluster_resolution" : 44,
     "display-show_widget_color" : false,
     "display-show_enabled_clusters" : false,
     "display-show_cluster_coordinates" : false,
@@ -8,7 +8,8 @@
     "display-light_color" : "Gray75",
     "widget-draw_constraints" : false,
     "widget-constraint_color" : "red",
+    "widget-header_thickness_in_clusters" : 2,
     "ll-draw_rect_rounding_oct" : true,
-    "widget-log_any_function_call" : true
+    "widget-log_any_function_call" : false
     
 }

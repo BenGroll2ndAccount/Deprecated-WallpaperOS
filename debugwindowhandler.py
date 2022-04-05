@@ -2,7 +2,7 @@ import json
 from graphics import GraphWin, Point, Rectangle, Text
 import os
 from layout_parts.Widgets.controllers import Calendar
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from notifier import NotifyService
 from elapsed import *
 
@@ -48,6 +48,11 @@ class DISPLAY():
                     width = len(row)
             print(str(height * cluster_resolution) + "x" + str(width * cluster_resolution))
         self.wallpaper = GraphWin("WallPaper", width=width * cluster_resolution, height=height * cluster_resolution)
+        isDarkMode = NotifyService.get("user.darkmode")
+        light_color = NotifyService.get("debug.display-light_color")
+        dark_color = NotifyService.get("debug.display-dark_color")
+        background_color = dark_color if isDarkMode else light_color
+        self.wallpaper.setBackground(background_color)
         displaycount = 0
         self.clusters = []
         for i in range(height):

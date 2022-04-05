@@ -11,14 +11,14 @@ def jget(filename : str, setting_name : str):
 
 def jdumpget(filename : str, settings):
     with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/" + filename + ".json", "r") as jfile:
-        try:
-            output = {}
-            data = json.loads(jfile.read())
-            for key in settings():
-                output[key] = data[key]
-            return output
-        except:
-            return None
+        output = {}
+        data = json.loads(jfile.read())
+        for key in settings:
+            output[key] = data[key]
+        return output
+    
+            
+            
 
 def jset(filename : str, setting_name : str, setting_value):
     with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/" + filename + ".json", "r") as jfile:
@@ -44,29 +44,43 @@ def get_all_keys(filename : str):
 class NOTIFIER():
     def __init__(self):
         self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing"]
-        for key in get_all_keys(filename="usersettings"):
-            setattr(self, "Listeners_user_" + key, [])
-        for key in get_all_keys(filename="debugsettings"):
-            setattr(self, "Listeners_debug_" + key, [])
-        for key in get_all_keys(filename="ramdata"):
-            setattr(self, "Listeners_ram_" + key, [])
-        for key in get_all_keys(filename="timing"):
-            setattr(self, "Listeners_timing_" + key, [])
-        
+        self.loadcache(["usersettings", "debugsettings", "ramdata", "timing"])
+
+    def loadcache(self, filenames):
+        #Usersettings
+        if "usersettings" in filenames:
+            usersettings_keys = get_all_keys(filename="usersettings")
+            usersettings_data = jdumpget(filename="usersettings", settings = usersettings_keys)
+            for key in usersettings_data:
+                setattr(self, "user."+key, usersettings_data[key])
+                setattr(self, "Listeners_user_" + key, [])
+        #Debugsettings
+        if "debugsettings" in filenames:
+            debug_keys = get_all_keys(filename="debugsettings")
+            debug_data = jdumpget(filename="debugsettings", settings = debug_keys)
+            for key in debug_data:
+                setattr(self, "debug."+key, debug_data[key])
+                setattr(self, "Listeners_debug_" + key, [])
+        if "ramdata" in filenames:
+        #Ramdata
+            ram_keys = get_all_keys(filename="ramdata")
+            ram_data = jdumpget(filename="ramdata", settings = ram_keys)
+            for key in ram_data:
+                setattr(self, "ram."+key, ram_data[key])
+                setattr(self, "Listeners_ram_" + key, [])
+        #Timing
+        if "timing" in filenames:
+            timing_keys = get_all_keys(filename="timing")
+            timing_data = jdumpget(filename="timing", settings = timing_keys)
+            for key in timing_data:
+                setattr(self, "timing."+key, timing_data[key])  
+                setattr(self, "Listeners_timing_" + key, [])      
 
     def get(self, name : str):
-        if name.split(".")[0] not in self.allowed_prefixes:
-            raise ValueError(name.split(".")[0] + " not in allowed prefixes")
-        if name.split(".")[0] == "debug":
-            return jget(filename="debugsettings", setting_name = name.split(".")[1])
-        elif name.split(".")[0] == "user":
-            return jget(filename="usersettings", setting_name = name.split(".")[1])
-        elif name.split(".")[0] == "ram":
-            return jget(filename="ramdata", setting_name=name.split(".")[1])
-        elif name.split(".") == "layout":
-            return jget(filename="layouts", setting_name=self.get("ram.currently_loaded_layout"))["settings"][name.split(".")[1]]
-        elif name.split(".") == "timing":
-            return jget(filename="timing", setting_name=name.split(".")[1])
+        if name.split(".")[0] in self.allowed_prefixes:
+            return getattr(self, name)
+        else:
+            raise ValueError(name + " not in allowed prefixes.")
         
     def change(self, name : str, value):
         prefix = name.split(".")[0]
@@ -80,25 +94,11 @@ class NOTIFIER():
         if name == "ramdata.widget_request_redraw":
             self.os.draw()
             jset("ramdata", "widget_request_redraw", False)
+        setattr(self, name, value)
 
-    def dumpchange(self, changes : dict):
-        prefixes = []
-        for key in changes.keys():
-            prefix = key.split(".")[0]
-            prefixes.append(prefix)
-            suffix = key.split(".")[1]
-            value = changes[key]
-            changes.pop(key)
-            changes[suffix] == value
-            if prefix not in self.allowed_prefixes:
-                raise ValueError(prefix + " not in allowed prefixes.")
-            for listener in getattr(self, "Listeners_" + prefix + "_" + suffix):
-                listener.notify(key, changes[key])
-        if not prefixes.count(prefixes[0]) == len(prefixes):
-            raise ValueError("All prefixes in dumpchange need to be the same.")
-        else:
-            if prefixes[0] == "user":
-                jdumpset("usersettings", changes)
+    def dumpchange(self, filename, changes : dict):
+        jdumpset(filename, changes)
+        self.loadcache(filenames=[filename])
 
     def addListeners(self, name : str, listeners : list):
         listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])

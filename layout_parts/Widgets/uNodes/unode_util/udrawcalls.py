@@ -28,6 +28,9 @@ class udraw_Line():
         self.highlight = highlight
         self.thickness = thickness
 
+    def out(self):
+        return f"udraw_Line @" + self.pointA.out() + self.pointB.out() + "_highlight: " + str(self.highlight) + ", thickness: " + str(self.thickness)
+
 class udraw_Rectangle():
     def __init__(
             self, 
@@ -61,7 +64,8 @@ class udraw_Rectangle():
         self.is_debug = is_debug
 
     def out(self):
-        return f"udraw_Rectangle @" + self.pointA.out() + self.pointB.out() + "border_is_highlight: " + str(self.border_is_highlight) + ", thickness: " + str(self.thickness) + ", rounding: " + str(self.rounding) + ", round_oct: " + str(self.round_oct) + ", filled: " + str(self.filled) + ", fill_match_border: " + str(self.fill_border) + ", is_debug: " + str(self.is_debug)
+        return "udraw_Rectangle @" + self.pointA.out() + self.pointB.out() + "border_is_highlight: " + str(self.border_is_highlight) + ", thickness: " + str(self.thickness) + ", rounding: " + str(self.rounding) + ", round_oct: " + str(self.round_oct) + ", filled: " + str(self.filled) + ", fill_match_border: " + str(self.fill_border) + ", is_debug: " + str(self.is_debug)
+
 class udraw_Circle():
     def __init__(
             self,
@@ -75,4 +79,12 @@ class udraw_Circle():
         self.radius = radius
         self.highlight = highlight
 
+class udraw_Text():
+    def __init__(self, anchorpoint : uPoint = None, textString : str = "Lorem", size : int = 8, highlight : bool = True):
+        self.anchorpoint = anchorpoint
+        self.textString : str = textString
+        self.size : int = size
+        self.highlight = highlight
 
+    def out(self):
+        return "udraw_Text @" + str(self.anchorpoint.out()) + "highlight: " + str(self.highlight) + ", size: "# + str(self.size) + ", textString: " + self.textString  

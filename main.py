@@ -1,17 +1,17 @@
 from debugwindowhandler import DISPLAY
-from layout_parts.Widgets.uNodes.unode_util.helperfunctions import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from notifier import NotifyService
 from graphics import Rectangle
 from rounded_rectangle import RoundedRectangle
-
-
+import datetime
 
 class OS():
     def __init__(self):
         #Initialize big size Window
         self.displayController = DISPLAY()
         self.displayController.load_layout("Preset Layout 1")
+        self.get_timing()
         currently_drawn_calls = self.draw()
         while True:
             print("q -> quit; l -> reload Layout; empty -> reload Widgets on Display")
@@ -24,6 +24,26 @@ class OS():
                 for call in currently_drawn_calls:
                     call.undraw()
                 self.draw()
+    @tlog
+    def get_timing(self):
+        date = datetime.date.today()
+        year = date.year
+        month = date.month
+        day = date.day
+        daytime = datetime.datetime.now()
+        hour = daytime.hour
+        minute = daytime.minute
+        NotifyService.dumpchange(filename = "timing", changes = {
+            "date_day" : day,
+            "date_month" : month,
+            "date_year" : year,
+            "time_hour" : hour,
+            "time_minute" : minute,
+            "weekday" : date.weekday()
+        })
+
+
+
     @tlog
     def draw(self):
         display = self.displayController
@@ -80,6 +100,13 @@ class OS():
                     obj.setOutline(color = background_color)
                     obj.setFill(color = background_color)
                 obj.draw(display.wallpaper)
+            elif draw_call.__class__.__name__ == "udraw_Text":
+                txt : udraw_Text = draw_call
+                obj = Text(txt.anchorpoint.to_point(), txt.textString)
+                obj.setSize(txt.size)
+                obj.setTextColor(highlight_color if txt.highlight else background_color)
+                obj.draw(display.wallpaper)
+
             
         if NotifyService.get("debug.widget-draw_constraints"):
             for call in constraints:

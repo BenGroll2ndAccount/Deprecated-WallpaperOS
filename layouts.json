@@ -5,10 +5,10 @@
             {
                 "Calendar" :  {
                 "coords" : [
-                    [0,0], [5, 18]
+                    [0,0], [11, 19]
                 ],
                 "parameters" : {
-                    "header" : null,
+                    "header" : "t",
                     "headercontent" : "timing.weekday"
                 }
             }
