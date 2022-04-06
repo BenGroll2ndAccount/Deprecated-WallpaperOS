@@ -29,7 +29,7 @@ class uNODE():
 
     def output(self):
         constraintoutput = self.constraint.out()
-        print((" " * 5 * self.depth) + self.__class__.__name__ + " " * (50 - len(self.__class__.__name__) - 5 * self.depth) + str(self.depth) + "-" + str(self.level) + "   " + constraintoutput )
+        print((" " * 5 * self.depth) + self.__class__.__name__ + " " * (100 - len(self.__class__.__name__) - 5 * self.depth) + str(self.depth) + "-" + str(self.level) + "   " + constraintoutput )
         if not hasattr(self, "child") and not hasattr(self, "children"):
             return
         if hasattr(self, "child") and self.child != None:
@@ -59,12 +59,21 @@ class uNODE():
     def __init__(self):
         pass
 
-    def constraincheck(self, parent_const):
-        if self.constraint.isSafe(parent_const):
+    def constraincheck(self, parent_const, parent_level):
+        if self.level <= parent_level:
+            if self.constraint.isSafe(parent_const):
+                if hasattr(self, "child") and self.child != None:
+                    return self.child.constraincheck(self.constraint, self.level)
+                if hasattr(self, "children") and self.children != None:
+                    for child in self.children:
+                        child.constraincheck(self.constraint, self.level)
+                    return
+        else:
             if hasattr(self, "child") and self.child != None:
                 return self.child.constraincheck(self.constraint)
             if hasattr(self, "children") and self.children != None:
                 for child in self.children:
-                    child.constraincheck(self.constraint)
+                    child.constraincheck(self.constraint, self.level)
                 return
+
 

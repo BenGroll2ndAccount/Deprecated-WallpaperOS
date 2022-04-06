@@ -12,10 +12,10 @@ class WIDGET():
     def finish(self):
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
-        wait = self.head.constraincheck(uConstrain(pointA=uPoint(0,0), pointB=uPoint(self.head.width+1, self.head.height + 1)))
+        wait = self.head.constraincheck(uConstrain(pointA=uPoint(0,0), pointB=uPoint(self.head.width+1, self.head.height + 1)), 0)
         print("Calendar")
         print("-------------------")
-        print("Type" + " " * (50 - len("Type")) + "Depth" + " " + "Constraints")
+        print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
         wait = self.head.output()
         print("-------------------", end="")
 

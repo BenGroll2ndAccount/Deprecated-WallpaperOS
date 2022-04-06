@@ -8,7 +8,7 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 
 class uROW(uNODE):
     @tlog
-    def __init__(self, children : list = None, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 1, flex = 1):
+    def __init__(self, children : list = None, listening : list = [], seperator : int = 0, spacing : str = "center", container : uNODE = None, include_sides : bool = True, divider_thickness : int = 0, flex = 1):
         allowed_spacings = {"start", "center", "end"}
         if spacing not in allowed_spacings:
             self.spacing = "center"
@@ -58,6 +58,7 @@ class uROW(uNODE):
                 total_flex = total_flex + child.flex
             if total_flex == 0:
                 return
+            seperators_placed = 0
             pixels_per_flex = (width_to_fill - pixels_seperator - pixels_for_dividers) / total_flex
             constraints = []
             set_flex = 0
@@ -66,15 +67,16 @@ class uROW(uNODE):
                     for index in range(len(self.children)):
                         childconst = uConstrain(
                             pointA=uPoint(
-                                x = self.constraint.pointA.x + (index + 1) * pixels_per_seperator + set_flex * pixels_per_flex,
+                                x = self.constraint.pointA.x + (seperators_placed + 1) * self.divider_thickness + set_flex * pixels_per_flex,
                                 y = self.constraint.pointA.y
                             ),
                             pointB=uPoint(
-                                x = self.constraint.pointA.x + (index + 1) * pixels_per_seperator + pixels_per_flex * (self.children[index].flex + set_flex),
+                                x = self.constraint.pointA.x + (seperators_placed + 1) * self.divider_thickness + pixels_per_flex * (self.children[index].flex + set_flex),
                                 y = self.constraint.pointB.y
                             )
                         )
                         set_flex += self.children[index].flex
+                        seperators_placed = index
                         constraints.append(childconst)
             for childex in range(len(self.children)):
                 self.children[childex].constrainmod(constraints[childex].copy)

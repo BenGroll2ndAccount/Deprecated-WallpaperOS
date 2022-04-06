@@ -14,12 +14,14 @@ class OS():
         self.get_timing()
         currently_drawn_calls = self.draw()
         while True:
-            print("q -> quit; l -> reload Layout; empty -> reload Widgets on Display")
-            lol = input()
-            if lol == "q":
+            print("quit; layout; empty -> reload Widgets on Display; cache;")
+            command = input()
+            if command == "quit":
                 exit()
-            elif lol == "l":
+            elif command == "layout":
                 self.displayController.load_layout("Preset Layout 1")
+            elif command == "cache":
+                NotifyService.reloadcache()
             else:
                 for call in currently_drawn_calls:
                     call.undraw()
@@ -100,12 +102,14 @@ class OS():
                     obj.setOutline(color = background_color)
                     obj.setFill(color = background_color)
                 obj.draw(display.wallpaper)
+                drawobjs.append(obj)
             elif draw_call.__class__.__name__ == "udraw_Text":
                 txt : udraw_Text = draw_call
                 obj = Text(txt.anchorpoint.to_point(), txt.textString)
                 obj.setSize(txt.size)
                 obj.setTextColor(highlight_color if txt.highlight else background_color)
                 obj.draw(display.wallpaper)
+                drawobjs.append(obj)
 
             
         if NotifyService.get("debug.widget-draw_constraints"):

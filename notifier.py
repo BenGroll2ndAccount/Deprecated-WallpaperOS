@@ -44,7 +44,11 @@ def get_all_keys(filename : str):
 class NOTIFIER():
     def __init__(self):
         self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing"]
-        self.loadcache(["usersettings", "debugsettings", "ramdata", "timing"])
+        self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing"]
+        self.loadcache(self.all_filenames_for_cache)
+
+    def reloadcache(self):
+        self.loadcache(self.all_filenames_for_cache)
 
     def loadcache(self, filenames):
         #Usersettings

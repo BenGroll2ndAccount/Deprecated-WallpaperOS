@@ -51,13 +51,7 @@ class udraw_Rectangle():
         self.border_is_highlight = border_is_highlight
         self.thickness = thickness
         rounding_length = 0
-        smaller_side = "h" if (pointB.x - pointA.x) > (pointB.y - pointA.y) else "v"
-        if smaller_side == "h":
-            rounding_length  = pointB.x - pointA.x
-        else:
-            rounding_length = pointB.y - pointA.y
-        total_rounding = rounding_length * (rounding / 100)
-        self.rounding = total_rounding
+        self.rounding = rounding
         self.round_oct = round_oct
         self.filled = filled
         self.fill_border = fill_match_border

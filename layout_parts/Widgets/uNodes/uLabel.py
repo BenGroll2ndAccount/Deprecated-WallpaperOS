@@ -5,8 +5,6 @@ from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 import pretty as pretty
-
-
 from notifier import NotifyService
 
 class uLABEL(uNODE):
@@ -44,6 +42,14 @@ class uLABEL(uNODE):
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
+        if self.size * 2 > self.constraint.height:
+            self.size = int((self.constraint.height  / 2) - 1) 
+        if self.size * len(self.text) > self.constraint.width:
+            self.size = int((self.constraint.width / len(self.text)))
+        if self.size < 5:
+            self.size = 5
+        if self.size > 36:
+            self.size = 36
         return    
 
     @tlog
