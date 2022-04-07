@@ -139,7 +139,7 @@ class DISPLAY():
                             clusters_inhibited.append(selected_cluster)
             widgetparams = layoutdata["widget-cluster-map"][widgetname]["parameters"]
             if widgetname == "Calendar":   
-                widget : Calendar = Calendar(clusters = clusters_inhibited, header = widgetparams["header"], headercontent= widgetparams["headercontent"])
+                widget : Calendar = Calendar(clusters = clusters_inhibited, header = widgetparams["header"], headercontent= widgetparams["headercontent"], headershape = widgetparams["headershape"])
             else:
                 widget = None
             for cluster in clusters_inhibited:

@@ -13,7 +13,7 @@ def tlog(func):
         result = func(*args, **kwargs)
         end = time.time()
         taken_s = (end-start)
-        suffix = "(" + str(round(float(taken_s * 1000), 2)) + "ms)"
+        suffix = "(" + str(round(float(taken_s * 1000), 5)) + "ms)"
         if NotifyService.get("debug.widget-log_any_function_call"):
             print("@" + str(func.__globals__["__name__"])+ " : " +  func.__name__ + suffix)
         return result

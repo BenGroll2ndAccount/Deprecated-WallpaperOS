@@ -20,10 +20,11 @@ class WIDGET():
         print("-------------------", end="")
 
 class Calendar(WIDGET):
-    def __init__(self, clusters : list, header : str, headercontent : str = None):
+    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect"):
         t = time.time()
         self.clusters = clusters
         self.head : uHEAD = uHEAD(
+            headershape=headershape,
             header = header,
             headercontent = headercontent if headercontent != None else self.__class__.__name__,
             anchor = self.clusters[0].anchor,

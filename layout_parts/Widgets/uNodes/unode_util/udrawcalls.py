@@ -82,3 +82,32 @@ class udraw_Text():
 
     def out(self):
         return "udraw_Text @" + str(self.anchorpoint.out()) + "highlight: " + str(self.highlight) + ", size: "# + str(self.size) + ", textString: " + self.textString  
+class udraw_Polygon():
+    def __init__(
+            self, 
+            pointA : uPoint = None,
+            pointB : uPoint = None,
+            pointC : uPoint = None,
+            pointD : uPoint = None,
+            border_is_highlight : bool = True,
+            thickness : int = 1,
+            rounding : int = 0,
+            round_oct : bool = True,
+            filled : bool = False,
+            fill_match_border : bool = False,
+            is_debug : bool = False
+            ):
+        if pointA == None or pointB == None or pointC == None or pointD == None:
+            raise uDRAWEXCEPTION(widget = self.__class__.__name__, message = "udraw_Polygon needs aat least four points specified")
+        self.pointA = pointA
+        self.pointB = pointB
+        self.pointC = pointC
+        self.pointD = pointD
+        self.border_is_highlight = border_is_highlight
+        self.thickness = thickness
+        self.filled = filled
+        self.fill_border = fill_match_border
+        self.is_debug = is_debug
+
+    def out(self):
+        return "udraw_Polygon @" + self.pointA.out() + self.pointB.out() + self.pointC.out() + self.pointD.out() + "border_is_highlight: " + str(self.border_is_highlight) + ", thickness: " + str(self.thickness) + ", round_oct: " + str(self.round_oct) + ", filled: " + str(self.filled) + ", fill_match_border: " + str(self.fill_border) + ", is_debug: " + str(self.is_debug)

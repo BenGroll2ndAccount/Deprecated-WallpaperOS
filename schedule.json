@@ -1,0 +1,12 @@
+{
+  "tasks" : [
+      {
+          "date" : "07.04.2022",
+          "time" : "13:00",
+          "endtime" : "15:00",
+          "category" : "UNI",
+          "title" : "Abgabe",
+          "description" : "Abgabe für Bescheid A340B"
+      }
+  ]   
+}

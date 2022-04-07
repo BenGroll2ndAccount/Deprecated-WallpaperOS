@@ -1,6 +1,7 @@
+from email import header
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
-from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text
+from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text, udraw_Polygon
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
@@ -8,10 +9,11 @@ from notifier import NotifyService
 
 class uHEAD(uNODE):
     @tlog
-    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None, header : str = None, headercontent : str = None, flex = 1):
+    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect"):
         self.anchor : uPoint = anchor
         self.width : int = width  
         self.height : int = height
+        self.headershape = headershape
         self.flex = flex
         self.child : uNODE = body
         self.header : str = header
@@ -64,10 +66,14 @@ class uHEAD(uNODE):
         elif self.header == "b":
             headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x, y = self.anchor.y + self.height - __HEADERRESOLUTION__ * __HEADERSIZE__), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         if self.header != None:
-            self.headerText = uLABEL(varname = self.headercontent, nice = True, size = int(__HEADERRESOLUTION__ / 3), highlight=False)
+            self.headerText = uLABEL(varname = self.headercontent, nice = True, highlight=False)
             self.headerText.constrainmod(headerconsts.copy)
             headertextcalls = self.headerText.draw()
-            outlist.append(udraw_Rectangle(pointA=headerconsts.pointA, pointB=headerconsts.pointB, border_is_highlight=True, filled = True, fill_match_border=True))
+            if self.headershape == "poly":
+                outlist.append(udraw_Polygon(pointA=headerconsts.pointA, pointB = uPoint(x = headerconsts.pointA.x + __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointC = uPoint(headerconsts.pointB.x - __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointD = uPoint(x = headerconsts.pointA.x + headerconsts.width, y = headerconsts.pointA.x), border_is_highlight=True, filled = True, fill_match_border=True,thickness = 1)) 
+            else:
+                outlist.append(udraw_Rectangle(pointA=headerconsts.pointA, pointB=headerconsts.pointB, border_is_highlight=True, filled = True, fill_match_border=True))
+
             for htcall in headertextcalls:
                 outlist.append(htcall)
         return outlist

@@ -9,6 +9,7 @@
                 ],
                 "parameters" : {
                     "header" : "t",
+                    "headershape" : "poly",
                     "headercontent" : "Calendar"
                 }
             }

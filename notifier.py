@@ -43,8 +43,8 @@ def get_all_keys(filename : str):
 
 class NOTIFIER():
     def __init__(self):
-        self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing"]
-        self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing"]
+        self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing", "tasks"]
+        self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing", "tasks"]
         self.loadcache(self.all_filenames_for_cache)
 
     def reloadcache(self):
@@ -78,7 +78,37 @@ class NOTIFIER():
             timing_data = jdumpget(filename="timing", settings = timing_keys)
             for key in timing_data:
                 setattr(self, "timing."+key, timing_data[key])  
-                setattr(self, "Listeners_timing_" + key, [])      
+                setattr(self, "Listeners_timing_" + key, [])    
+        if "tasks" in filenames:
+            tasks = jget("schedule", setting_name="tasks")
+            schedule = {}
+            for task in tasks:
+                date = task["date"]
+                if date in schedule.keys():
+                    day : list = schedule[date]
+                    day.append(task)
+                    schedule[date] = day
+                else:
+                    schedule[date] = [task]
+            setattr(self, "tasks.per_day", schedule)  
+            setattr(self, "Listeners_tasks.per_day", [])
+            category_tasks = {}
+            categories = []
+            for task in tasks:
+                if not task["category"] in categories:
+                    categories.append(task["category"])
+                if task["category"] in category_tasks:
+                    category__of_this_task : list = category_tasks[task["category"]]
+                    category__of_this_task.append(task)
+                    category_tasks[task["category"]] = category__of_this_task
+                else:
+                    category_tasks[task["category"]] = [task]
+            setattr(self, "tasks.per_category", category_tasks)
+            setattr(self, "Listeners_tasks.per_category", [])
+            setattr(self, "total_task_categories", categories)
+            setattr(self, "Listejers_total_task_categories", [])
+
+
 
     def get(self, name : str):
         if name.split(".")[0] in self.allowed_prefixes:

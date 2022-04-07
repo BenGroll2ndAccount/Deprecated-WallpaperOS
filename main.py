@@ -5,6 +5,7 @@ from notifier import NotifyService
 from graphics import Rectangle
 from rounded_rectangle import RoundedRectangle
 import datetime
+from layout_parts.Widgets.uNodes.uCollectives import CalendarEntrys
 
 class OS():
     def __init__(self):
@@ -13,6 +14,9 @@ class OS():
         self.displayController.load_layout("Preset Layout 1")
         self.get_timing()
         currently_drawn_calls = self.draw()
+        print("üüüasdaoiushdoaisuhdaoiuwdhiouaw")
+        print(CalendarEntrys("07.04.2022"))
+        print("ajdhosdhaohdfpaohd")
         while True:
             print("quit; layout; empty -> reload Widgets on Display; cache;")
             command = input()
@@ -35,6 +39,7 @@ class OS():
         daytime = datetime.datetime.now()
         hour = daytime.hour
         minute = daytime.minute
+        
         NotifyService.dumpchange(filename = "timing", changes = {
             "date_day" : day,
             "date_month" : month,
@@ -43,6 +48,7 @@ class OS():
             "time_minute" : minute,
             "weekday" : date.weekday()
         })
+        
 
 
 
@@ -107,9 +113,26 @@ class OS():
                 txt : udraw_Text = draw_call
                 obj = Text(txt.anchorpoint.to_point(), txt.textString)
                 obj.setSize(txt.size)
+                obj.setFace("courier")
                 obj.setTextColor(highlight_color if txt.highlight else background_color)
                 obj.draw(display.wallpaper)
                 drawobjs.append(obj)
+            elif draw_call.__class__.__name__ == "udraw_Polygon":
+                call : udraw_Polygon = draw_call
+                obj = Polygon([call.pointA.to_point(), call.pointB.to_point(), call.pointC.to_point(), call.pointD.to_point()])
+                if call.border_is_highlight:
+                    obj.setOutline(highlight_color)
+                if call.filled:
+                    if call.fill_border and call.border_is_highlight:
+                        obj.setFill(highlight_color)
+                    elif call.fill_border and not call.border_is_highlight:
+                        obj.setFill(background_color)
+                    elif not call.fill_border and call.border_is_highlight:
+                        obj.setFill(background_color)
+                    else:
+                        obj.setFill(highlight_color)
+                obj.draw(display.wallpaper)
+
 
             
         if NotifyService.get("debug.widget-draw_constraints"):
