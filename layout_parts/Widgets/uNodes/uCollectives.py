@@ -31,7 +31,6 @@ def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
 
 
 def CalendarEntrys(date : str, settings):
-    print(settings)
     true_time = settings["true-time"]
     earliest_time = get_weeks_earliest_and_latest_time()[0]
     latest_time = get_weeks_earliest_and_latest_time()[1]
