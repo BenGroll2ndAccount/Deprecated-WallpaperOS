@@ -30,7 +30,9 @@ def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
 
 
 
-def CalendarEntrys(date : str, truetime : bool = True):
+def CalendarEntrys(date : str, settings):
+    print(settings)
+    true_time = settings["true-time"]
     earliest_time = get_weeks_earliest_and_latest_time()[0]
     latest_time = get_weeks_earliest_and_latest_time()[1]
     tasks_for_today : list = NotifyService.get("tasks.per_day")
@@ -66,12 +68,12 @@ def CalendarEntrys(date : str, truetime : bool = True):
                 isInTime = time_to_dec(t.time) < time_to_dec(timenowstring)
         if last_task != None:
             if t.time == last_task.endtime:
-                tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time))
+                tasksitems.append(uEMPTY(flex = (time_to_dec(t.time) - last_time) if true_time else 0))
             else:
-                tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time)) 
+                tasksitems.append(uEMPTY(flex = (time_to_dec(t.time) - last_time) if true_time else 0)) 
                 tasksitems.append(uLABEL(t.time))
         else:
-            tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time))
+            tasksitems.append(uEMPTY(flex = (time_to_dec(t.time) - last_time) if true_time else 0 ))
             tasksitems.append(uLABEL(t.time))
         tasksitems.append(uCARD(
             thickness=3,
@@ -81,10 +83,10 @@ def CalendarEntrys(date : str, truetime : bool = True):
             child = uCOLUMN(
                 children = [uLABEL(text, highlight = (not isInTime or not str(datetime.date.today()) == t.date )) for text in t.title.split(" ")]
             )
-            )
         )
+    )
         tasksitems.append(uLABEL(t.endtime) if t.endtime != None else uEMPTY())
         last_time = time_to_dec(t.endtime) if t.endtime != None else last_time + 1
         last_task = t
-    tasksitems.append(uEMPTY(flex = latest_time - last_time - 1))
+    tasksitems.append(uEMPTY(flex = (latest_time - last_time - 1) if true_time else 0))
     return tasksitems

@@ -7,8 +7,9 @@ from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCollectives import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
-
-body = uCOLUMN(
+def body(settings):
+    print(settings)
+    return uCOLUMN(
     divider_thickness=3,
     children=[
         uROW(
@@ -75,40 +76,39 @@ body = uCOLUMN(
                 uPBOX(
                     modH = 90,
                     child = uCOLUMN(
-                    children= CalendarEntrys(get_date_based_on_weekday(0))
+                    children= CalendarEntrys(get_date_based_on_weekday(0), settings)
                 )),
                 uPBOX(
                     modH=90,
                     child = uCOLUMN(
-                    children = CalendarEntrys(get_date_based_on_weekday(1))
+                    children = CalendarEntrys(get_date_based_on_weekday(1), settings)
                 )),
                 uPBOX(
                     modH=95,
                     child = uCOLUMN(
-                        children = CalendarEntrys(get_date_based_on_weekday(2))
+                        children = CalendarEntrys(get_date_based_on_weekday(2), settings)
 
                      )),
                 uPBOX(
                     modH=95,
                     child = uCOLUMN(
-                        children = CalendarEntrys(get_date_based_on_weekday(3))
+                        children = CalendarEntrys(get_date_based_on_weekday(3), settings)
 
-                     )
-                ),
+                     )),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                    children = CalendarEntrys(get_date_based_on_weekday(4))
+                    children = CalendarEntrys(get_date_based_on_weekday(4), settings)
                 )),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                    children = CalendarEntrys(get_date_based_on_weekday(5))
+                    children = CalendarEntrys(get_date_based_on_weekday(5), settings)
                 )),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                        children = CalendarEntrys(get_date_based_on_weekday(6))
+                        children = CalendarEntrys(get_date_based_on_weekday(6), settings)
                     )),
             ]
         )

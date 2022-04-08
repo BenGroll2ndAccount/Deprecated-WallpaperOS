@@ -10,7 +10,11 @@
                 "parameters" : {
                     "header" : "t",
                     "headershape" : "poly",
-                    "headercontent" : "Calendar"
+                    "headercontent" : "Calendar",
+                    "settings" : {
+                        "categories-to-hide": [],
+                        "true-time" : false
+                    }
                 }
             }
 

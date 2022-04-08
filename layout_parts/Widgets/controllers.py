@@ -26,8 +26,9 @@ class WIDGET():
 
 
 class Calendar(WIDGET):
-    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect"):
+    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None):
         t = time.time()
+        self.settings  = settings
         self.clusters = clusters
         self.head : uHEAD = uHEAD(
             headershape=headershape,
@@ -36,11 +37,9 @@ class Calendar(WIDGET):
             anchor = self.clusters[0].anchor,
             width = self.clusters[-1].end.x - self.clusters[0].anchor.x,
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
-            body = calendar_body
+            body = calendar_body(self.settings.copy())
         )
-        self.settings : dict = {
-            "categoriesToShow" : []
-        }
+        
         self.finish(self.settings)
         return
     
