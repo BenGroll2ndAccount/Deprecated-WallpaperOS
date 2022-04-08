@@ -38,6 +38,7 @@ class uNODE():
             for child in self.children:
                 wait = child.output()
             return
+        
 
     @abstractmethod
     def notify(self, name, value):
@@ -48,8 +49,17 @@ class uNODE():
         pass
 
     @abstractmethod
-    def miscmod(self):
-        pass
+    def passWidgetData(self, data : dict):
+        self.widgetData = data.copy()
+        if hasattr(self, "child") and self.child != None:
+            self.child.passWidgetData(data.copy())
+            return
+        elif hasattr(self, "children") and self.children != None:
+            for child in self.children:
+                child.passWidgetData(data.copy())
+            return
+        else:
+            return
 
     @abstractmethod
     def draw(self):
@@ -61,7 +71,7 @@ class uNODE():
 
     def constraincheck(self, parent_const, parent_level):
         if self.level <= parent_level:
-            if self.constraint.isSafe(parent_const):
+            if self.constraint.isSafe(parent_const, self.__class__.__name__):
                 if hasattr(self, "child") and self.child != None:
                     return self.child.constraincheck(self.constraint, self.level)
                 if hasattr(self, "children") and self.children != None:

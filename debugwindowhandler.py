@@ -4,8 +4,7 @@ import os
 from layout_parts.Widgets.controllers import Calendar
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from notifier import NotifyService
-from elapsed import *
-
+import time
 
 
 class Cluster():
@@ -37,7 +36,6 @@ class Cluster():
 class DISPLAY():
     @tlog
     def __init__(self):
-        t = time.time()
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
             self.matrix = json.loads(jfile.read())["clusters"]
             height = len(self.matrix)
@@ -46,7 +44,6 @@ class DISPLAY():
                 if len(row) > width:
                     width = len(row)
         cluster_resolution = NotifyService.get("debug.display-cluster_resolution")
-        print(str(height * cluster_resolution) + "x" + str(width * cluster_resolution))
         self.wallpaper = GraphWin("WallPaper", width=width * cluster_resolution, height=height * cluster_resolution)
         isDarkMode = NotifyService.get("user.darkmode")
         light_color = NotifyService.get("debug.display-light_color")
@@ -57,8 +54,6 @@ class DISPLAY():
         self.clusters = []
         for i in range(height):
             self.clusters.append([None for i in range(width)])
-        print("Rows:" + str(len(self.clusters)))
-        print("Columns:" + str(len(self.clusters[0])))
         for row in range(height):
             for element in range(width):
                 display_id = self.matrix[row][element]

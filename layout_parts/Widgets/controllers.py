@@ -1,23 +1,29 @@
 from layout_parts.Widgets.Calendar import body as calendar_body
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
-from elapsed import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import uConstrain, uPoint
+from notifier import NotifyService
+
 
 class WIDGET():
     @property
     def drawcalls(self):
         return self.head.draw()
     
-    def finish(self):
+    def finish(self, settings):
+        self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
-        wait = self.head.constraincheck(uConstrain(pointA=uPoint(0,0), pointB=uPoint(self.head.width+1, self.head.height + 1)), 0)
-        print("Calendar")
-        print("-------------------")
-        print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
-        wait = self.head.output()
-        print("-------------------", end="")
+        
+        print("Calendar", end = "")
+        if NotifyService.get("debug.widget-output_widget_tree"):
+            print("\n-------------------")
+            print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
+            self.head.output()
+            print("-------------------", end="")
+        else:
+            print("*collapsed*")
+
 
 class Calendar(WIDGET):
     def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect"):
@@ -32,6 +38,11 @@ class Calendar(WIDGET):
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
             body = calendar_body
         )
-        self.finish()
-        elapsedtime(t)
+        self.settings : dict = {
+            "categoriesToShow" : []
+        }
+        self.finish(self.settings)
         return
+    
+    def constraincheck(self):
+        return self.head.constraincheck(self.head.constraint, 0)

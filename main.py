@@ -6,17 +6,16 @@ from graphics import Rectangle
 from rounded_rectangle import RoundedRectangle
 import datetime
 from layout_parts.Widgets.uNodes.uCollectives import CalendarEntrys
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class OS():
     def __init__(self):
         #Initialize big size Window
         self.displayController = DISPLAY()
+        get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
         self.get_timing()
         currently_drawn_calls = self.draw()
-        print("üüüasdaoiushdoaisuhdaoiuwdhiouaw")
-        print(CalendarEntrys("07.04.2022"))
-        print("ajdhosdhaohdfpaohd")
         while True:
             print("quit; layout; empty -> reload Widgets on Display; cache;")
             command = input()
@@ -133,7 +132,6 @@ class OS():
                         obj.setFill(highlight_color)
                 obj.draw(display.wallpaper)
 
-
             
         if NotifyService.get("debug.widget-draw_constraints"):
             for call in constraints:
@@ -141,6 +139,8 @@ class OS():
                 call.draw(display.wallpaper)
                 drawobjs.append(call)
         print(">>>(Re)Drawn Display", end="")
+        for widget in display.currently_loaded_widgets:
+            widget.constraincheck()
         return drawobjs
 
 setattr(NotifyService, "os", OS())

@@ -88,7 +88,6 @@ class uCOLUMN(uNODE):
                     y = y_begin + ((y_end - y_begin) / 2)
                     divider_y_coords.append(y)
             self.divider_yss = divider_y_coords
-            print(self.divider_yss)
                     
     @tlog
     def draw(self):

@@ -1,5 +1,5 @@
 {    
     "notifications": "low",
-    "darkmode" : false,
+    "darkmode" : true,
     "language" : "en"
 }

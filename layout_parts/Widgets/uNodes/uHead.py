@@ -56,7 +56,6 @@ class uHEAD(uNODE):
             outlist.append(call)    
         __HEADERSIZE__ : int = NotifyService.get("debug.widget-header_thickness_in_clusters")
         __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
-        print(__HEADERRESOLUTION__ * __HEADERSIZE__)
         if self.header == "t":
             headerconsts = uConstrain(pointA=uPoint(x=self.anchor.x, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + __HEADERRESOLUTION__ * __HEADERSIZE__))
         elif self.header == "l":

@@ -1,10 +1,12 @@
+from calendar import Calendar
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
-from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
 from layout_parts.Widgets.uNodes.uCollectives import *
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 
 body = uCOLUMN(
     divider_thickness=3,
@@ -73,210 +75,43 @@ body = uCOLUMN(
                 uPBOX(
                     modH = 90,
                     child = uCOLUMN(
-                    divider_thickness = 0,
-                    seperator=10,
-                    children=[
-                        uEMPTY(flex = 4),
-                        uLABEL("12:30"),
-                        uCARD(
-                            thickness = 3,
-                            rounding = 7,
-                            flex = 4.5,
-                            filled = False,child=uCOLUMN(
-                            divider_thickness = 0,
-                            children=[
-                                uLABEL("FAHR-"),
-                                uLABEL("SCHULE")
-                                ]
-                            )
-                        ),
-                        
-                        uLABEL("17:00"),
-                        uEMPTY(flex = 1.5),
-                        uLABEL("19:30"),
-                        uCARD(
-                            flex = 1.5,
-                            thickness = 3,
-                            rounding = 7,
-                            filled = False, highlight=True,
-                            child=uCOLUMN(
-                                children = [
-                                uLABEL("GESPRÄCH"),
-                                uLABEL("MIT"),
-                                uLABEL("THOMAS")
-                                ]
-                            )
-                        ),
-                        uLABEL("21:00")
-                        
-                    ]
+                    children= CalendarEntrys(get_date_based_on_weekday(0))
                 )),
-                uCOLUMN(
-                    children = [
-                        uPBOX(
-                            flex = 14,
-                            modH = 90,
-                            child=uCOLUMN(
-                                divider_thickness=0,
-                                children = [
-                                    uEMPTY(flex = 0.5),
-                                    uLABEL("7:30", flex = 0.5),
-                                    uCARD(
-                                        flex = 12,
-                                        filled = False,
-                                        thickness=3,
-                                        rounding=7,
-                                        child=uCOLUMN(
-                                            children=[
-                                                uLABEL("WANDER-"),
-                                                uLABEL("UND"),
-                                                uLABEL("MIT"),
-                                                uLABEL("FAMILIE")
-                                            ]
-                                        )
-                                    ),
-                                    uLABEL("19:47"),
-                                    uEMPTY(flex = 0.5),
-
-                                    ]
-                            )
-                        )
-                    ]
-                ),
+                uPBOX(
+                    modH=90,
+                    child = uCOLUMN(
+                    children = CalendarEntrys(get_date_based_on_weekday(1))
+                )),
                 uPBOX(
                     modH=95,
                     child = uCOLUMN(
-                        children = CalendarEntrys("07.04.2022")
+                        children = CalendarEntrys(get_date_based_on_weekday(2))
 
                      )),
                 uPBOX(
                     modH=95,
                     child = uCOLUMN(
-                        children = [
-                            uEMPTY(1.5),
-                            uLABEL("9:30"),
-                            uCARD(
-                                thickness = 3,
-                                rounding = 7,
-                                filled = False,
-                                flex = 3,
-                                child = uPBOX(
-                                    modH=90,
-                                    modV=90,
-                                    child = uCOLUMN(
-                                        children = [
-                                            uLABEL("MITARBEITER-"),
-                                            uLABEL("FORTBILDUNG")
-                                        ]
-                                    )
-                                )
-                            ),
-                            uLABEL("12:30"),
-                            uEMPTY(flex = 2),
-                            uLABEL("16:30"),
-                            uCARD(
-                                thickness = 3,
-                                rounding = 7,
-                                flex = 1,
-                                filled = False,
-                                child = uCOLUMN(
-                                    children=[
-                                        uLABEL("BRIEFE"),
-                                        uLABEL("DHL"),
-                                    ]
-                                )
-                            ),
-                            uLABEL("17:30"),
-                            uEMPTY(flex = 2.5)
-
-                        ]
+                        children = CalendarEntrys(get_date_based_on_weekday(3))
 
                      )
                 ),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                    children = [
-                        uLABEL("7:00"),
-                        uCARD(
-                            filled = False,
-                            thickness = 3,
-                            highlight=True,
-                            rounding=7,
-                            flex=2.5,
-                            child = uCOLUMN(
-                                [
-                                    uLABEL("MORGEN"),
-                                    uLABEL("WORKOUT")
-                             ])
-                        ),
-                        uLABEL("9:30"),
-                        uEMPTY(flex = 2),
-                        uLABEL("14:30"),
-                        uCARD(
-                            thickness = 3,
-                            filled = False,
-                            highlight=True,
-                            rounding = 7,
-                            flex = 4,
-                            child = uCOLUMN(
-                                [
-                                    uLABEL("MEETING"),
-                                    uLABEL("MIT"),
-                                    uLABEL("ANDREAS")
-                                ]
-                            )
-                        ),
-                        uLABEL("18:30"),
-                        uEMPTY(flex = 1.5)
-                    ]
+                    children = CalendarEntrys(get_date_based_on_weekday(4))
                 )),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                    [
-                        uEMPTY(flex=15),
-                        uLABEL("20:30"),
-                        uCARD(
-                            thickness = 3,
-                            flex = 2,
-                            filled = False,
-                            highlight=True,
-                            rounding = 7,
-                            child=uCOLUMN(
-                                [
-                                    uLABEL("PARTY"),
-                                    uLABEL("VIVI")
-                                ]
-                            )
-                        ),
-                    ]
+                    children = CalendarEntrys(get_date_based_on_weekday(5))
                 )),
                 uPBOX(
                     modH = 95,
                     child = uCOLUMN(
-                        children = [
-                            uEMPTY(flex = 2),
-                            uLABEL("10:30"),
-                            uCARD(
-                                thickness = 3,
-                                rounding = 7,
-                                flex = 4,
-                                filled = False,
-                                highlight=True,
-                                child = uCOLUMN(
-                                    children = [
-                                        uLABEL("BRUNCH"),
-                                        uEMPTY(flex=4)
-                                        ],
-                                        
-                                )
-                            ),
-                            uLABEL("14:30"),
-                            uEMPTY(flex = 5)
-                        ]
+                        children = CalendarEntrys(get_date_based_on_weekday(6))
                     )),
             ]
         )
     ]
 )
+

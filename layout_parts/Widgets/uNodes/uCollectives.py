@@ -1,4 +1,4 @@
-
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
@@ -28,18 +28,16 @@ def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
     else:
         return uEMPTY(flex = 0)
 
-def time_to_dec(timestring):
-    hour = int(timestring.split(":")[0])
-    minute = int(timestring.split(":")[1])
-    timefloat : float = hour
-    timefloat += minute / 60
-    return timefloat
 
-def CalendarEntrys(date, truetime : bool = True):
-    earliest_time = "7:00"
+
+def CalendarEntrys(date : str, truetime : bool = True):
+    earliest_time = get_weeks_earliest_and_latest_time()[0]
+    latest_time = get_weeks_earliest_and_latest_time()[1]
     tasks_for_today : list = NotifyService.get("tasks.per_day")
+    if not date in tasks_for_today.keys():
+        return [uLABEL("Keine Tasks")]
     tasks = []
-    for task in tasks_for_today[date]:
+    for task in tasks_for_today[str(date)]:
         tasks.append(Task(
             date = task["date"],
             time = task["time"],
@@ -48,8 +46,11 @@ def CalendarEntrys(date, truetime : bool = True):
             title = task["title"],
             description= task["description"]
         ))
-    last_time = time_to_dec(earliest_time) - 1
+    if len(tasks) == 0:
+        return [uLABEL("Keine Tasks")]
+    last_time = earliest_time + 1
     tasksitems = []
+    last_task = None
     for tasko in tasks:
         t : Task = tasko
         if t.time == None and t.date != None:
@@ -57,22 +58,33 @@ def CalendarEntrys(date, truetime : bool = True):
             last_time += 1
         time_now = datetime.datetime.now()
         timenowstring = str(time_now.hour) + ":" + str(time_now.minute)
-        in_time = time_to_dec(timenowstring) > time_to_dec(t.time) and (time_to_dec(timenowstring) < time_to_dec(t.endtime) if t.endtime != None else True)
-        tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time - 2))
-        tasksitems.append(uLABEL(str(time_to_dec(t.time) - last_time - 2)))
-        tasksitems.append(uLABEL(str(time_to_dec(t.endtime) - time_to_dec(t.time) if t.endtime != None else 1)))
-        tasksitems.append(uLABEL(t.time))
+        isInTime = False
+        if t.time != None:
+            if t.endtime != None:
+                isInTime = time_to_dec(t.time) < time_to_dec(timenowstring) and time_to_dec(t.endtime) > time_to_dec(timenowstring)
+            else:
+                isInTime = time_to_dec(t.time) < time_to_dec(timenowstring)
+        if last_task != None:
+            if t.time == last_task.endtime:
+                tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time))
+            else:
+                tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time)) 
+                tasksitems.append(uLABEL(t.time))
+        else:
+            tasksitems.append(uEMPTY(flex = time_to_dec(t.time) - last_time))
+            tasksitems.append(uLABEL(t.time))
         tasksitems.append(uCARD(
             thickness=3,
             flex = time_to_dec(t.endtime) - time_to_dec(t.time) if t.endtime != None else 1,
-            filled = datetime.date.today() == t.date and in_time,
+            filled = str(datetime.date.today()) == t.date and isInTime,
             rounding = 7,
             child = uCOLUMN(
-                children = [uLABEL(text) for text in t.title.split(" ")]
+                children = [uLABEL(text, highlight = (not isInTime or not str(datetime.date.today()) == t.date )) for text in t.title.split(" ")]
             )
             )
         )
         tasksitems.append(uLABEL(t.endtime) if t.endtime != None else uEMPTY())
-        last_time = t.endtime if t.endtime != None else last_time + 1
+        last_time = time_to_dec(t.endtime) if t.endtime != None else last_time + 1
+        last_task = t
+    tasksitems.append(uEMPTY(flex = latest_time - last_time - 1))
     return tasksitems
-
