@@ -151,12 +151,3 @@ class DISPLAY():
         self.currently_loaded_widgets = currently_loaded_widgets
         print(">>>Loaded " + name + "<<<", end="")
         return
-                        
-                        
-        
-            
-                    
-
-                
-
-        

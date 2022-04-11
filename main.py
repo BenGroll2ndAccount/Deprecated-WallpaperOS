@@ -37,7 +37,6 @@ class OS():
         daytime = datetime.datetime.now()
         hour = daytime.hour
         minute = daytime.minute
-        
         NotifyService.dumpchange(filename = "timing", changes = {
             "date_day" : day,
             "date_month" : month,
