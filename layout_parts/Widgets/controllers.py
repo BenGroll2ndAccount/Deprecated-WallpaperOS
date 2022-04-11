@@ -26,10 +26,11 @@ class WIDGET():
 
 
 class Calendar(WIDGET):
-    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None):
+    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None, number : int = None):
         t = time.time()
         self.settings  = settings
         self.clusters = clusters
+        self.number = number
         self.head : uHEAD = uHEAD(
             headershape=headershape,
             header = header,

@@ -9,7 +9,6 @@ from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 import pretty
 
 def body(settings):
-    print(settings)
     return uCOLUMN(
     divider_thickness=3,
     children=[

@@ -1,11 +1,10 @@
-from debugwindowhandler import DISPLAY
+from windowhandler import DISPLAY
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from notifier import NotifyService
 from graphics import Rectangle
 from rounded_rectangle import RoundedRectangle
 import datetime
-from layout_parts.Widgets.uNodes.uCollectives import CalendarEntrys
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class OS():
