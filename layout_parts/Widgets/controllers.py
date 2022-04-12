@@ -1,7 +1,7 @@
 from layout_parts.Widgets.Calendar import body as calendar_body
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
-from layout_parts.Widgets.uNodes.unode_util.helperclasses import uConstrain, uPoint
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from notifier import NotifyService
 
 
@@ -10,6 +10,7 @@ class WIDGET():
     def drawcalls(self):
         return self.head.draw()
     
+    @tlog
     def finish(self, settings):
         self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
@@ -23,6 +24,10 @@ class WIDGET():
             print("-------------------", end="")
         else:
             print("*collapsed*")
+
+    @tlog
+    def constraincheck(self):
+        return self.head.constraincheck(self.head.constraint, 0)
 
 
 class Calendar(WIDGET):
@@ -40,9 +45,7 @@ class Calendar(WIDGET):
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
             body = calendar_body(self.settings.copy())
         )
-        
         self.finish(self.settings)
         return
     
-    def constraincheck(self):
-        return self.head.constraincheck(self.head.constraint, 0)
+    

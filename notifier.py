@@ -16,10 +16,7 @@ def jdumpget(filename : str, settings):
         for key in settings:
             output[key] = data[key]
         return output
-    
-            
-            
-
+        
 def jset(filename : str, setting_name : str, setting_value):
     with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/" + filename + ".json", "r") as jfile:
         directory = json.loads(jfile.read())

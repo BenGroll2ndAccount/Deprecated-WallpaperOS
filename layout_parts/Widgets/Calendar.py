@@ -1,4 +1,4 @@
-from calendar import Calendar
+
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
@@ -6,7 +6,6 @@ from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCollectives import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
-import pretty
 
 def body(settings):
     return uCOLUMN(

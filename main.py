@@ -45,9 +45,6 @@ class OS():
             "time_minute" : minute,
             "weekday" : date.weekday()
         })
-        
-
-
 
     @tlog
     def draw(self):
