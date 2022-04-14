@@ -11,9 +11,9 @@ class OS():
     def __init__(self):
         #Initialize big size Window
         self.displayController = DISPLAY()
+        self.get_timing()
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
-        self.get_timing()
         currently_drawn_calls = self.draw()
         while True:
             print("quit; layout; empty -> reload Widgets on Display; cache;")

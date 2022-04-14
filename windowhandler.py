@@ -96,6 +96,7 @@ class DISPLAY():
                     endpoint = Point(x = (coordinate_two[0] + 1) * cluster_resolution, y = (coordinate_two[1] + 1) * cluster_resolution)
                     rect = Rectangle(p1 = startingPoint, p2=endpoint)
                     rect.setOutline("red")
+                    
                     rect.draw(self.wallpaper)
             input()
         print(">>>Created Window<<<", end="")

@@ -7,7 +7,12 @@ from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCollectives import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
-def body(settings):
+class BODIES():
+    def __init__(self):
+        self.Calendar = Calendar_body
+
+
+def Calendar_body(settings):
     return uCOLUMN(
     divider_thickness=3,
     children=[
