@@ -67,6 +67,21 @@ class uROW(uNODE):
                     for index in range(len(self.children)):
                         childconst = uConstrain(
                             pointA=uPoint(
+                                x = self.constraint.pointA.x + (seperators_placed + 1) * self.divider_thickness + seperators_placed * pixels_per_seperator + set_flex * pixels_per_flex,
+                                y = self.constraint.pointA.y
+                            ),
+                            pointB=uPoint(
+                                x = self.constraint.pointA.x + (seperators_placed + 1) * self.divider_thickness + seperators_placed * pixels_per_seperator + pixels_per_flex * (self.children[index].flex + set_flex),
+                                y = self.constraint.pointB.y
+                            )
+                        )
+                        set_flex += self.children[index].flex
+                        seperators_placed = index
+                        constraints.append(childconst)
+            elif self.spacing == "start":
+                for index in range(len(self.children)):
+                        childconst = uConstrain(
+                            pointA=uPoint(
                                 x = self.constraint.pointA.x + (seperators_placed + 1) * self.divider_thickness + set_flex * pixels_per_flex,
                                 y = self.constraint.pointA.y
                             ),
@@ -78,6 +93,23 @@ class uROW(uNODE):
                         set_flex += self.children[index].flex
                         seperators_placed = index
                         constraints.append(childconst)
+
+            elif self.spacing == "end":
+                for index in range(len(self.children)):
+                        childconst = uConstrain(
+                            pointA=uPoint(
+                                x = self.constraint.pointA.x + pixels_seperator + (seperators_placed + 1) * self.divider_thickness + set_flex * pixels_per_flex,
+                                y = self.constraint.pointA.y
+                            ),
+                            pointB=uPoint(
+                                x = self.constraint.pointA.x + pixels_seperator + (seperators_placed + 1) * self.divider_thickness + pixels_per_flex * (self.children[index].flex + set_flex),
+                                y = self.constraint.pointB.y
+                            )
+                        )
+                        set_flex += self.children[index].flex
+                        seperators_placed = index
+                        constraints.append(childconst)
+
             for childex in range(len(self.children)):
                 self.children[childex].constrainmod(constraints[childex].copy)
             divider_x_coords = []

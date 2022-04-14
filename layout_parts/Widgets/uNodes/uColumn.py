@@ -78,6 +78,36 @@ class uCOLUMN(uNODE):
                         )
                         set_flex += self.children[index].flex
                         constraints.append(childconst)
+            elif self.spacing == "start":
+                for index in range(len(self.children)):
+                        childconst = uConstrain(
+                            pointA=uPoint(
+                                y = self.constraint.pointA.y + set_flex * pixels_per_flex,
+                                x = new_full_constrain.pointA.x
+                            ),
+                            pointB=uPoint(
+                                y = self.constraint.pointA.y + pixels_per_flex * (self.children[index].flex + set_flex),
+                                x = new_full_constrain.pointB.x
+                            )
+                        )
+                        set_flex += self.children[index].flex
+                        constraints.append(childconst)
+                        
+            elif self.spacing == "end":
+                for index in range(len(self.children)):
+                        childconst = uConstrain(
+                            pointA=uPoint(
+                                y = self.constraint.pointA.y + pixels_seperator + set_flex * pixels_per_flex,
+                                x = new_full_constrain.pointA.x
+                            ),
+                            pointB=uPoint(
+                                y = self.constraint.pointA.y + pixels_seperator + pixels_per_flex * (self.children[index].flex + set_flex),
+                                x = new_full_constrain.pointB.x
+                            )
+                        )
+                        set_flex += self.children[index].flex
+                        constraints.append(childconst)
+
             for childex in range(len(self.children)):
                 self.children[childex].constrainmod(constraints[childex].copy)
             divider_y_coords = []

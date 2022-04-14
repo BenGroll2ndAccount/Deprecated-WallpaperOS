@@ -5,22 +5,7 @@
             {
                 "Calendar_1" :  {
                 "coords" : [
-                    [0,1], [11, 9]
-                ],
-                "parameters" : {
-                    "header" : "t",
-                    "headershape" : "poly",
-                    "headercontent" : "Calendar",
-                    "settings" : {
-                        "categories-to-hide": [],
-                        "true-time" : false,
-                        "show-dates" : false
-                    }
-                }
-            },
-            "Calendar_2" :  {
-                "coords" : [
-                    [0, 10], [11, 19]
+                    [0,0], [11, 19]
                 ],
                 "parameters" : {
                     "header" : "t",
@@ -33,7 +18,6 @@
                     }
                 }
             }
-
             },
         "settings" : {}            
     }

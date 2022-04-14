@@ -22,7 +22,7 @@ class uLABEL(uNODE):
         if varname != None and str.startswith(varname, "_"):
             varvalue = NotifyService.get(varname.split("_")[1])
             self.text = self.formatt(varname.split("_")[1], varvalue)
-            self.__node_init__(varname.split("_")[1], level = 0)
+            self.__node_init__([varname.split("_")[1]], level = 0)
         else:
             self.text = varname
             self.__node_init__(listening = [])
