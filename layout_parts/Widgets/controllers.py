@@ -2,6 +2,7 @@ from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 from notifier import NotifyService
 
 class WIDGET():
@@ -19,7 +20,7 @@ class WIDGET():
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
             body = getattr(BODIES(), self.__class__.__name__)(self.settings.copy())
         )
-        self.finish(self.settings)
+        self.finish(self.settings, self.clusters[0].anchor)
         return
     
 
@@ -28,12 +29,12 @@ class WIDGET():
         return self.head.draw()
     
     @tlog
-    def finish(self, settings):
+    def finish(self, settings, anchor:uPoint):
         self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
         
-        print("Calendar", end = "")
+        print("Calendar (" + str(anchor.x) + "|" + str(anchor.y) + ")", end = "")
         if NotifyService.get("debug.widget-output_widget_tree"):
             print("\n-------------------")
             print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
