@@ -1,15 +1,17 @@
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
+from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 from notifier import NotifyService
 
 class WIDGET():
-    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None, number : int = None):
+    def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None, number : int = None, widgetname : str = "Dummy"):
         t = time.time()
         self.settings  = settings
         self.clusters = clusters
+        self.widgetname = widgetname
         self.number = number
         self.head : uHEAD = uHEAD(
             headershape=headershape,
@@ -18,7 +20,7 @@ class WIDGET():
             anchor = self.clusters[0].anchor,
             width = self.clusters[-1].end.x - self.clusters[0].anchor.x,
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
-            body = getattr(BODIES(), self.__class__.__name__)(self.settings.copy())
+            body = getattr(BODIES, self.widgetname)(self.settings.copy())
         )
         self.finish(self.settings, self.clusters[0].anchor)
         return
@@ -33,8 +35,7 @@ class WIDGET():
         self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
-        
-        print("Calendar (" + str(anchor.x) + "|" + str(anchor.y) + ")", end = "")
+        print(self.widgetname + " (" + str(anchor.x) + "|" + str(anchor.y) + ")", end = "")
         if NotifyService.get("debug.widget-output_widget_tree"):
             print("\n-------------------")
             print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
@@ -47,7 +48,3 @@ class WIDGET():
     def constraincheck(self):
         return self.head.constraincheck(self.head.constraint, 0)
 
-
-class Calendar(WIDGET):
-    pass
-    

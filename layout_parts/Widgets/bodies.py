@@ -8,101 +8,97 @@ from layout_parts.Widgets.uNodes.uCollectives import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class BODIES():
-    def __init__(self):
-        self.Calendar = Calendar_body
-
-
-def Calendar_body(settings):
-    return uCOLUMN(
-    divider_thickness=3,
-    children=[
-        uCOLUMN(
-            children = [
-                uROW(
-            flex = 1,
-            divider_thickness = 0,
-            children = [
-                uCOLUMN(
-                    children = [uPBOX(
-                    modV=80 if NotifyService.get("timing.weekday") != 0 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 0 else 100,
-                    flex = 2,
-                    child=uCARD(
-                        rounding = 10 if NotifyService.get("timing.weekday") != 0 else 0,
-                        child=uLABEL("MO", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(0).split("-")[2] + "." + get_date_based_on_weekday(0).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
+    def Calendar(settings):
+        return uCOLUMN(
+        divider_thickness=3,
+        children=[
+            uCOLUMN(
+                children = [
+                    uROW(
+                flex = 1,
+                divider_thickness = 0,
+                children = [
+                    uCOLUMN(
+                        children = [uPBOX(
+                        modV=80 if NotifyService.get("timing.weekday") != 0 else 100,
+                        modH=80 if NotifyService.get("timing.weekday") != 0 else 100,
                         flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 1 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 1 else 100,
-                    child=uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 1 else 0,
-                        child=uLABEL("DI", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(1).split("-")[2] + "." + get_date_based_on_weekday(1).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
-                        flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 2 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 2 else 100,
-                    child=uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 2 else 0,
-                        child=uLABEL("MI", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(2).split("-")[2] + "." + get_date_based_on_weekday(2).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
-                        flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 3 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 3 else 100,
-                    child = uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 3 else 0,
-                        child=uLABEL("DO", highlight=False)),
-                ),
-                uLABEL(get_date_based_on_weekday(3).split("-")[2] + "." + get_date_based_on_weekday(3).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
-                        flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 4 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 4 else 100,
-                    child=uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 4 else 0,
-                        child=uLABEL("FR", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(4).split("-")[2] + "." + get_date_based_on_weekday(4).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
-                        flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 5 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 5 else 100,
-                    child=uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 5 else 0,
-                        child=uLABEL("SA", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(5).split("-")[2] + "." + get_date_based_on_weekday(5).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]),
-                uCOLUMN(
-                    children = [uPBOX(
-                        flex = 2,
-                    modV=80 if NotifyService.get("timing.weekday") != 6 else 100,
-                    modH=80 if NotifyService.get("timing.weekday") != 6 else 100,
-                    child=uCARD(
-                        rounding=10 if NotifyService.get("timing.weekday") != 6 else 0,
-                        child=uLABEL("SO", highlight=False))
-                ),
-                uLABEL(get_date_based_on_weekday(6).split("-")[2] + "." + get_date_based_on_weekday(6).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                ]
+                        child=uCARD(
+                            rounding = 10 if NotifyService.get("timing.weekday") != 0 else 0,
+                            child=uLABEL("MO", highlight=False))
+                    ),
+                    uLABEL(get_date_based_on_weekday(0).split("-")[2] + "." + get_date_based_on_weekday(0).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]),
+                    uCOLUMN(
+                        children = [uPBOX(
+                            flex = 2,
+                        modV=80 if NotifyService.get("timing.weekday") != 1 else 100,
+                        modH=80 if NotifyService.get("timing.weekday") != 1 else 100,
+                        child=uCARD(
+                            rounding=10 if NotifyService.get("timing.weekday") != 1 else 0,
+                            child=uLABEL("DI", highlight=False))
+                    ),
+                    uLABEL(get_date_based_on_weekday(1).split("-")[2] + "." + get_date_based_on_weekday(1).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]),
+                    uCOLUMN(
+                        children = [uPBOX(
+                            flex = 2,
+                            modV=80 if NotifyService.get("timing.weekday") != 2 else 100,
+                            modH=80 if NotifyService.get("timing.weekday") != 2 else 100,
+                            child=uCARD(
+                                rounding=10 if NotifyService.get("timing.weekday") != 2 else 0,
+                                child=uLABEL("MI", highlight=False)
+                                )
+                            ),
+                    uLABEL(get_date_based_on_weekday(2).split("-")[2] + "." + get_date_based_on_weekday(2).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]),
+                    uCOLUMN(
+                        children = [uPBOX(
+                            flex = 2,
+                        modV=80 if NotifyService.get("timing.weekday") != 3 else 100,
+                        modH=80 if NotifyService.get("timing.weekday") != 3 else 100,
+                        child = uCARD(
+                            rounding=10 if NotifyService.get("timing.weekday") != 3 else 0,
+                            child=uLABEL("DO", highlight=False)),
+                    ),
+                    uLABEL(get_date_based_on_weekday(3).split("-")[2] + "." + get_date_based_on_weekday(3).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]),
+                    uCOLUMN(
+                        children = [uPBOX(
+                            flex = 2,
+                            modV=80 if NotifyService.get("timing.weekday") != 4 else 100,
+                            modH=80 if NotifyService.get("timing.weekday") != 4 else 100,
+                            child=uCARD(
+                                    rounding=10 if NotifyService.get("timing.weekday") != 4 else 0,
+                            child=uLABEL("FR", highlight=False))
+                        ),
+                        uLABEL(get_date_based_on_weekday(4).split("-")[2] + "." + get_date_based_on_weekday(4).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                        ]),
+                        uCOLUMN(
+                            children = [uPBOX(
+                                flex = 2,
+                                modV=80 if NotifyService.get("timing.weekday") != 5 else 100,
+                                modH=80 if NotifyService.get("timing.weekday") != 5 else 100,
+                                child=uCARD(
+                                rounding=10 if NotifyService.get("timing.weekday") != 5 else 0,
+                                child=uLABEL("SA", highlight=False))
+                    ),
+                    uLABEL(get_date_based_on_weekday(5).split("-")[2] + "." + get_date_based_on_weekday(5).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]),
+                    uCOLUMN(
+                        children = [uPBOX(
+                            flex = 2,
+                        modV=80 if NotifyService.get("timing.weekday") != 6 else 100,
+                        modH=80 if NotifyService.get("timing.weekday") != 6 else 100,
+                        child=uCARD(
+                            rounding=10 if NotifyService.get("timing.weekday") != 6 else 0,
+                            child=uLABEL("SO", highlight=False))
+                    ),
+                    uLABEL(get_date_based_on_weekday(6).split("-")[2] + "." + get_date_based_on_weekday(6).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
+                    ]
         ),
         ]),
         ]),
-        
         uROW(
             flex = 7,
             include_sides = True,
@@ -145,8 +141,11 @@ def Calendar_body(settings):
                     child = uCOLUMN(
                         children = CalendarEntrys(get_date_based_on_weekday(6), settings)
                     )),
-            ]
-        )
-    ]
-)
+                        ]
+                    )
+                ]
+            )
+    def TODOs(settings):
+        return uLABEL("jzgfjzgc")
 
+    

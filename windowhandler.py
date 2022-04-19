@@ -1,14 +1,12 @@
 import json
 from graphics import GraphWin, Point, Rectangle, Text
 import os
-from layout_parts.Widgets.controllers import Calendar
+from layout_parts.Widgets.WIDGET import WIDGET
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from notifier import NotifyService
 import time
 
-class WIDGETMAP():
-    def __init__(self):
-        self.Calendar = Calendar
+
 
 
 
@@ -139,15 +137,11 @@ class DISPLAY():
                                 marker.draw(self.wallpaper)
                             clusters_inhibited.append(selected_cluster)
             widgetparams = layoutdata["widget-cluster-map"][widgetname]["parameters"]
-            ######
-            ######  ADD NEW WIDGETS HERE
-            ###### 
+            ###### Widget Mapper
             classname = widgetname.split("_")[0]
             number = widgetname.split("_")[1]
-            widget = getattr(WIDGETMAP(), classname)(clusters = clusters_inhibited, header = widgetparams["header"], headercontent= widgetparams["headercontent"], headershape = widgetparams["headershape"], settings = widgetparams["settings"], number = number)
-            ######
+            widget = WIDGET(clusters = clusters_inhibited, header = widgetparams["header"], headercontent = widgetparams["headercontent"], headershape = widgetparams["headershape"], settings = widgetparams["settings"], number = number, widgetname=classname)
             ###### END OF WIDGET MAPPER
-            ######
             for cluster in clusters_inhibited:
                 cluster.giveWidget(widget)
             currently_loaded_widgets.append(widget)
