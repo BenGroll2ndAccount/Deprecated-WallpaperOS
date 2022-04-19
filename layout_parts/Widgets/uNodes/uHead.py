@@ -26,7 +26,6 @@ class uHEAD(uNODE):
     @tlog
     def notify(self, name, value):
         if name == "ram.widget-control_center":
-            print(value)
             if value[self.widgetname] == 0:
                 self.controlcenter == None
             elif value[self.widgetname] == 1:
@@ -60,9 +59,7 @@ class uHEAD(uNODE):
 
     @tlog
     def draw(self):
-        print(self.controlcenter)
-        outlist = []
-        
+        outlist = []            
         background_call = udraw_Rectangle(pointA=self.anchor, pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height), filled=True, border_is_highlight=False, fill_match_border=True)
         #list.append(background_call)
         child_calls : list = self.child.draw()
@@ -90,7 +87,6 @@ class uHEAD(uNODE):
                 outlist.append(htcall)
 
         if self.controlcenter != None:
-            print("Controlcenter != None")
             controlcentercalls = self.controlcenter.draw()
             for call in controlcentercalls:
                 outlist.append(call)

@@ -6,6 +6,7 @@ from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCollectives import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 
 class BODIES():
     def Calendar(settings):
@@ -18,7 +19,10 @@ class BODIES():
                 flex = 1,
                 divider_thickness = 0,
                 children = [
-                    uCOLUMN(
+                    uTOUCHAREA(
+                        level = 0,
+                        identifier = "MondayTest",
+                        child = uCOLUMN(
                         children = [uPBOX(
                         modV=80 if NotifyService.get("timing.weekday") != 0 else 100,
                         modH=80 if NotifyService.get("timing.weekday") != 0 else 100,
@@ -27,8 +31,9 @@ class BODIES():
                             rounding = 10 if NotifyService.get("timing.weekday") != 0 else 0,
                             child=uLABEL("MO", highlight=False))
                     ),
+                    
                     uLABEL(get_date_based_on_weekday(0).split("-")[2] + "." + get_date_based_on_weekday(0).split("-")[1]) if settings["show-dates"] else uEMPTY(flex = 0)
-                    ]),
+                    ])),
                     uCOLUMN(
                         children = [uPBOX(
                             flex = 2,

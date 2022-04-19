@@ -1,5 +1,6 @@
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
 from graphics import *
+
 class uPoint():
     def __init__(self, x : int, y : int):
         self.x = x
@@ -16,6 +17,11 @@ class uPoint():
     @property
     def copy(self):
         return uPoint(x = self.x, y = self.y)
+
+    def isInArea(self, constraint):
+        return self.x > constraint.pointA.x and self.x < constraint.pointB.x and self.y > constraint.pointA.y and self.y < constraint.pointB.y
+        
+
 
 
 

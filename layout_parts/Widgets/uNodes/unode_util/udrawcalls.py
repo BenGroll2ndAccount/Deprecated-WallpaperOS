@@ -42,7 +42,8 @@ class udraw_Rectangle():
             round_oct : bool = True,
             filled : bool = False,
             fill_match_border : bool = False,
-            is_debug : bool = False
+            is_debug : bool = False,
+            is_touch_debug : bool = False
             ):
         if pointA == None or pointB == None:
             raise uDRAWEXCEPTION(widget = self.__class__.__name__, message = "Draw needs both start and endpoint")
@@ -50,7 +51,7 @@ class udraw_Rectangle():
         self.pointB = pointB
         self.border_is_highlight = border_is_highlight
         self.thickness = thickness
-        rounding_length = 0
+        self.is_touch_debug = is_touch_debug
         self.rounding = rounding
         self.round_oct = round_oct
         self.filled = filled
@@ -111,3 +112,7 @@ class udraw_Polygon():
 
     def out(self):
         return "udraw_Polygon @" + self.pointA.out() + self.pointB.out() + self.pointC.out() + self.pointD.out() + "border_is_highlight: " + str(self.border_is_highlight) + ", thickness: " + str(self.thickness) + ", round_oct: " + str(self.round_oct) + ", filled: " + str(self.filled) + ", fill_match_border: " + str(self.fill_border) + ", is_debug: " + str(self.is_debug)
+
+class uIndicateTouchArea():
+    def __init__(self, pointA,pointB):
+        pass

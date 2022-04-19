@@ -25,15 +25,16 @@ class OS():
             elif command == "cache":
                 NotifyService.reloadcache()
             elif command == "test":
-                before = NotifyService.get("ram.widget-control_center")
-                after = before
-                if after["Calendar_1"] == 0:
-                    after["Calendar_1"] = 1
-                elif after["Calendar_1"] == 1:
-                    after["Calendar_1"] = 2
-                elif after["Calendar_1"] == 2:
-                    after["Calendar_1"] = 0
-                NotifyService.change("ram.widget-control_center", after)
+                #before = NotifyService.get("ram.widget-control_center")
+                #after = before
+                #if after["Calendar_1"] == 0:
+                #    after["Calendar_1"] = 1
+                #elif after["Calendar_1"] == 1:
+                #    after["Calendar_1"] = 2
+                #elif after["Calendar_1"] == 2:
+                #    after["Calendar_1"] = 0
+                #NotifyService.change("ram.widget-control_center", after)
+                NotifyService.change("ram.touching", [10, 80])
             else:
                 for call in currently_drawn_calls:
                     call.undraw()
