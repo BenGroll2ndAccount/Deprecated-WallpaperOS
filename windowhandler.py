@@ -113,7 +113,10 @@ class DISPLAY():
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
             layoutdata = json.loads(jfile.read())[name]
         cluster_map = layoutdata["widget-cluster-map"]
+        loaded_widgets = {}
+
         for widgetname in cluster_map:
+            loaded_widgets[widgetname] = 0
             clusters_inhibited = []
             if len(cluster_map[widgetname]["coords"]) / 2 == 1:
                 for y in range(cluster_map[widgetname]["coords"][0][0], cluster_map[widgetname]["coords"][1][0] + 1):
@@ -140,11 +143,12 @@ class DISPLAY():
             ###### Widget Mapper
             classname = widgetname.split("_")[0]
             number = widgetname.split("_")[1]
-            widget = WIDGET(clusters = clusters_inhibited, header = widgetparams["header"], headercontent = widgetparams["headercontent"], headershape = widgetparams["headershape"], settings = widgetparams["settings"], number = number, widgetname=classname)
+            widget = WIDGET(clusters = clusters_inhibited, header = widgetparams["header"], headercontent = widgetparams["headercontent"], headershape = widgetparams["headershape"], settings = widgetparams["settings"], number = number, widgetname=classname + "_" + number)
             ###### END OF WIDGET MAPPER
             for cluster in clusters_inhibited:
                 cluster.giveWidget(widget)
             currently_loaded_widgets.append(widget)
+        NotifyService.change("ram.widget-control_center", loaded_widgets)
         self.currently_loaded_widgets = currently_loaded_widgets
         print(">>>Loaded " + name + "<<<", end="")
         return

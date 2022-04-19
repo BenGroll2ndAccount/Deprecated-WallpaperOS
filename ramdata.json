@@ -1,4 +1,5 @@
 {
     "currently_loaded_layout" : null,
-    "widget_request_redraw" : false
+    "widget_request_redraw" : false,
+    "widget-control_center" : {}
 }

@@ -1,28 +1,39 @@
-from email import header
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text, udraw_Polygon
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
+from layout_parts.Widgets.uNodes.uControlCenter import ControlCenter
 from notifier import NotifyService
 
 class uHEAD(uNODE):
     @tlog
-    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, listening : list = None, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect"):
+    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect", widgetname : str = "", settings = None):
         self.anchor : uPoint = anchor
         self.width : int = width  
         self.height : int = height
         self.headershape = headershape
         self.flex = flex
         self.child : uNODE = body
+        self.widgetname = widgetname
+        self.settings = settings
+        self.controlcenter = None
         self.header : str = header
         self.headercontent : str = headercontent
-        self.__node_init__(listening=listening, level = 0)
+        self.__node_init__(listening=["ram.widget-control_center"], level = 0)
 
     @tlog
     def notify(self, name, value):
-        pass
+        if name == "ram.widget-control_center":
+            print(value)
+            if value[self.widgetname] == 0:
+                self.controlcenter == None
+            elif value[self.widgetname] == 1:
+                available_space = self.childs_constraint.copy
+                __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
+                self.controlcenter = ControlCenter(constraint = uConstrain(pointA=uPoint(available_space.pointA.x, available_space.pointB.y - __HEADERRESOLUTION__ * 2), pointB=uPoint(available_space.pointB.x, available_space.pointB.y)), settings = self.settings, widgetname=self.widgetname, value = 1)
+
 
     @tlog
     def constrainmod(self):
@@ -40,6 +51,7 @@ class uHEAD(uNODE):
             new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __HEADERRESOLUTION__)))
         else:
             return self.child.constrainmod(self.constraint.copy)
+        self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
 
     @tlog
@@ -48,7 +60,9 @@ class uHEAD(uNODE):
 
     @tlog
     def draw(self):
+        print(self.controlcenter)
         outlist = []
+        
         background_call = udraw_Rectangle(pointA=self.anchor, pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height), filled=True, border_is_highlight=False, fill_match_border=True)
         #list.append(background_call)
         child_calls : list = self.child.draw()
@@ -72,7 +86,12 @@ class uHEAD(uNODE):
                 outlist.append(udraw_Polygon(pointA=headerconsts.pointA, pointB = uPoint(x = headerconsts.pointA.x + __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointC = uPoint(headerconsts.pointB.x - __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointD = uPoint(x = headerconsts.pointA.x + headerconsts.width, y = headerconsts.pointA.y), border_is_highlight=True, filled = True, fill_match_border=True,thickness = 1)) 
             else:
                 outlist.append(udraw_Rectangle(pointA=headerconsts.pointA, pointB=headerconsts.pointB, border_is_highlight=True, filled = True, fill_match_border=True))
-
             for htcall in headertextcalls:
                 outlist.append(htcall)
+
+        if self.controlcenter != None:
+            print("Controlcenter != None")
+            controlcentercalls = self.controlcenter.draw()
+            for call in controlcentercalls:
+                outlist.append(call)
         return outlist
