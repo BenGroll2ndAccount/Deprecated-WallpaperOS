@@ -32,7 +32,17 @@ class uHEAD(uNODE):
                 print("Task Opened")
             elif name.split(".")[1] == "CCenter":
                 if self.controlcenter.status == "Closed":
+                    self.controlcenterOpenButton.level = 2
+                    self.controlcenter.status = "Base"
+                    self.constrainmod()
                     self.controlcenter.change_status("Base")
+                else:
+                    self.controlcenterOpenButton.level = 1
+                    print("Should Close")
+                    self.controlcenter.status = "Closed"
+                    self.constrainmod()
+                    self.controlcenter.change_status("Closed")
+                    
 
 
 
@@ -40,23 +50,28 @@ class uHEAD(uNODE):
     def constrainmod(self):
         self.constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         __HEADERSIZE__ : int = NotifyService.get("debug.widget-header_thickness_in_clusters")
-        __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
+        __CLUSTERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
         new_constraint = None
         if self.header == "t":
-            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x, y = __HEADERSIZE__ * __HEADERRESOLUTION__), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x, y = __HEADERSIZE__ * __CLUSTERRESOLUTION__), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         elif self.header == "l":
-            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x + __HEADERSIZE__ * __HEADERRESOLUTION__, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x + __HEADERSIZE__ * __CLUSTERRESOLUTION__, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         elif self.header == "r":
-            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width - (__HEADERSIZE__ * __HEADERRESOLUTION__), y = self.anchor.y + self.height))
+            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width - (__HEADERSIZE__ * __CLUSTERRESOLUTION__), y = self.anchor.y + self.height))
         elif self.header == "b":
-            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __HEADERRESOLUTION__)))
+            new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __CLUSTERRESOLUTION__)))
         else:
             return self.child.constrainmod(self.constraint.copy)
-        self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.5, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.5),pointB = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.3, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.3)))
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
         __CCENTERSIZE__ = NotifyService.get("debug.widget-controlcenter-thickness-in-clusters")
-        self.controlcenter.constrainmod(uConstrain(pointA=uPoint(x = new_constraint.pointA.x, y = new_constraint.pointB.y - __CCENTERSIZE__ * __HEADERRESOLUTION__), pointB=uPoint(x = new_constraint.pointB.x, y = new_constraint.pointB.y)))
+        if self.controlcenter.status != "Closed":
+            button_shrinking_factor = 0.3
+            self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ - 1) / (2) - (__CLUSTERRESOLUTION__ * button_shrinking_factor), new_constraint.pointB.y - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ - 1) / (2) - (__CLUSTERRESOLUTION__ * button_shrinking_factor)),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__  + 1) / (2) + (__CLUSTERRESOLUTION__ * button_shrinking_factor), new_constraint.pointB.y - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ + 1) / (2) + (__CLUSTERRESOLUTION__ * button_shrinking_factor))))
+            self.controlcenter.constrainmod(uConstrain(pointA=uPoint(x = new_constraint.pointA.x, y = new_constraint.pointB.y - __CCENTERSIZE__ * __CLUSTERRESOLUTION__), pointB=uPoint(x = new_constraint.pointB.x, y = new_constraint.pointB.y)))
+        else:
+            self.controlcenter.constrainmod(uConstrain(pointA=uPoint(0,0), pointB = uPoint(0,0)))
+            self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.5, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.5),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.3, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.3)))
 
 
     @tlog
@@ -72,21 +87,21 @@ class uHEAD(uNODE):
         for call in child_calls:
             outlist.append(call)    
         __HEADERSIZE__ : int = NotifyService.get("debug.widget-header_thickness_in_clusters")
-        __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
+        __CLUSTERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
         if self.header == "t":
-            headerconsts = uConstrain(pointA=uPoint(x=self.anchor.x, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + __HEADERRESOLUTION__ * __HEADERSIZE__))
+            headerconsts = uConstrain(pointA=uPoint(x=self.anchor.x, y = self.anchor.y), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + __CLUSTERRESOLUTION__ * __HEADERSIZE__))
         elif self.header == "l":
-            headerconsts = uConstrain(pointA=uPoint(x=self.anchor.x ,y = self.anchor.y), pointB=uPoint(x = self.anchor.x + __HEADERRESOLUTION__ * __HEADERSIZE__, y = self.anchor.y + self.height))
+            headerconsts = uConstrain(pointA=uPoint(x=self.anchor.x ,y = self.anchor.y), pointB=uPoint(x = self.anchor.x + __CLUSTERRESOLUTION__ * __HEADERSIZE__, y = self.anchor.y + self.height))
         elif self.header == "r":
-            headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x + self.width - __HEADERRESOLUTION__ * __HEADERSIZE__, y = self.anchor.y), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x + self.width - __CLUSTERRESOLUTION__ * __HEADERSIZE__, y = self.anchor.y), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         elif self.header == "b":
-            headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x, y = self.anchor.y + self.height - __HEADERRESOLUTION__ * __HEADERSIZE__), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
+            headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x, y = self.anchor.y + self.height - __CLUSTERRESOLUTION__ * __HEADERSIZE__), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         if self.header != None:
             self.headerText = uLABEL(varname = self.headercontent, nice = True, highlight=False)
             self.headerText.constrainmod(headerconsts.copy)
             headertextcalls = self.headerText.draw()
             if self.headershape == "poly":
-                outlist.append(udraw_Polygon(pointA=headerconsts.pointA, pointB = uPoint(x = headerconsts.pointA.x + __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointC = uPoint(headerconsts.pointB.x - __HEADERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointD = uPoint(x = headerconsts.pointA.x + headerconsts.width, y = headerconsts.pointA.y), border_is_highlight=True, filled = True, fill_match_border=True,thickness = 1)) 
+                outlist.append(udraw_Polygon(pointA=headerconsts.pointA, pointB = uPoint(x = headerconsts.pointA.x + __CLUSTERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointC = uPoint(headerconsts.pointB.x - __CLUSTERRESOLUTION__ * __HEADERSIZE__, y = headerconsts.pointA.y + headerconsts.height), pointD = uPoint(x = headerconsts.pointA.x + headerconsts.width, y = headerconsts.pointA.y), border_is_highlight=True, filled = True, fill_match_border=True,thickness = 1)) 
             else:
                 outlist.append(udraw_Rectangle(pointA=headerconsts.pointA, pointB=headerconsts.pointB, border_is_highlight=True, filled = True, fill_match_border=True))
             for htcall in headertextcalls:

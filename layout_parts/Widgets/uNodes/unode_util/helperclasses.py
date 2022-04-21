@@ -27,8 +27,8 @@ class uPoint():
 
 class uConstrain():
     def __init__(self, pointA : uPoint, pointB : uPoint):
-        self.pointA = pointA
-        self.pointB = pointB
+        self.pointA = uPoint(x = min([pointA.x, pointB.x]), y = min([pointA.y, pointB.y]))
+        self.pointB = uPoint(x = max([pointA.x, pointB.x]), y = max([pointA.y, pointB.y]))
 
     def out(self) -> str:
         return "(" + str(self.pointA.x) + "|" + str(self.pointA.y) + "),(" + str(self.pointB.x) + "|" + str(self.pointB.y) + ")"

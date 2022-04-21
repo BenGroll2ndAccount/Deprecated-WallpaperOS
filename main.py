@@ -15,7 +15,7 @@ class OS():
         NotifyService.subscribe_to_event(self, "redraw")
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
-        currently_drawn_calls = self.draw()
+        self.currently_drawn_calls = self.draw()
         while True:
             #print("quit; layout; empty -> reload Widgets on Display; cache;")
             #command = input()
@@ -54,9 +54,7 @@ class OS():
                 elif key == "t":
                     pass
                 elif key == "d":
-                    for call in currently_drawn_calls:
-                        call.undraw()
-                    self.draw()
+                    self.redraw()
     
     @tlog
     def get_timing(self):
@@ -76,10 +74,16 @@ class OS():
             "weekday" : date.weekday()
         })
     @tlog
+    def redraw(self):
+        for call in self.currently_drawn_calls:
+            call.undraw()
+        self.draw()
+
+
+    @tlog
     def notify(self, name):
         if name == "event.redraw":
-            self.draw()
-
+            self.redraw()
     @tlog
     def draw(self):
         display = self.displayController

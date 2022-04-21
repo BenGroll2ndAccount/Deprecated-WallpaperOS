@@ -113,10 +113,12 @@ class NOTIFIER():
     def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)
         if name == "touching":
+            print("Registered")
             affected_listeners = []
             for listener in listeners:
                 touchpoint : uPoint = uPoint(x = args[0][0], y = args[0][1])
                 if listener.affected_by_touch(point=touchpoint):
+                    print("Affected!")
                     affected_listeners.append(listener)
             if len(affected_listeners) > 0:
                 highest_level_listener = affected_listeners[0]
@@ -127,6 +129,8 @@ class NOTIFIER():
         if name == "redraw":
             for listener in listeners:
                 listener.notify("event." + name)
+
+
     def subscribe_to_event(self, subscriber, eventname):
         slist = getattr(self, "Subscribers_" + eventname)
         slist.append(subscriber)

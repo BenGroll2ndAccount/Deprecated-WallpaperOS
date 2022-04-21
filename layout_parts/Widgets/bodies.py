@@ -18,10 +18,11 @@ class BODIES():
             thickness=1,
             highlight=True,
             fill_match_border=False,
+            
         ))
     def ControlCenterCalendarClosed(parentwidget):
         return uEMPTY()
-        
+
     def ControlCenterCalendarBase(parentwidget):
         return uCARD(
             filled = True,

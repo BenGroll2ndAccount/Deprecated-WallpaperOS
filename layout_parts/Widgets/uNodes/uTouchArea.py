@@ -1,3 +1,4 @@
+from re import U
 from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
@@ -32,7 +33,7 @@ class uTOUCHAREA(uNODE):
             return 0
 
     @tlog
-    def affected_by_touch(self, point):
+    def affected_by_touch(self, point : uPoint):
         return point.isInArea(self.constraint.copy)
 
     @tlog
