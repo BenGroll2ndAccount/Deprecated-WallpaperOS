@@ -29,7 +29,7 @@ class uNODE():
 
     def output(self):
         constraintoutput = self.constraint.out()
-        print((" " * 5 * self.depth) + self.__class__.__name__ + " " * (100 - len(self.__class__.__name__) - 5 * self.depth) + str(self.depth) + "-" + str(self.level) + "   " + constraintoutput )
+        print((" " * 5 * self.depth) + self.__class__.__name__ + "-" * (100 - len(self.__class__.__name__) - 5 * self.depth) + " | " + str(self.depth) + "-" + str(self.level) + "   " + constraintoutput )
         if not hasattr(self, "child") and not hasattr(self, "children"):
             return
         if hasattr(self, "child") and self.child != None:

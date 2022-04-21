@@ -71,8 +71,9 @@ def CalendarEntrys(date : str, parentwidget):
             tasksitems.append(uLABEL(t.time))
         tasksitems.append(
             uTOUCHAREA(
+            parentwidget=parentwidget,
             funcname="Task",
-            args=(parentwidget),
+            args=[tasko],
             child = uCARD(
             thickness=3,
             flex = time_to_dec(t.endtime) - time_to_dec(t.time) if t.endtime != None else 1,

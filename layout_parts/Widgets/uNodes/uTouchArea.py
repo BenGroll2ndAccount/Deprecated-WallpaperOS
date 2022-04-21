@@ -8,9 +8,10 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTOUCHAREA(uNODE):
     @tlog
-    def __init__(self, child : uNODE = None, level : int = 0, flex = 1, funcname : str = "", args = None, kwargs = None):
+    def __init__(self, child : uNODE = None, level : int = 0, flex = 1, parentwidget = None, funcname : str = "", args = None, kwargs = None):
         self.flex = flex
         self.child = child
+        self.parentwidget = parentwidget
         self.onPress = (funcname, args, kwargs)
         NotifyService.subscribe_to_event(self, "touching")
         self.__node_init__(listening=[], level = level)
@@ -22,6 +23,8 @@ class uTOUCHAREA(uNODE):
             fakepoint = uPoint(values[0], values[1])
             if fakepoint.isInArea(self.constraint.copy):
                 self.getPressFunction(self.onPress[0], self.onPress[1], self.onPress[2])
+                if self.onPress[0] == "Task":
+                    self.parentwidget.notify("touched.Task", self.onPress[1][0])
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy

@@ -27,8 +27,9 @@ class WIDGET():
         self.finish(self.settings, self.clusters[0].anchor)
         return
 
-    def notify(self, name, value):
-        print("Notified")
+    def notify(self, name : str, value):
+        if name.startswith("touched"):
+            self.head.notify(name=name, value=value)
 
     @property
     def drawcalls(self):

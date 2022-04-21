@@ -148,7 +148,6 @@ class DISPLAY():
             for cluster in clusters_inhibited:
                 cluster.giveWidget(widget)
             currently_loaded_widgets.append(widget)
-        NotifyService.change("ram.widget-control_center", loaded_widgets)
         self.currently_loaded_widgets = currently_loaded_widgets
         print(">>>Loaded " + name + "<<<", end="")
         return

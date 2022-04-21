@@ -21,17 +21,13 @@ class uHEAD(uNODE):
         self.controlcenter = None
         self.header : str = header
         self.headercontent : str = headercontent
-        self.__node_init__(listening=["ram.widget-control_center"], level = 0)
+        self.__node_init__(listening=[], level = 0)
 
     @tlog
-    def notify(self, name, value):
-        if name == "ram.widget-control_center":
-            if value[self.widgetname] == 0:
-                self.controlcenter == None
-            elif value[self.widgetname] == 1:
-                available_space = self.childs_constraint.copy
-                __HEADERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
-                self.controlcenter = ControlCenter(constraint = uConstrain(pointA=uPoint(available_space.pointA.x, available_space.pointB.y - __HEADERRESOLUTION__ * 2), pointB=uPoint(available_space.pointB.x, available_space.pointB.y)), settings = self.settings, widgetname=self.widgetname, value = 1)
+    def notify(self, name : str, value):
+        if name.startswith("touched"):
+            if name.split(".")[1] == "Task":
+                print("Task Opened")
 
 
     @tlog
