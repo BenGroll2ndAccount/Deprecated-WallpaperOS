@@ -64,5 +64,12 @@ class uConstrain():
         else:
             return True
 
-
-
+class Task():
+    def __init__(self, title : str, date : str = None, time : str = None, endtime : str = None, category : str = None, description : str = None, key : str = ""):
+        self.date = date
+        self.time = time
+        self.category = category
+        self.title = title
+        self.description = description
+        self.endtime = endtime
+        self.key = key

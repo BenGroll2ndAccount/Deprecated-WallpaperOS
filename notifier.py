@@ -40,8 +40,8 @@ def get_all_keys(filename : str):
 
 class NOTIFIER():
     def __init__(self):
-        self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing", "tasks"]
-        self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing", "tasks"]
+        self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing", "tasks", "event"]
+        self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing", "tasks", "event"]
         self.loadcache(self.all_filenames_for_cache)
 
     def reloadcache(self):
@@ -103,9 +103,21 @@ class NOTIFIER():
             setattr(self, "tasks.per_category", category_tasks)
             setattr(self, "Listeners_tasks.per_category", [])
             setattr(self, "total_task_categories", categories)
-            setattr(self, "Listejers_total_task_categories", [])
+            setattr(self, "Listeners_total_task_categories", [])
+        if "event" in filenames:
+            available_events = ["touching"]
+            for event in available_events:
+                setattr(self, "Subscribers_" + event, [])
 
+    def register_event(self, name, *args):
+        listeners = getattr(self, "Subscribers_" + name)
+        for listener in listeners:
+            listener.notify("event." + name, *args)
 
+    def subscribe_to_event(self, subscriber, eventname):
+        slist = getattr(self, "Subscribers_" + eventname)
+        slist.append(subscriber)
+        setattr(self, "Subscribers_" + eventname, slist)
 
     def get(self, name : str):
         if name.split(".")[0] in self.allowed_prefixes:

@@ -20,13 +20,15 @@ class WIDGET():
             anchor = self.clusters[0].anchor,
             width = self.clusters[-1].end.x - self.clusters[0].anchor.x,
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
-            body = getattr(BODIES, self.widgetname.split("_")[0])(self.settings.copy()),
+            body = getattr(BODIES, self.widgetname.split("_")[0])(self),
             widgetname=widgetname,
             settings = settings
         )
         self.finish(self.settings, self.clusters[0].anchor)
         return
-    
+
+    def notify(self, name, value):
+        print("Notified")
 
     @property
     def drawcalls(self):

@@ -1,20 +1,14 @@
+from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCard import uCARD
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 from notifier import NotifyService
 import datetime
 
-class Task():
-    def __init__(self, title : str, date : str = None, time : str = None, endtime : str = None, category : str = None, description : str = None):
-        self.date = date
-        self.time = time
-        self.category = category
-        self.title = title
-        self.description = description
-        self.endtime = endtime
 
 
 def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
@@ -30,8 +24,8 @@ def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
 
 
 
-def CalendarEntrys(date : str, settings):
-    true_time = settings["true-time"]
+def CalendarEntrys(date : str, parentwidget):
+    true_time = parentwidget.settings["true-time"]
     earliest_time = get_weeks_earliest_and_latest_time()[0]
     latest_time = get_weeks_earliest_and_latest_time()[1]
     tasks_for_today : list = NotifyService.get("tasks.per_day")
@@ -40,6 +34,7 @@ def CalendarEntrys(date : str, settings):
     tasks = []
     for task in tasks_for_today[str(date)]:
         tasks.append(Task(
+            key = task["key"],
             date = task["date"],
             time = task["time"],
             endtime = task["endtime"],
@@ -74,16 +69,21 @@ def CalendarEntrys(date : str, settings):
         else:
             tasksitems.append(uEMPTY(flex = (time_to_dec(t.time) - last_time) if true_time else 0 ))
             tasksitems.append(uLABEL(t.time))
-        tasksitems.append(uCARD(
+        tasksitems.append(
+            uTOUCHAREA(
+            funcname="Task",
+            args=(parentwidget),
+            child = uCARD(
             thickness=3,
             flex = time_to_dec(t.endtime) - time_to_dec(t.time) if t.endtime != None else 1,
             filled = str(datetime.date.today()) == t.date and isInTime,
             rounding = 7,
             child = uCOLUMN(
                 children = [uLABEL(text, highlight = (not isInTime or not str(datetime.date.today()) == t.date )) for text in t.title.split(" ")]
+                )
+            )
             )
         )
-    )
         tasksitems.append(uLABEL(t.endtime) if t.endtime != None else uEMPTY())
         last_time = time_to_dec(t.endtime) if t.endtime != None else last_time + 1
         last_task = t

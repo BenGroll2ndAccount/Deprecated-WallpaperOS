@@ -4,23 +4,24 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTOUCHAREA(uNODE):
     @tlog
-    def __init__(self, child : uNODE = None, level : int = 0, flex = 1, identifier : str = ""):
+    def __init__(self, child : uNODE = None, level : int = 0, flex = 1, funcname : str = "", args = None, kwargs = None):
         self.flex = flex
         self.child = child
-        self.identifier = identifier
-        self.__node_init__(listening=["ram.touching"], level = level)
+        self.onPress = (funcname, args, kwargs)
+        NotifyService.subscribe_to_event(self, "touching")
+        self.__node_init__(listening=[], level = level)
 
     @tlog
-    def notify(self, name, value):
+    def notify(self, name, values):
         print(self.constraint.out())
-        if name == "ram.touching":
-            fakepoint = uPoint(value[0], value[1])
+        if name == "event.touching":
+            fakepoint = uPoint(values[0], values[1])
             if fakepoint.isInArea(self.constraint.copy):
-                print("lol")
-
+                self.getPressFunction(self.onPress[0], self.onPress[1], self.onPress[2])
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
@@ -45,3 +46,11 @@ class uTOUCHAREA(uNODE):
         for call in child_calls:
             own_draw_calls.append(call)
         return own_draw_calls
+
+    @tlog
+    def getPressFunction(self, funcname, *args, **kwargs):
+        getattr(uTouchAreaFunctions, "onPress_" + funcname)(*args, *kwargs)
+    
+class uTouchAreaFunctions():
+    def onPress_Task(self, *args, **kwargs):
+        print("Touched")

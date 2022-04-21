@@ -34,7 +34,7 @@ class OS():
                 #elif after["Calendar_1"] == 2:
                 #    after["Calendar_1"] = 0
                 #NotifyService.change("ram.widget-control_center", after)
-                NotifyService.change("ram.touching", [10, 80])
+                NotifyService.register_event("touching", ([700, 400]))
             else:
                 for call in currently_drawn_calls:
                     call.undraw()
