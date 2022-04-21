@@ -17,14 +17,12 @@ class uTOUCHAREA(uNODE):
         self.__node_init__(listening=[], level = level)
 
     @tlog
-    def notify(self, name, values):
-        print(self.constraint.out())
+    def notify(self, name, *args, **kwargs):
         if name == "event.touching":
-            fakepoint = uPoint(values[0], values[1])
-            if fakepoint.isInArea(self.constraint.copy):
-                self.getPressFunction(self.onPress[0], self.onPress[1], self.onPress[2])
-                if self.onPress[0] == "Task":
-                    self.parentwidget.notify("touched.Task", self.onPress[1][0])
+            if self.onPress[0] == "Task":
+                self.parentwidget.notify("touched.Task", self.onPress[1][0])
+            if self.onPress[0] == "CCenter":
+                self.parentwidget.notify("touched.CCenter", None)
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
@@ -32,6 +30,10 @@ class uTOUCHAREA(uNODE):
             self.child.constrainmod(self.constraint.copy)
         else:
             return 0
+
+    @tlog
+    def affected_by_touch(self, point):
+        return point.isInArea(self.constraint.copy)
 
     @tlog
     def miscmod(self):
@@ -49,11 +51,3 @@ class uTOUCHAREA(uNODE):
         for call in child_calls:
             own_draw_calls.append(call)
         return own_draw_calls
-
-    @tlog
-    def getPressFunction(self, funcname, *args, **kwargs):
-        getattr(uTouchAreaFunctions, "onPress_" + funcname)(*args, *kwargs)
-    
-class uTouchAreaFunctions():
-    def onPress_Task(self, *args, **kwargs):
-        print("Touched")

@@ -1,5 +1,6 @@
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
+from layout_parts.Widgets.uNodes.uDot import uDOT
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
@@ -7,6 +8,18 @@ from layout_parts.Widgets.uNodes.uBuilders import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class BODIES():
+    def ControlCenterOpenButton(parentwidget):
+        return uTOUCHAREA(
+            level = 1,
+            parentwidget=parentwidget,
+            funcname="CCenter",
+            child = uDOT(
+            filled=True,
+            thickness=1,
+            highlight=True,
+            fill_match_border=False,
+        ))
+
     def Calendar(parentwidget):
         return uCOLUMN(
         divider_thickness=3,

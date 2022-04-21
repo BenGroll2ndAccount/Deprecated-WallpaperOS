@@ -70,7 +70,7 @@ class udraw_Circle():
             ):
         if point == None:
             raise uDRAWEXCEPTION(widget = self.__class__.__name__, message = "Draw needs a centerpoint.")
-        self.point = point,
+        self.point = point
         self.radius = radius
         self.highlight = highlight
 
@@ -112,7 +112,3 @@ class udraw_Polygon():
 
     def out(self):
         return "udraw_Polygon @" + self.pointA.out() + self.pointB.out() + self.pointC.out() + self.pointD.out() + "border_is_highlight: " + str(self.border_is_highlight) + ", thickness: " + str(self.thickness) + ", round_oct: " + str(self.round_oct) + ", filled: " + str(self.filled) + ", fill_match_border: " + str(self.fill_border) + ", is_debug: " + str(self.is_debug)
-
-class uIndicateTouchArea():
-    def __init__(self, pointA,pointB):
-        pass

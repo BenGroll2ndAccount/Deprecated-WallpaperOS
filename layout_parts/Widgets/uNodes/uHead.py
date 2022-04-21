@@ -1,3 +1,4 @@
+from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text, udraw_Polygon
@@ -19,6 +20,7 @@ class uHEAD(uNODE):
         self.widgetname = widgetname
         self.settings = settings
         self.controlcenter = None
+        self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
         self.header : str = header
         self.headercontent : str = headercontent
         self.__node_init__(listening=[], level = 0)
@@ -28,6 +30,8 @@ class uHEAD(uNODE):
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
+            elif name.split(".")[1] == "CCenter":
+                print("Should Open Control Center Now.")
 
 
     @tlog
@@ -46,8 +50,10 @@ class uHEAD(uNODE):
             new_constraint = uConstrain(pointA = self.anchor, pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - (__HEADERSIZE__ * __HEADERRESOLUTION__)))
         else:
             return self.child.constrainmod(self.constraint.copy)
+        self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.5, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.5),pointB = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.3, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.3)))
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
+
 
     @tlog
     def miscmod(self):
@@ -81,6 +87,9 @@ class uHEAD(uNODE):
                 outlist.append(udraw_Rectangle(pointA=headerconsts.pointA, pointB=headerconsts.pointB, border_is_highlight=True, filled = True, fill_match_border=True))
             for htcall in headertextcalls:
                 outlist.append(htcall)
+        controlcenterbuttoncalls = self.controlcenterOpenButton.draw()
+        for call in controlcenterbuttoncalls:
+            outlist.append(call)
 
         if self.controlcenter != None:
             controlcentercalls = self.controlcenter.draw()

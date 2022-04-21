@@ -1,6 +1,7 @@
 #from typing import Dict, List
 import json
 import os
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 
 def jget(filename : str, setting_name : str):
     with open(str(os.path.dirname(os.path.abspath(__file__)))+ r"/" + filename + ".json", "r") as jfile:
@@ -109,10 +110,20 @@ class NOTIFIER():
             for event in available_events:
                 setattr(self, "Subscribers_" + event, [])
 
-    def register_event(self, name, *args):
+    def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)
-        for listener in listeners:
-            listener.notify("event." + name, *args)
+        if name == "touching":
+            affected_listeners = []
+            for listener in listeners:
+                touchpoint : uPoint = uPoint(x = args[0][0], y = args[0][1])
+                if listener.affected_by_touch(point=touchpoint):
+                    affected_listeners.append(listener)
+            if len(affected_listeners) > 0:
+                highest_level_listener = affected_listeners[0]
+                for listener in affected_listeners:
+                    if listener.level > highest_level_listener.level:
+                        highest_level_listener = listener
+                highest_level_listener.notify("event." + name)
 
     def subscribe_to_event(self, subscriber, eventname):
         slist = getattr(self, "Subscribers_" + eventname)

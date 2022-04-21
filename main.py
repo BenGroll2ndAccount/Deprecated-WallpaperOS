@@ -91,6 +91,15 @@ class OS():
         constraints = []
         touch_areas = []
         for draw_call in drawcalls:
+            if draw_call.__class__.__name__ == "udraw_Circle":
+                circle_to_draw : udraw_Circle = draw_call
+                obj = Circle(circle_to_draw.point, circle_to_draw.radius)
+                if circle_to_draw.highlight:
+                    obj.setOutline(color = highlight_color)
+                else:
+                    obj.setOutline(color = background_color)
+                obj.draw(display.wallpaper)
+                drawobjs.append(obj)
             if draw_call.__class__.__name__ == "udraw_Pixel":
                 pixel_to_draw : udraw_Pixel = draw_call
                 display.wallpaper.plotPixel(x = pixel_to_draw.position.x, y = pixel_to_draw.position.y, color = highlight_color if draw_call.highlight else background_color)
@@ -158,8 +167,6 @@ class OS():
                     else:
                         obj.setFill(highlight_color)
                 obj.draw(display.wallpaper)
-
-            
         if NotifyService.get("debug.widget-draw_constraints"):
             for call in constraints:
                 call.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
