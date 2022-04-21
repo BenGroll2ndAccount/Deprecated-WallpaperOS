@@ -37,7 +37,7 @@ class uTOUCHAREA(uNODE):
     @tlog
     def draw(self):
         own_draw_calls = []
-        if NotifyService.get("debug.widget-draw_constraints"):
+        if NotifyService.get("debug.widget-draw-touch-areas"):
             own_draw_calls.append(udraw_Rectangle(pointA = self.constraint.pointA, pointB = self.constraint.pointB, is_touch_debug = True))
         if self.child != None:
             child_calls : list = self.child.draw()

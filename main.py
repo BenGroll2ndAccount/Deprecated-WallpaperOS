@@ -16,15 +16,15 @@ class OS():
         self.displayController.load_layout("Preset Layout 1")
         currently_drawn_calls = self.draw()
         while True:
-            print("quit; layout; empty -> reload Widgets on Display; cache;")
-            command = input()
-            if command == "quit":
-                exit()
-            elif command == "layout":
-                self.displayController.load_layout("Preset Layout 1")
-            elif command == "cache":
-                NotifyService.reloadcache()
-            elif command == "test":
+            #print("quit; layout; empty -> reload Widgets on Display; cache;")
+            #command = input()
+            #if command == "quit":
+            #    exit()
+            #elif command == "layout":
+            #    self.displayController.load_layout("Preset Layout 1")
+            #elif command == "cache":
+            #    NotifyService.reloadcache()
+            #elif command == "test":
                 #before = NotifyService.get("ram.widget-control_center")
                 #after = before
                 #if after["Calendar_1"] == 0:
@@ -34,11 +34,29 @@ class OS():
                 #elif after["Calendar_1"] == 2:
                 #    after["Calendar_1"] = 0
                 #NotifyService.change("ram.widget-control_center", after)
-                NotifyService.register_event("touching", ([700, 400]))
-            else:
-                for call in currently_drawn_calls:
-                    call.undraw()
-                self.draw()
+            #    NotifyService.register_event("touching", ([700, 400]))
+            #else:
+            #    for call in currently_drawn_calls:
+            #        call.undraw()
+            #    self.draw()
+            mouse = self.displayController.wallpaper.checkMouse()
+            if mouse != None:
+                NotifyService.register_event("touching", [mouse.x, mouse.y])
+            key = self.displayController.wallpaper.checkKey()
+            if key != None:
+                if key == "q":
+                    exit()
+                elif key == "l":
+                    self.displayController.load_layout("Preset Layout 1")
+                elif key == "c":
+                    NotifyService.reloadcache()
+                elif key == "t":
+                    pass
+                elif key == "d":
+                    for call in currently_drawn_calls:
+                        call.undraw()
+                    self.draw()
+    
     @tlog
     def get_timing(self):
         date = datetime.date.today()
@@ -71,6 +89,7 @@ class OS():
         highlight_color = light_color if isDarkMode else dark_color
         background_color = dark_color if isDarkMode else light_color
         constraints = []
+        touch_areas = []
         for draw_call in drawcalls:
             if draw_call.__class__.__name__ == "udraw_Pixel":
                 pixel_to_draw : udraw_Pixel = draw_call
@@ -83,6 +102,8 @@ class OS():
                     obj = Rectangle(p1 = Point(x = rectangle.pointA.x, y = rectangle.pointA.y), p2 = Point(x = rectangle.pointB.x, y = rectangle.pointB.y))
                 if rectangle.is_debug:
                     constraints.append(obj)
+                elif rectangle.is_touch_debug:
+                    touch_areas.append(obj)
                 elif rectangle.filled:
                     if rectangle.border_is_highlight and rectangle.fill_border:
                         obj.setOutline(color=highlight_color)
@@ -97,7 +118,7 @@ class OS():
                         obj.setFill(background_color)
                         obj.setOutline(background_color)
                 obj.setWidth(rectangle.thickness)
-                if not rectangle.is_debug:
+                if not rectangle.is_debug and not rectangle.is_touch_debug:
                     obj.draw(display.wallpaper)
                 drawobjs.append(obj)
             elif draw_call.__class__.__name__ == "udraw_Line":
@@ -142,6 +163,11 @@ class OS():
         if NotifyService.get("debug.widget-draw_constraints"):
             for call in constraints:
                 call.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
+                call.draw(display.wallpaper)
+                drawobjs.append(call)
+        if NotifyService.get("debug.widget-draw-touch-areas"):
+            for call in touch_areas:
+                call.setFill(color=NotifyService.get("debug.widget-toucharea_color"))
                 call.draw(display.wallpaper)
                 drawobjs.append(call)
         print(">>>(Re)Drawn Display", end="")
