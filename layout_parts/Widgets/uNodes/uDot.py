@@ -33,9 +33,7 @@ class uDOT(uNODE):
 
     @tlog
     def draw(self):
-        print("JHASODHOASHDOJSHDOASHDOAHODAHJSODASODN")
         own_draw_calls = []
-        print(self.constraint.out())
         if NotifyService.get("debug.widget-draw_constraints"):
             own_draw_calls.append(udraw_Rectangle(pointA = self.constraint.pointA, pointB = self.constraint.pointB, is_debug = True))
         own_draw_calls.append(udraw_Circle(point = self.constraint.center, radius=self.constraint.width / 2, highlight=self.highlight))

@@ -106,7 +106,7 @@ class NOTIFIER():
             setattr(self, "total_task_categories", categories)
             setattr(self, "Listeners_total_task_categories", [])
         if "event" in filenames:
-            available_events = ["touching"]
+            available_events = ["touching", "redraw"]
             for event in available_events:
                 setattr(self, "Subscribers_" + event, [])
 
@@ -124,7 +124,9 @@ class NOTIFIER():
                     if listener.level > highest_level_listener.level:
                         highest_level_listener = listener
                 highest_level_listener.notify("event." + name)
-
+        if name == "redraw":
+            for listener in listeners:
+                listener.notify("event." + name)
     def subscribe_to_event(self, subscriber, eventname):
         slist = getattr(self, "Subscribers_" + eventname)
         slist.append(subscriber)

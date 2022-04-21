@@ -5,7 +5,7 @@ from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, u
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
-from layout_parts.Widgets.uNodes.uControlCenter import ControlCenter
+from layout_parts.Widgets.uNodes.uControlCenter import uControlCenter
 from notifier import NotifyService
 
 class uHEAD(uNODE):
@@ -19,7 +19,7 @@ class uHEAD(uNODE):
         self.child : uNODE = body
         self.widgetname = widgetname
         self.settings = settings
-        self.controlcenter = None
+        self.controlcenter = uControlCenter(self)
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
         self.header : str = header
         self.headercontent : str = headercontent
@@ -31,7 +31,9 @@ class uHEAD(uNODE):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
             elif name.split(".")[1] == "CCenter":
-                print("Should Open Control Center Now.")
+                if self.controlcenter.status == "Closed":
+                    self.controlcenter.change_status("Base")
+
 
 
     @tlog
@@ -53,6 +55,8 @@ class uHEAD(uNODE):
         self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.5, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.5),pointB = uPoint(new_constraint.pointB.x - __HEADERRESOLUTION__ * 0.3, new_constraint.pointB.y - __HEADERRESOLUTION__ * 0.3)))
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
+        __CCENTERSIZE__ = NotifyService.get("debug.widget-controlcenter-thickness-in-clusters")
+        self.controlcenter.constrainmod(uConstrain(pointA=uPoint(x = new_constraint.pointA.x, y = new_constraint.pointB.y - __CCENTERSIZE__ * __HEADERRESOLUTION__), pointB=uPoint(x = new_constraint.pointB.x, y = new_constraint.pointB.y)))
 
 
     @tlog
@@ -88,11 +92,10 @@ class uHEAD(uNODE):
             for htcall in headertextcalls:
                 outlist.append(htcall)
         controlcenterbuttoncalls = self.controlcenterOpenButton.draw()
+        controlcentercalls = self.controlcenter.draw()
+    
+        for call in controlcentercalls:
+            outlist.append(call)
         for call in controlcenterbuttoncalls:
             outlist.append(call)
-
-        if self.controlcenter != None:
-            controlcentercalls = self.controlcenter.draw()
-            for call in controlcentercalls:
-                outlist.append(call)
         return outlist

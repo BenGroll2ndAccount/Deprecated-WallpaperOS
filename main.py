@@ -12,6 +12,7 @@ class OS():
         #Initialize big size Window
         self.displayController = DISPLAY()
         self.get_timing()
+        NotifyService.subscribe_to_event(self, "redraw")
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
         currently_drawn_calls = self.draw()
@@ -74,6 +75,10 @@ class OS():
             "time_minute" : minute,
             "weekday" : date.weekday()
         })
+    @tlog
+    def notify(self, name):
+        if name == "event.redraw":
+            self.draw()
 
     @tlog
     def draw(self):
