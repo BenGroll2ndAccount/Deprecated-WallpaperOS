@@ -77,7 +77,7 @@ class OS():
     def redraw(self):
         for call in self.currently_drawn_calls:
             call.undraw()
-        self.draw()
+        self.currently_drawn_calls = self.draw()
 
 
     @tlog

@@ -71,7 +71,7 @@ class uHEAD(uNODE):
             self.controlcenter.constrainmod(uConstrain(pointA=uPoint(x = new_constraint.pointA.x, y = new_constraint.pointB.y - __CCENTERSIZE__ * __CLUSTERRESOLUTION__), pointB=uPoint(x = new_constraint.pointB.x, y = new_constraint.pointB.y)))
         else:
             self.controlcenter.constrainmod(uConstrain(pointA=uPoint(0,0), pointB = uPoint(0,0)))
-            self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.5, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.5),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.3, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.3)))
+            self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.6, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.6),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.2, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.2)))
 
 
     @tlog
