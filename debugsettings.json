@@ -14,6 +14,7 @@
     "widget-controlcenter-thickness-in-clusters" : 1,
     "ll-draw_rect_rounding_oct" : false,
     "widget-log_any_function_call" : false,
-    "widget-output_widget_tree" : true
+    "widget-output_widget_tree" : true,
+    "ll-point-poly-detection-reference-offset-x" : 32768
     
 }
