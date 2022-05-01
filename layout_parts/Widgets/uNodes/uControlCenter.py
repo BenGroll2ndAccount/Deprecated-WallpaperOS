@@ -24,7 +24,7 @@ class uControlCenter(uNODE):
         self.status = status
         self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + status)(self.parentwidget)
         self.constrainmod(self.constraint.copy)
-        NotifyService.register_event("redraw", None)
+        NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
     @tlog
     def constrainmod(self, value : uConstrain):

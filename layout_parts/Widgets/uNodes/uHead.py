@@ -38,7 +38,6 @@ class uHEAD(uNODE):
                     self.controlcenter.change_status("Base")
                 else:
                     self.controlcenterOpenButton.level = 1
-                    print("Should Close")
                     self.controlcenter.status = "Closed"
                     self.constrainmod()
                     self.controlcenter.change_status("Closed")
