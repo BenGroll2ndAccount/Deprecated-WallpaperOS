@@ -1,3 +1,4 @@
+from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
@@ -5,19 +6,22 @@ from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, u
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
+from layout_parts.Widgets.uNodes.uCard import uCARD
+
 from layout_parts.Widgets.uNodes.uControlCenter import uControlCenter
 from notifier import NotifyService
 
 class uHEAD(uNODE):
     @tlog
-    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect", widgetname : str = "", settings = None):
+    def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect", parentwidget = None, settings = None):
         self.anchor : uPoint = anchor
         self.width : int = width  
         self.height : int = height
         self.headershape = headershape
         self.flex = flex
         self.child : uNODE = body
-        self.widgetname = widgetname
+        self.parentwidget = parentwidget
+        self.widgetname = parentwidget.widgetname
         self.settings = settings
         self.controlcenter = uControlCenter(self)
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
@@ -96,7 +100,11 @@ class uHEAD(uNODE):
         elif self.header == "b":
             headerconsts = uConstrain(pointA = uPoint(x = self.anchor.x, y = self.anchor.y + self.height - __CLUSTERRESOLUTION__ * __HEADERSIZE__), pointB = uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
         if self.header != None:
-            self.headerText = uLABEL(varname = self.headercontent, nice = True, highlight=False)
+            self.headerText = uTOUCHAREA(
+                level=1,
+                parentwidget=self.parentwidget,
+                funcname="Header",
+                child = uLABEL(varname = self.headercontent, nice = True, highlight=False))
             self.headerText.constrainmod(headerconsts.copy)
             headertextcalls = self.headerText.draw()
             if self.headershape == "poly":

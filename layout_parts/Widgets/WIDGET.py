@@ -16,12 +16,12 @@ class WIDGET():
         self.head : uHEAD = uHEAD(
             headershape=headershape,
             header = header,
+            parentwidget=self,
             headercontent = headercontent if headercontent != None else self.__class__.__name__,
             anchor = self.clusters[0].anchor,
             width = self.clusters[-1].end.x - self.clusters[0].anchor.x,
             height = self.clusters[-1].end.y - self.clusters[0].anchor.y,
             body = getattr(BODIES, self.widgetname.split("_")[0])(self),
-            widgetname=widgetname,
             settings = settings
         )
         self.finish(self.settings, self.clusters[0].anchor)

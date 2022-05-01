@@ -99,11 +99,7 @@ class OS():
                     obj = RoundedRectangle(p1 = rectangle.pointA.to_point(), p2 = rectangle.pointB.to_point(), radius=rectangle.rounding)
                 else:
                     obj = Rectangle(p1 = Point(x = rectangle.pointA.x, y = rectangle.pointA.y), p2 = Point(x = rectangle.pointB.x, y = rectangle.pointB.y))
-                if rectangle.is_debug:
-                    constraints.append(obj)
-                elif rectangle.is_touch_debug:
-                    touch_areas.append(obj)
-                elif rectangle.filled:
+                if rectangle.filled:
                     if rectangle.border_is_highlight and rectangle.fill_border:
                         obj.setOutline(color=highlight_color)
                         obj.setFill(color=highlight_color)
@@ -117,7 +113,14 @@ class OS():
                         obj.setFill(background_color)
                         obj.setOutline(background_color)
                 obj.setWidth(rectangle.thickness)
-                drawobjs.append(obj)
+                if rectangle.is_debug:
+                    obj.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
+                    constraints.append(obj)
+                elif rectangle.is_touch_debug:
+                    obj.setOutline(color=NotifyService.get("debug.widget-toucharea_color"))
+                    touch_areas.append(obj)
+                else:
+                    drawobjs.append(obj)
             elif draw_call.__class__.__name__ == "udraw_Line":
                 line : udraw_Line = draw_call
                 if line.pointA.x == line.pointB.x:
@@ -153,14 +156,13 @@ class OS():
                     else:
                         obj.setFill(highlight_color)
                 drawobjs.append(obj)
-        if NotifyService.get("debug.widget-draw_constraints"):
-            for call in constraints:
-                call.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
-                drawobjs.append(call)
-        if NotifyService.get("debug.widget-draw-touch-areas"):
-            for call in touch_areas:
-                call.setFill(color=NotifyService.get("debug.widget-toucharea_color"))
-                drawobjs.append(call)
+        
+        print("constraints")
+        print(constraints)
+        print("drawobjs")
+        print(drawobjs)
+        print("touch_areas")
+        print(touch_areas)
         return {"constraints" : constraints, "objs" : drawobjs, "touch" : touch_areas}
 
 
@@ -194,3 +196,4 @@ class OS():
 
 setattr(NotifyService, "os", OS())
 
+#Rectangle(Point(0.0, 0.0), Point(1760.0, 88.0)), Rectangle(Point(1707.2, 1003.2), Point(1742.4, 1038.4))
