@@ -40,14 +40,20 @@ class uHEAD(uNODE):
                     self.controlcenterOpenButton.level = 2
                     self.controlcenter.status = "Base"
                     self.constrainmod()
-                    self.controlcenter.change_status("Base")
+                    self.controlcenter.update_status()
                 else:
                     self.controlcenterOpenButton.level = 1
                     self.controlcenter.status = "Closed"
                     self.constrainmod()
-                    self.controlcenter.change_status("Closed")
+                    self.controlcenter.update_status()
+                    
             elif name.split(".")[1] == "CCenterOpenSettings":
                 print("Opened Settings!")
+                self.controlcenterOpenButton.level = 1
+                self.constrainmod()
+                self.controlcenter.status = "SettingsOpen"
+                self.controlcenter.update_status()
+                
                     
 
 

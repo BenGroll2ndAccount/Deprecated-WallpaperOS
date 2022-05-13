@@ -139,7 +139,6 @@ class OS():
             elif draw_call.__class__.__name__ == "udraw_Text":
                 txt : udraw_Text = draw_call
                 obj = Text(txt.anchorpoint.to_point(), txt.textString)
-                print(txt.size)
                 obj.setSize(txt.size)
                 obj.setFace("courier")
                 obj.setTextColor(highlight_color if txt.highlight else background_color)
