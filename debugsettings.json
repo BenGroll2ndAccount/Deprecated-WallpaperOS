@@ -6,7 +6,7 @@
     "display-show_display_boundaries" : false,
     "display-dark_color" : "Gray10",
     "display-light_color" : "Gray75",
-    "widget-draw_constraints" : true,
+    "widget-draw_constraints" : false,
     "widget-draw-touch-areas" : false,
     "widget-constraint_color" : "red",
     "widget-toucharea_color" : "blue",

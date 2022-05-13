@@ -83,8 +83,8 @@ class DISPLAY():
                         txt = Text(p = Point((pointAnchor.x + pointStretcher.x) / 2, (pointAnchor.y + pointStretcher.y) / 2) , text = str(cluster.gridcoords))
                         txt.draw(self.wallpaper)
 
-        if NotifyService.get("debug.display-show_display_boundaries") or NotifyService.get("debug.display-show_cluster_coordinates") or NotifyService.get("debug.display-show_enabled_clusters"):
-            input()
+        #if NotifyService.get("debug.display-show_display_boundaries") or NotifyService.get("debug.display-show_cluster_coordinates") or NotifyService.get("debug.display-show_enabled_clusters"):
+        #    input()
         if NotifyService.get("debug.display-show_display_boundaries"):
             with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/displayarrangement.json", "r") as jfile:
                 for display_coordinates in json.loads(jfile.read())["displays"]:

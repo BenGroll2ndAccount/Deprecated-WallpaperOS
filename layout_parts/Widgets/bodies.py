@@ -1,3 +1,6 @@
+from tkinter import Label
+
+from matplotlib.pyplot import fill
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uDot import uDOT
@@ -10,7 +13,7 @@ from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class BODIES():
     def ControlCenterOpenButton(parentwidget):
-        return uTOUCHAREA(
+        return uTOUCHAREA( 
             level = 1,
             parentwidget=parentwidget,
             funcname="CCenter",
@@ -26,6 +29,7 @@ class BODIES():
 
     def ControlCenterCalendarBase(parentwidget):
         return uCARD(
+            thickness=4,
             filled = True,
             fill_match_border=False,
             highlight=True,
@@ -57,6 +61,89 @@ class BODIES():
                     child=uLABEL("Settings")
                     )
                 )
+            )
+        )
+
+    def ControlCenterSettingsPanel(parentwidget, dummy):
+        print(parentwidget)
+        return uCARD(
+            filled=True,
+            thickness=4,
+            rounding = 5,
+            fill_match_border=False,
+            highlight=True,
+            child=uCOLUMN(
+                divider_thickness=4,
+                include_sides=True,
+                children=[
+                    uPBOX(
+                        modH = 95,
+                        modV = 95,
+                        child = uROW(
+                        divider_thickness=4,
+                        children=[
+                            uPBOX(
+                                modH = 90,
+                                modV = 92,
+                                child = uTOUCHAREA(
+                                level = 3,
+                                flex = 3,
+                                parentwidget=parentwidget,
+                                funcname="SETTINGS.Saved",
+                                child=uCARD(
+                                    filled = True,
+                                    fill_match_border=True,
+                                    highlight=True,
+                                    rounding = 5,
+                                    child = uLABEL("SAVE", highlight = False)
+                                ))
+                            ),
+                            uEMPTY(flex = 2),
+                            uROW(
+                                flex = 3,
+                                children = [
+                                    uPBOX(
+                                        modH = 60,
+                                        modV = 60,
+                                        flex = 0.3,
+                                        child = uTOUCHAREA(
+                                            level = 3,                               
+                                            parentwidget=parentwidget,
+                                            funcname="SETTINGS.PAGEBWD",
+                                            child = uDOT(filled = False, fill_match_border=False, highlight = True, thickness=2)
+                                            )
+                                        ),
+                                    uLABEL(varname = "Page 0 / 0" if dummy else "PAGE " + str(parentwidget.ccenterSettingsPanel.current_page) + " / " + str(parentwidget.ccenterSettingsPanel.total_pages)),
+                                    uPBOX(
+                                        modH = 60,
+                                        modV = 60,
+                                        flex = 0.3,
+                                        child = uTOUCHAREA(
+                                            level = 3,                               
+                                            parentwidget=parentwidget,
+                                            funcname="SETTINGS.PAGEFWD",
+                                            child = uDOT(filled = False, fill_match_border=False, highlight = True, thickness=2)
+                                            )
+                                        ),
+                            ]),
+                            uEMPTY(flex = 2),
+                            uTOUCHAREA(
+                                flex = 0.5,
+                                parentwidget = parentwidget,
+                                funcname = "SETTINGS.DISCARD",
+                                child = uCARD(
+                                thickness = 4,
+                                rounding = 0,
+                                filled = True,
+                                fill_match_border=True,
+                                highlight=True
+                            ))
+                        ]
+                    )
+                    ),
+                    
+                    uEMPTY(flex = 8)
+                ]
             )
         )
     

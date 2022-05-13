@@ -1,3 +1,4 @@
+from layout_parts.Widgets.uNodes.uCCenterSettingsPanel import uCCSETTINGS
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
@@ -26,12 +27,14 @@ class uHEAD(uNODE):
         self.controlcenter = uControlCenter(self)
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
         self.controlcenter.assign_depth(0)
+        self.ccenterSettingsPanel : uNODE = None
         self.header : str = header
         self.headercontent : str = headercontent
         self.__node_init__(listening=[], level = 0)
 
     @tlog
     def notify(self, name : str, value):
+        print(name)
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
@@ -46,13 +49,19 @@ class uHEAD(uNODE):
                     self.controlcenter.status = "Closed"
                     self.constrainmod()
                     self.controlcenter.update_status()
-                    
             elif name.split(".")[1] == "CCenterOpenSettings":
                 print("Opened Settings!")
                 self.controlcenterOpenButton.level = 1
+                self.ccenterSettingsPanel = uCCSETTINGS(self)
                 self.constrainmod()
-                self.controlcenter.status = "SettingsOpen"
-                self.controlcenter.update_status()
+                NotifyService.register_event("redraw", self.widgetname)
+            elif name.split(".")[1] == "SETTINGS":
+                if name.split(".")[2] == "DISCARD":
+                    print("Closed Settings!")
+                    self.controlcenterOpenButton.level = 1
+                    self.ccenterSettingsPanel = None
+                    self.constrainmod()
+                    NotifyService.register_event("redraw", self.widgetname)
                 
                     
 
@@ -77,6 +86,13 @@ class uHEAD(uNODE):
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
         __CCENTERSIZE__ = NotifyService.get("debug.widget-controlcenter-thickness-in-clusters")
+        if self.ccenterSettingsPanel != None:
+            settings_constraint = new_constraint.copy
+            settings_constraint.pointA.x += __CLUSTERRESOLUTION__
+            settings_constraint.pointA.y += __CLUSTERRESOLUTION__
+            settings_constraint.pointB.x -= __CLUSTERRESOLUTION__
+            settings_constraint.pointB.y -= __CLUSTERRESOLUTION__ * __CCENTERSIZE__
+            self.ccenterSettingsPanel.constrainmod(settings_constraint)
         if self.controlcenter.status != "Closed":
             button_shrinking_factor = 0.3
             self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ - 1) / (2) - (__CLUSTERRESOLUTION__ * button_shrinking_factor), new_constraint.pointB.y - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ - 1) / (2) - (__CLUSTERRESOLUTION__ * button_shrinking_factor)),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__  + 1) / (2) + (__CLUSTERRESOLUTION__ * button_shrinking_factor), new_constraint.pointB.y - __CLUSTERRESOLUTION__ * (__CCENTERSIZE__ + 1) / (2) + (__CLUSTERRESOLUTION__ * button_shrinking_factor))))
@@ -124,9 +140,12 @@ class uHEAD(uNODE):
                 outlist.append(htcall)
         controlcenterbuttoncalls = self.controlcenterOpenButton.draw()
         controlcentercalls = self.controlcenter.draw()
-    
+        settingscalls = self.ccenterSettingsPanel.draw() if self.ccenterSettingsPanel != None else []
         for call in controlcentercalls:
             outlist.append(call)
         for call in controlcenterbuttoncalls:
             outlist.append(call)
+        for call in settingscalls:
+            outlist.append(call)
+        
         return outlist

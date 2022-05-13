@@ -13,6 +13,7 @@ class uTOUCHAREA(uNODE):
         self.flex = flex
         self.child = child
         self.parentwidget = parentwidget
+        print(funcname + " @ " + str(parentwidget))
         self.onPress = (funcname, args, kwargs)
         NotifyService.subscribe_to_event(self, "touching")
         self.__node_init__(listening=[], level = level)
@@ -28,6 +29,8 @@ class uTOUCHAREA(uNODE):
                 self.parentwidget.notify("touched.Header", None)
             if self.onPress[0] == "CCenterOpenSettings":
                 self.parentwidget.notify("touched.CCenterOpenSettings", None)
+            if self.onPress[0] == "SETTINGS.DISCARD":
+                self.parentwidget.notify("touched.SETTINGS.DISCARD", None)
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
