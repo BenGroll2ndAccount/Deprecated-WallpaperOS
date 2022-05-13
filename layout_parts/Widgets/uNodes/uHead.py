@@ -25,6 +25,7 @@ class uHEAD(uNODE):
         self.settings = settings
         self.controlcenter = uControlCenter(self)
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
+        self.controlcenter.assign_depth(0)
         self.header : str = header
         self.headercontent : str = headercontent
         self.__node_init__(listening=[], level = 0)
@@ -45,6 +46,8 @@ class uHEAD(uNODE):
                     self.controlcenter.status = "Closed"
                     self.constrainmod()
                     self.controlcenter.change_status("Closed")
+            elif name.split(".")[1] == "CCenterOpenSettings":
+                print("Opened Settings!")
                     
 
 

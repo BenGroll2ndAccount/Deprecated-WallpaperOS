@@ -26,6 +26,8 @@ class uTOUCHAREA(uNODE):
                 self.parentwidget.notify("touched.CCenter", None)
             if self.onPress[0] == "Header":
                 self.parentwidget.notify("touched.Header", None)
+            if self.onPress[0] == "CCenterOpenSettings":
+                self.parentwidget.notify("touched.CCenterOpenSettings", None)
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy

@@ -4,6 +4,7 @@ from layout_parts.Widgets.uNodes.uDot import uDOT
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
+from layout_parts.Widgets.uNodes.uRect import uRECT
 from layout_parts.Widgets.uNodes.uBuilders import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
@@ -28,6 +29,35 @@ class BODIES():
             filled = True,
             fill_match_border=False,
             highlight=True,
+            child=uPBOX(
+                modV = 80,
+                modH = 70,
+                hAlign="start",
+                child = uROW(
+                    children=[uEMPTY(),BODIES.ControlCenterOpenSettingsButton(parentwidget)],
+
+                )
+            )
+        )
+
+    def ControlCenterOpenSettingsButton(parentwidget):
+        return uRECT(
+            child = uTOUCHAREA(
+            level=1,
+            parentwidget=parentwidget,
+            funcname="CCenterOpenSettings",
+            child = uCARD(
+                filled = False,
+                thickness = 4,
+                rounding = 5,
+                highlight = True,
+                child=uPBOX(
+                    modH=99,
+                    modV=99,
+                    child=uLABEL("Settings")
+                    )
+                )
+            )
         )
     
     

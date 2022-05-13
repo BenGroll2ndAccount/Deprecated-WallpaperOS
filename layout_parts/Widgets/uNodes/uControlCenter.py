@@ -11,7 +11,7 @@ class uControlCenter(uNODE):
     def __init__(self, parentwidget):
         self.parentwidget = parentwidget
         self.status = "Closed"
-        self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + self.status)(self.parentwidget)
+        self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + self.status)(parentwidget)
         self.__node_init__(listening=[], level = 0)
         
 
@@ -24,6 +24,7 @@ class uControlCenter(uNODE):
         self.status = status
         self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + status)(self.parentwidget)
         self.constrainmod(self.constraint.copy)
+
         NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
     @tlog
@@ -50,3 +51,15 @@ class uControlCenter(uNODE):
         for call in child_calls:
             own_draw_calls.append(call)
         return own_draw_calls
+
+    @tlog
+    def output(self):
+        self.assign_depth(1)
+        constraintoutput = self.constraint.out()
+        print((" " * 5 * self.depth) + self.__class__.__name__ + "-" * (100 - len(self.__class__.__name__) - 5 * self.depth) + " | " + str(self.depth) + "   " + constraintoutput )
+        self.body.output()
+
+    @tlog
+    def assign_depth(self, value):
+        self.depth = value
+        self.body.assign_depth(value + 1)

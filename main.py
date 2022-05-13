@@ -30,7 +30,9 @@ class OS():
                 elif key == "c":
                     NotifyService.reloadcache()
                 elif key == "t":
-                    pass
+                    for widget in self.displayController.currently_loaded_widgets:
+                        widget.output()
+                    
                 elif key == "d":
                     self.redraw()
     
@@ -137,6 +139,7 @@ class OS():
             elif draw_call.__class__.__name__ == "udraw_Text":
                 txt : udraw_Text = draw_call
                 obj = Text(txt.anchorpoint.to_point(), txt.textString)
+                print(txt.size)
                 obj.setSize(txt.size)
                 obj.setFace("courier")
                 obj.setTextColor(highlight_color if txt.highlight else background_color)
@@ -156,13 +159,6 @@ class OS():
                     else:
                         obj.setFill(highlight_color)
                 drawobjs.append(obj)
-        
-        print("constraints")
-        print(constraints)
-        print("drawobjs")
-        print(drawobjs)
-        print("touch_areas")
-        print(touch_areas)
         return {"constraints" : constraints, "objs" : drawobjs, "touch" : touch_areas}
 
 

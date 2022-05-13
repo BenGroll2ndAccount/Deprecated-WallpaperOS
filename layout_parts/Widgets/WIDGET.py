@@ -36,19 +36,26 @@ class WIDGET():
         return self.head.draw()
     
     @tlog
+    def output(self):
+        print(self.widgetname + " (" + str(self.head.anchor.x) + "|" + str(self.head.anchor.y) + ")", end = "")
+        print("\n-------------------")
+        print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
+        self.head.output()
+        print(" ")
+        print(self.widgetname + ".Controlcenter:")
+        self.head.controlcenter.output()
+        print("----------------------")
+
+    @tlog
     def finish(self, settings, anchor:uPoint):
         self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
-        print(self.widgetname + " (" + str(anchor.x) + "|" + str(anchor.y) + ")", end = "")
         if NotifyService.get("debug.widget-output_widget_tree"):
-            print("\n-------------------")
-            print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
-            self.head.output()
-            print("-------------------", end="")
+            self.output()
         else:
+            print(self.widgetname + " (" + str(self.head.anchor.x) + "|" + str(self.head.anchor.y) + ")", end = "")
             print("*collapsed*")
-
     @tlog
     def constraincheck(self):
         return self.head.constraincheck(self.head.constraint, 0)
