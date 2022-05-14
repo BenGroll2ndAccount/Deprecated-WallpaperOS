@@ -8,8 +8,8 @@
                     [0,0], [11, 19]
                 ],
                 "parameters" : {
-                    "header" : "t",
-                    "headershape" : "poly",
+                    "header" : "l",
+                    "headershape" : "rect",
                     "headercontent" : "Calendar",
                     "settings" : {
                         "categories-to-hide": [],
