@@ -13,7 +13,6 @@ class uTOUCHAREA(uNODE):
         self.flex = flex
         self.child = child
         self.parentwidget = parentwidget
-        print(funcname + " @ " + str(parentwidget))
         self.onPress = (funcname, args, kwargs)
         NotifyService.subscribe_to_event(self, "touching")
         self.__node_init__(listening=[], level = level)
@@ -52,6 +51,8 @@ class uTOUCHAREA(uNODE):
         own_draw_calls = []
         if NotifyService.get("debug.widget-draw-touch-areas"):
             own_draw_calls.append(udraw_Rectangle(pointA = self.constraint.pointA, pointB = self.constraint.pointB, is_touch_debug = True))
+        if NotifyService.get("debug.widget-draw_constraints"):
+            own_draw_calls.append(udraw_Rectangle(pointA = self.constraint.pointA, pointB = self.constraint.pointB, is_debug = True))
         if self.child != None:
             child_calls : list = self.child.draw()
         else:

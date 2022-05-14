@@ -42,8 +42,13 @@ class WIDGET():
         print("Type" + " " * (100 - len("Type")) + "Depth" + " " + "Constraints")
         self.head.output()
         print(" ")
-        print(self.widgetname + ".Controlcenter:")
-        self.head.controlcenter.output()
+        if self.head.controlcenter != None:
+            print(self.widgetname + ".Controlcenter:")
+            self.head.controlcenter.output()
+        if self.head.popup != None:
+            print(" ")
+            print(self.widgetname + ".Popup(" + self.head.popup.__class__.__name__ + ")")
+            self.head.popup.output()
         print("----------------------")
 
     @tlog

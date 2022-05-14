@@ -1,5 +1,6 @@
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
@@ -25,7 +26,7 @@ def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
 
 
 def CalendarEntrys(date : str, parentwidget):
-    true_time = parentwidget.settings["true-time"]
+    true_time = not parentwidget.settings["stretch_time"]
     earliest_time = get_weeks_earliest_and_latest_time()[0]
     latest_time = get_weeks_earliest_and_latest_time()[1]
     tasks_for_today : list = NotifyService.get("tasks.per_day")
@@ -90,3 +91,9 @@ def CalendarEntrys(date : str, parentwidget):
         last_task = t
     tasksitems.append(uEMPTY(flex = (latest_time - last_time - 1) if true_time else 0))
     return tasksitems
+
+def buildSettingsEntrys(parentwidget, data : uCCSETTINGSdata, pagenumber):
+    returnlist = [uEMPTY() for i in range(data.max_items_per_page)]
+    for item in data.pagedata[pagenumber - 1]:
+        pass
+    return returnlist

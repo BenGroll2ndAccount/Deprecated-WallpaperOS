@@ -7,6 +7,7 @@ from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uRect import uRECT
 from layout_parts.Widgets.uNodes.uBuilders import *
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import * 
 
 class BODIES():
     def ControlCenterOpenButton(parentwidget):
@@ -61,7 +62,7 @@ class BODIES():
             )
         )
 
-    def ControlCenterSettingsPanel(parentwidget, dummy):
+    def ControlCenterSettingsPanel(parentwidget, data : uCCSETTINGSdata):
         return uCARD(
             filled=True,
             thickness=4,
@@ -109,7 +110,7 @@ class BODIES():
                                             child = uDOT(filled = False, fill_match_border=False, highlight = True, thickness=2)
                                             )
                                         ),
-                                    uLABEL(varname = "Page 0 / 0" if dummy else "PAGE " + str(parentwidget.popup.current_page) + " / " + str(parentwidget.popup.total_pages)),
+                                    uLABEL(varname = str(data.current_page) + " / " + str(data.maxpages)),
                                     uPBOX(
                                         modH = 60,
                                         modV = 60,
@@ -140,12 +141,16 @@ class BODIES():
                         ]
                     )
                     ),
-                    
-                    uEMPTY(flex = 8)
+                    BODIES.ControlCenterSettingsContent(parentwidget=parentwidget, data = data)
                 ]
             )
         )
-    
+    def ControlCenterSettingsContent(parentwidget, data : uCCSETTINGSdata):
+        return uCOLUMN(
+            flex = data.max_items_per_page,
+            divider_thickness=1,
+            children = buildSettingsEntrys(parentwidget=parentwidget, data=data, pagenumber = data.current_page)
+            )
     
 
     def Calendar(parentwidget):
@@ -167,7 +172,7 @@ class BODIES():
                             rounding = 10 if NotifyService.get("timing.weekday") != 0 else 0,
                             child=uLABEL("MO", highlight=False))
                     ),
-                    uLABEL(get_date_based_on_weekday(0).split("-")[2] + "." + get_date_based_on_weekday(0).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(0).split("-")[2] + "." + get_date_based_on_weekday(0).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]),
                     uCOLUMN(
                         children = [uPBOX(
@@ -178,7 +183,7 @@ class BODIES():
                             rounding=10 if NotifyService.get("timing.weekday") != 1 else 0,
                             child=uLABEL("DI", highlight=False))
                     ),
-                    uLABEL(get_date_based_on_weekday(1).split("-")[2] + "." + get_date_based_on_weekday(1).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(1).split("-")[2] + "." + get_date_based_on_weekday(1).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]),
                     uCOLUMN(
                         children = [uPBOX(
@@ -190,7 +195,7 @@ class BODIES():
                                 child=uLABEL("MI", highlight=False)
                                 )
                             ),
-                    uLABEL(get_date_based_on_weekday(2).split("-")[2] + "." + get_date_based_on_weekday(2).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(2).split("-")[2] + "." + get_date_based_on_weekday(2).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]),
                     uCOLUMN(
                         children = [uPBOX(
@@ -201,7 +206,7 @@ class BODIES():
                             rounding=10 if NotifyService.get("timing.weekday") != 3 else 0,
                             child=uLABEL("DO", highlight=False)),
                     ),
-                    uLABEL(get_date_based_on_weekday(3).split("-")[2] + "." + get_date_based_on_weekday(3).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(3).split("-")[2] + "." + get_date_based_on_weekday(3).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]),
                     uCOLUMN(
                         children = [uPBOX(
@@ -212,7 +217,7 @@ class BODIES():
                                     rounding=10 if NotifyService.get("timing.weekday") != 4 else 0,
                             child=uLABEL("FR", highlight=False))
                         ),
-                        uLABEL(get_date_based_on_weekday(4).split("-")[2] + "." + get_date_based_on_weekday(4).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                        uLABEL(get_date_based_on_weekday(4).split("-")[2] + "." + get_date_based_on_weekday(4).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                         ]),
                         uCOLUMN(
                             children = [uPBOX(
@@ -223,7 +228,7 @@ class BODIES():
                                 rounding=10 if NotifyService.get("timing.weekday") != 5 else 0,
                                 child=uLABEL("SA", highlight=False))
                     ),
-                    uLABEL(get_date_based_on_weekday(5).split("-")[2] + "." + get_date_based_on_weekday(5).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(5).split("-")[2] + "." + get_date_based_on_weekday(5).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]),
                     uCOLUMN(
                         children = [uPBOX(
@@ -234,7 +239,7 @@ class BODIES():
                             rounding=10 if NotifyService.get("timing.weekday") != 6 else 0,
                             child=uLABEL("SO", highlight=False))
                     ),
-                    uLABEL(get_date_based_on_weekday(6).split("-")[2] + "." + get_date_based_on_weekday(6).split("-")[1]) if parentwidget.settings["show-dates"] else uEMPTY(flex = 0)
+                    uLABEL(get_date_based_on_weekday(6).split("-")[2] + "." + get_date_based_on_weekday(6).split("-")[1]) if parentwidget.settings["show_dates"] else uEMPTY(flex = 0)
                     ]
         ),
         ]),

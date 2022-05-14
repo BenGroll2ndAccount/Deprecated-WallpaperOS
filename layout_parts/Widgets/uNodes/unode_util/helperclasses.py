@@ -69,3 +69,10 @@ class Task():
         self.description = description
         self.endtime = endtime
         self.key = key
+
+class uCCSETTINGSdata():
+    def __init__(self, current_page, maxpages, max_items_per_page, pagedata):
+        self.current_page = current_page
+        self.maxpages = maxpages
+        self.max_items_per_page = max_items_per_page
+        self.pagedata = pagedata

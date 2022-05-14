@@ -1,0 +1,19 @@
+{
+    "Calendar" : {
+        "stretch_time" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : false
+        },
+        "show_dates" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : false
+        },
+        "hidden_tags" : {
+            "access" : "page",
+            "type" : "list<str>",
+            "value" : []
+        }
+    }
+}

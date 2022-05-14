@@ -24,9 +24,8 @@ class uHEAD(uNODE):
         self.parentwidget = parentwidget
         self.widgetname = parentwidget.widgetname
         self.settings = settings
-        self.controlcenter = uControlCenter(self)
+        self.controlcenter = None
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
-        self.controlcenter.assign_depth(0)
         self.popup : uPOPUP = None
         self.header : str = header
         self.headercontent : str = headercontent
@@ -34,27 +33,31 @@ class uHEAD(uNODE):
 
     @tlog
     def notify(self, name : str, value):
-        print(name)
+        #print(name)
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
             elif name.split(".")[1] == "CCenter":
-                if self.controlcenter.status == "Closed":
+                if self.controlcenter == None:
                     self.controlcenterOpenButton.level = 2
+                    self.controlcenter = uControlCenter(self)
+                    self.controlcenter.assign_depth(0)
                     self.controlcenter.status = "Base"
                     self.constrainmod()
                     self.controlcenter.update_status()
                 else:
-                    self.controlcenterOpenButton.level = 1
-                    self.controlcenter.status = "Closed"
-                    self.constrainmod()
-                    self.controlcenter.update_status()
+                    if self.popup == None:
+                        self.controlcenterOpenButton.level = 1
+                        self.controlcenter = None
+                        self.constrainmod()
+                        NotifyService.register_event("redraw", self.widgetname)
             elif name.split(".")[1] == "CCenterOpenSettings":
-                print("Opened Settings!")
                 self.controlcenterOpenButton.level = 1
                 self.popup = uCCSETTINGS(self)
+                self.popup.assign_depth(0)
                 self.constrainmod()
                 NotifyService.register_event("redraw", self.widgetname)
+
             elif name.split(".")[1] == "POPUP":
                 if name.split(".")[2] == "DISCARD":
                     print("Closed Popup!")
@@ -74,8 +77,7 @@ class uHEAD(uNODE):
         __CLUSTERRESOLUTION__ : int = NotifyService.get("debug.display-cluster_resolution")
         __CCENTERSIZE__ : float = NotifyService.get("debug.widget-controlcenter-thickness-in-clusters")
         new_constraint = None
-        if self.controlcenter.status == "Closed":
-            self.controlcenter.constrainmod(uConstrain(pointA=uPoint(0,0), pointB = uPoint(0,0)))
+        if self.controlcenter == None:
             if self.header == "t":
                 new_constraint = uConstrain(pointA=uPoint(x=self.anchor.x, y = __HEADERSIZE__ * __CLUSTERRESOLUTION__), pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height))
                 self.controlcenterOpenButton.constrainmod(uConstrain(pointA = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.6, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.6),pointB = uPoint(new_constraint.pointB.x - __CLUSTERRESOLUTION__ * 0.2, new_constraint.pointB.y - __CLUSTERRESOLUTION__ * 0.2)))
@@ -128,17 +130,14 @@ class uHEAD(uNODE):
                 self.controlcenter.constrainmod(uConstrain(pointA=uPoint(x = new_constraint.pointA.x, y = new_constraint.pointB.y - __CCENTERSIZE__ * __CLUSTERRESOLUTION__), pointB=uPoint(x = new_constraint.pointB.x, y = new_constraint.pointB.y)))
                 #Set Widget Constraint
                 return self.child.constrainmod(uConstrain(pointA = self.anchor, pointB=uPoint(x = self.anchor.x + self.width, y = self.anchor.y + self.height - __CLUSTERRESOLUTION__ * __CCENTERSIZE__)))
-
-
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
- 
         if self.popup != None:
             settings_constraint = new_constraint.copy
             settings_constraint.pointA.x += __CLUSTERRESOLUTION__
             settings_constraint.pointA.y += __CLUSTERRESOLUTION__
             settings_constraint.pointB.x -= __CLUSTERRESOLUTION__
-            self.popup.constrainmod(settings_constraint)
+            self.popup.constrainmod(settings_constraint.copy)
             
 
     @tlog
@@ -178,7 +177,7 @@ class uHEAD(uNODE):
             for htcall in headertextcalls:
                 outlist.append(htcall)
         controlcenterbuttoncalls = self.controlcenterOpenButton.draw()
-        controlcentercalls = self.controlcenter.draw()
+        controlcentercalls = self.controlcenter.draw() if self.controlcenter != None else []
         popupcalls = self.popup.draw() if self.popup != None else []
         for call in controlcentercalls:
             outlist.append(call)

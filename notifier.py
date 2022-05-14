@@ -178,6 +178,18 @@ class NOTIFIER():
             listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
             listening.remove(listener)
 
+    @property
+    def layoutdata(self):
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
+            layoutdata = json.loads(jfile.read())[self.get("ram.currently_loaded_layout")]
+        return layoutdata
+
+    @property
+    def defaultwidgetsettings(self):
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/widgetsettingsdefault.json", "r") as jfile:
+            settings = json.loads(jfile.read())
+        return settings
+
 
 global NotifyService
 NotifyService : NOTIFIER = NOTIFIER()

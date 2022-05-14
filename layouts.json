@@ -12,9 +12,9 @@
                     "headershape" : "rect",
                     "headercontent" : "Calendar",
                     "settings" : {
-                        "categories-to-hide": [],
-                        "true-time" : false,
-                        "show-dates" : false
+                        "hidden_tags": [],
+                        "stretch_time" : false,
+                        "show_dates" : false
                     }
                 }
             }

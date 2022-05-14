@@ -1,3 +1,4 @@
+from abc import abstractmethod
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from notifier import NotifyService
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
@@ -10,10 +11,16 @@ class uPOPUP(uNODE):
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
+        self.load_data()
         if self.body != None:
+            print("Body Constrainmod!")
             self.body.constrainmod(self.constraint.copy)
         else:
             return 0
+
+    @abstractmethod
+    def load_data():
+        raise NotImplementedError
 
     @tlog
     def miscmod(self):
