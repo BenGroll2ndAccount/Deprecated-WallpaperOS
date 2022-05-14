@@ -8,7 +8,7 @@
                     [0,0], [11, 19]
                 ],
                 "parameters" : {
-                    "header" : "l",
+                    "header" : "t",
                     "headershape" : "rect",
                     "headercontent" : "Calendar",
                     "settings" : {

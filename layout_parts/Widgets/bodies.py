@@ -123,7 +123,10 @@ class BODIES():
                                         ),
                             ]),
                             uEMPTY(flex = 2),
-                            uTOUCHAREA(
+                            uPBOX(
+                                modV = 90,
+                                modH  = 90,
+                                child = uTOUCHAREA(
                                 flex = 0.5,
                                 parentwidget = parentwidget,
                                 funcname = "SETTINGS.DISCARD",
@@ -133,7 +136,7 @@ class BODIES():
                                 filled = True,
                                 fill_match_border=True,
                                 highlight=True
-                            ))
+                                )))
                         ]
                     )
                     ),
