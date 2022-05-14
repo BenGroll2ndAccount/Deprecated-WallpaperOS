@@ -1,4 +1,4 @@
-from layout_parts.Widgets.uNodes.uCCenterSettingsPanel import uCCSETTINGS
+from layout_parts.Widgets.uNodes.uPopups.uCCenterSettingsPanel import uCCSETTINGS
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
@@ -8,8 +8,8 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCard import uCARD
-
 from layout_parts.Widgets.uNodes.uControlCenter import uControlCenter
+from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
 from notifier import NotifyService
 
 class uHEAD(uNODE):
@@ -27,7 +27,7 @@ class uHEAD(uNODE):
         self.controlcenter = uControlCenter(self)
         self.controlcenterOpenButton = BODIES.ControlCenterOpenButton(self)
         self.controlcenter.assign_depth(0)
-        self.ccenterSettingsPanel : uNODE = None
+        self.popup : uPOPUP = None
         self.header : str = header
         self.headercontent : str = headercontent
         self.__node_init__(listening=[], level = 0)
@@ -52,14 +52,14 @@ class uHEAD(uNODE):
             elif name.split(".")[1] == "CCenterOpenSettings":
                 print("Opened Settings!")
                 self.controlcenterOpenButton.level = 1
-                self.ccenterSettingsPanel = uCCSETTINGS(self)
+                self.popup = uCCSETTINGS(self)
                 self.constrainmod()
                 NotifyService.register_event("redraw", self.widgetname)
             elif name.split(".")[1] == "SETTINGS":
                 if name.split(".")[2] == "DISCARD":
                     print("Closed Settings!")
                     self.controlcenterOpenButton.level = 1
-                    self.ccenterSettingsPanel = None
+                    self.popup = None
                     self.constrainmod()
                     NotifyService.register_event("redraw", self.widgetname)
                 
@@ -133,12 +133,12 @@ class uHEAD(uNODE):
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
  
-        if self.ccenterSettingsPanel != None:
+        if self.popup != None:
             settings_constraint = new_constraint.copy
             settings_constraint.pointA.x += __CLUSTERRESOLUTION__
             settings_constraint.pointA.y += __CLUSTERRESOLUTION__
             settings_constraint.pointB.x -= __CLUSTERRESOLUTION__
-            self.ccenterSettingsPanel.constrainmod(settings_constraint)
+            self.popup.constrainmod(settings_constraint)
             
 
     @tlog
@@ -179,12 +179,12 @@ class uHEAD(uNODE):
                 outlist.append(htcall)
         controlcenterbuttoncalls = self.controlcenterOpenButton.draw()
         controlcentercalls = self.controlcenter.draw()
-        settingscalls = self.ccenterSettingsPanel.draw() if self.ccenterSettingsPanel != None else []
+        popupcalls = self.popup.draw() if self.popup != None else []
         for call in controlcentercalls:
             outlist.append(call)
         for call in controlcenterbuttoncalls:
             outlist.append(call)
-        for call in settingscalls:
+        for call in popupcalls:
             outlist.append(call)
         
         return outlist

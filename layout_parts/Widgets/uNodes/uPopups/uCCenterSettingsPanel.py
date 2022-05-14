@@ -1,12 +1,12 @@
 from notifier import NotifyService
-from layout_parts.Widgets.uNodes.uNode import uNODE
+from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.bodies import BODIES
 
-class uCCSETTINGS(uNODE):
+class uCCSETTINGS(uPOPUP):
     @tlog
     def __init__(self, parentwidget):
         self.parentwidget = parentwidget

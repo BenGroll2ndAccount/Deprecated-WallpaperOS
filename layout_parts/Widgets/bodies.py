@@ -1,6 +1,3 @@
-from tkinter import Label
-
-from matplotlib.pyplot import fill
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uDot import uDOT
@@ -65,7 +62,6 @@ class BODIES():
         )
 
     def ControlCenterSettingsPanel(parentwidget, dummy):
-        print(parentwidget)
         return uCARD(
             filled=True,
             thickness=4,
@@ -113,7 +109,7 @@ class BODIES():
                                             child = uDOT(filled = False, fill_match_border=False, highlight = True, thickness=2)
                                             )
                                         ),
-                                    uLABEL(varname = "Page 0 / 0" if dummy else "PAGE " + str(parentwidget.ccenterSettingsPanel.current_page) + " / " + str(parentwidget.ccenterSettingsPanel.total_pages)),
+                                    uLABEL(varname = "Page 0 / 0" if dummy else "PAGE " + str(parentwidget.popup.current_page) + " / " + str(parentwidget.popup.total_pages)),
                                     uPBOX(
                                         modH = 60,
                                         modV = 60,
