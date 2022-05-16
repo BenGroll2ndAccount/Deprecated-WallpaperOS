@@ -14,7 +14,7 @@
                     "settings" : {
                         "hidden_tags": [],
                         "stretch_time" : false,
-                        "show_dates" : false
+                        "show_dates" : true
                     }
                 }
             }

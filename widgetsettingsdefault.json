@@ -8,7 +8,7 @@
         "show_dates" : {
             "access" : "page",
             "type" : "checkbox",
-            "value" : false
+            "value" : true
         },
         "hidden_tags" : {
             "access" : "page",

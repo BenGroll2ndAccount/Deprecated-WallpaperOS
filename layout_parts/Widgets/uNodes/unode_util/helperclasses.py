@@ -76,3 +76,12 @@ class uCCSETTINGSdata():
         self.maxpages = maxpages
         self.max_items_per_page = max_items_per_page
         self.pagedata = pagedata
+
+    @property
+    def copy(self):
+        return uCCSETTINGSdata(
+            current_page = self.current_page,
+            maxpages = self.maxpages,
+            max_items_per_page = self.max_items_per_page,
+            pagedata = self.pagedata.copy()
+        )

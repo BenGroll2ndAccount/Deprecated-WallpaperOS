@@ -29,16 +29,8 @@ class uRECT(uNODE):
                 height_to_reduce_by = new_constraint.height - smaller_value
                 new_constraint.pointA.y += height_to_reduce_by / 2
                 new_constraint.pointB.y -= height_to_reduce_by / 2
-            #self.child.constraint = new_constraint
             if self.child != None:
                 self.child.constrainmod(uConstrain(pointA=uPoint(new_constraint.pointA.x, new_constraint.pointA.y), pointB = uPoint(new_constraint.pointB.x, new_constraint.pointB.y)))
-            
-
-
-        if self.child != None:
-            self.child.constrainmod(self.constraint.copy)
-        else:
-            return 0
 
     @tlog
     def miscmod(self):

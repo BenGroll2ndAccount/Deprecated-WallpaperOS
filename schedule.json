@@ -1,68 +1,14 @@
 {
   "tasks" : [
       {
-          "key" : "A",
+          "key" : "template",
           "date" : "2022-04-04",
+          "creation" : ["2022-04-04", "10:14"],
           "time" : "12:15",
           "endtime" : "13:45",
-          "category" : "UNI",
+          "tags" : ["UNI"],
           "title" : "PROMO",
           "description" : "Raum B101"
-      },
-      {
-        "key" : "B",
-        "date" : "2022-04-05",
-        "time" : "8:30",
-        "endtime" : "11:00",
-        "category" : "UNI",
-        "title" : "ALGO",
-        "description" : "Raum B101"
-    },
-    {
-      "key" : "C",
-      "date" : "2022-04-05",
-      "time" : "11:00",
-      "endtime" : "13:30",
-      "category" : "UNI",
-      "title" : "LDS",
-      "description" : "Raum B101"
-    },
-    {
-      "key" : "D",
-      "date" : "2022-04-06",
-      "time" : "16:15",
-      "endtime" : "17:45",
-      "category" : "UNI",
-      "title" : "PROMO",
-      "description" : "Raum B101"
-    },
-    {
-      "key" : "E",
-      "date" : "2022-04-07",
-      "time" : "10:00",
-      "endtime": "15:00",
-      "category": "Arbeit",
-      "title" : "Arbeit",
-      "description":"--"
-    },
-    {
-      "key" : "F",
-      "date" : "2022-04-08",
-      "time" : "10:00",
-      "endtime": "15:00",
-      "category": "Arbeit",
-      "title" : "Arbeit",
-      "description":"--"
-    },
-    {
-      "key" : "G",
-      "date" : "2022-04-22",
-      "time" : "10:00",
-      "endtime": "15:00",
-      "category": "Arbeit",
-      "title" : "Arbeit",
-      "description":"--"
-    }
-    
+      }  
   ]   
 }

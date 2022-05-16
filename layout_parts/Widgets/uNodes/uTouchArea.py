@@ -30,6 +30,8 @@ class uTOUCHAREA(uNODE):
                 self.parentwidget.notify("touched.CCenterOpenSettings", None)
             if self.onPress[0] == "SETTINGS.DISCARD":
                 self.parentwidget.notify("touched.POPUP.DISCARD", None)
+            if self.onPress[0].startswith("SETTING."):
+                self.parentwidget.notify(self.onPress[0])
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy

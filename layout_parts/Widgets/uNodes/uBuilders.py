@@ -3,10 +3,12 @@ from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
+from layout_parts.Widgets.uNodes.uRow import uROW
 from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
+from layout_parts.Widgets.uNodes.uControllerNodes import *
 from notifier import NotifyService
 import datetime
 
@@ -94,6 +96,26 @@ def CalendarEntrys(date : str, parentwidget):
 
 def buildSettingsEntrys(parentwidget, data : uCCSETTINGSdata, pagenumber):
     returnlist = [uEMPTY() for i in range(data.max_items_per_page)]
-    for item in data.pagedata[pagenumber - 1]:
-        pass
+    for item in range(len(data.pagedata[pagenumber - 1])):
+        returnlist[item] = uROW(
+            children = [
+                uLABEL(data.pagedata[pagenumber - 1][item]["name"]),
+                build_controller_for_setting(parentwidget, data = data.pagedata[pagenumber - 1][item])
+            ]
+        )
     return returnlist
+
+def build_controller_for_setting(parentwidget, data : dict):
+    print(data)
+    if data["type"] == "checkbox":
+        return uCHECKBOX(
+            level = 4,
+            widget_to_notify=parentwidget,
+            initial_status=data["value"],
+            name="SETTING." + data["name"]
+        )
+    else:
+        return uEMPTY()
+
+
+

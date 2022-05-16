@@ -90,21 +90,7 @@ class NOTIFIER():
                     schedule[date] = [task]
             setattr(self, "tasks.per_day", schedule)  
             setattr(self, "Listeners_tasks.per_day", [])
-            category_tasks = {}
-            categories = []
-            for task in tasks:
-                if not task["category"] in categories:
-                    categories.append(task["category"])
-                if task["category"] in category_tasks:
-                    category__of_this_task : list = category_tasks[task["category"]]
-                    category__of_this_task.append(task)
-                    category_tasks[task["category"]] = category__of_this_task
-                else:
-                    category_tasks[task["category"]] = [task]
-            setattr(self, "tasks.per_category", category_tasks)
-            setattr(self, "Listeners_tasks.per_category", [])
-            setattr(self, "total_task_categories", categories)
-            setattr(self, "Listeners_total_task_categories", [])
+ 
         if "event" in filenames:
             available_events = ["touching", "redraw"]
             for event in available_events:
