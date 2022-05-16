@@ -52,20 +52,21 @@ class uCCSETTINGS(uPOPUP):
                     total_idx += 1
             pages.append(pagedata)
         self.data = uCCSETTINGSdata(current_page=1, maxpages = pages_required, max_items_per_page=settings_per_page, pagedata = pages)
-        self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
-        
+        self.notify("init")
+
     def updatebody(self):
         self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
+        self.body.constrainmod(self.constraint)
+        NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
     def notify(self, string:str):
+        origstring = string
+        string = '%s' % string  
+        print("@Begin notify @CCenterSettings : " + string)
         if string.startswith("SETTING."):
             string = string.split(".")
             name = string[1]
-            value = string[2]
-            if value == "True":
-                value = True
-            if value == "False":
-                value = False
+            operation = string[2]
             olddata = self.data.copy
             #print(olddata.pagedata)
             #print(name)
@@ -74,14 +75,18 @@ class uCCSETTINGS(uPOPUP):
             for pageidx in range(len(olddata.pagedata)):
                 for settingidx in range(len(olddata.pagedata[pageidx])):
                     if olddata.pagedata[pageidx][settingidx]["name"] == name:
-                        print("OY")
                         correct_pageidx = pageidx
                         correct_settingidx = settingidx
-            #print(correct_settingidx)
-            #print(correct_pageidx)
-            print(olddata.pagedata[correct_pageidx][correct_settingidx])
-            olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = value
-            print(olddata.pagedata)
+            if operation == "Flip":
+                olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = not olddata.pagedata[correct_pageidx][correct_settingidx]["value"]
             self.data = olddata.copy
-            #self.updatebody()
-        
+            #Body Update
+        if origstring.startswith("SETTING.") or origstring == "init":
+            self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
+            self.body.constrainmod(self.constraint)
+            NotifyService.register_event("redraw", self.parentwidget.widgetname)
+            print("@end notify @CCenter : " + str(self.data.pagedata))
+            first_box_funcname = self.body.child.children[1].children[0].children[1].child.onlyOnPress[0]
+            second_box_funcname = self.body.child.children[1].children[1].children[1].child.onlyOnPress[0]
+            print("@end notify @CCenter : First box funcname: " + first_box_funcname)
+            print("@end notify @CCenter : Second box funcname: " + second_box_funcname)

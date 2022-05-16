@@ -8,7 +8,7 @@ def uCHECKBOX(widget_to_notify, initial_status : bool, name : str, level : int):
     return uRECT(uTOUCHAREA(
         level = level,
         parentwidget=widget_to_notify,
-        funcname = name +"."+ str(not initial_status),
+        funcname = name +".Flip",
         child = uCARD(
             rounding = 4,
             thickness = 4,

@@ -13,25 +13,28 @@ class uTOUCHAREA(uNODE):
         self.flex = flex
         self.child = child
         self.parentwidget = parentwidget
-        self.onPress = (funcname, args, kwargs)
+        self.onlyOnPress = (funcname, args, kwargs)
         NotifyService.subscribe_to_event(self, "touching")
         self.__node_init__(listening=[], level = level)
+        if funcname.startswith("SETTING."):
+            print("@init TouchArea: " + funcname)
 
     @tlog
     def notify(self, name, *args, **kwargs):
         if name == "event.touching":
-            if self.onPress[0] == "Task":
-                self.parentwidget.notify("touched.Task", self.onPress[1][0])
-            if self.onPress[0] == "CCenter":
+            if self.onlyOnPress[0] == "Task":
+                self.parentwidget.notify("touched.Task", self.onlyOnPress[1][0])
+            if self.onlyOnPress[0] == "CCenter":
                 self.parentwidget.notify("touched.CCenter", None)
-            if self.onPress[0] == "Header":
+            if self.onlyOnPress[0] == "Header":
                 self.parentwidget.notify("touched.Header", None)
-            if self.onPress[0] == "CCenterOpenSettings":
+            if self.onlyOnPress[0] == "CCenterOpenSettings":
                 self.parentwidget.notify("touched.CCenterOpenSettings", None)
-            if self.onPress[0] == "SETTINGS.DISCARD":
+            if self.onlyOnPress[0] == "SETTINGS.DISCARD":
                 self.parentwidget.notify("touched.POPUP.DISCARD", None)
-            if self.onPress[0].startswith("SETTING."):
-                self.parentwidget.notify(self.onPress[0])
+            if self.onlyOnPress[0].startswith("SETTING."):
+                print("@Toucharea, Notify sent:"  + '%s' % self.onlyOnPress[0])
+                self.parentwidget.notify('%s' % self.onlyOnPress[0] )
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
