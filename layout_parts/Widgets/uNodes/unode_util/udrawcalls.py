@@ -66,13 +66,19 @@ class udraw_Circle():
             self,
             point : uPoint = None,
             radius : int = 1,
-            highlight : bool = True
+            highlight : bool = True,
+            thickness : int = 1,
+            filled : bool = False,
+            fill_border : bool = True
             ):
         if point == None:
             raise uDRAWEXCEPTION(widget = self.__class__.__name__, message = "Draw needs a centerpoint.")
         self.point = point
         self.radius = radius
         self.highlight = highlight
+        self.thickness = thickness
+        self.filled = filled
+        self.fill_border = fill_border
 
 class udraw_Text():
     def __init__(self, anchorpoint : uPoint = None, textString : str = "Lorem", size : int = 8, highlight : bool = True):

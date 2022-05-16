@@ -89,8 +89,13 @@ class OS():
                 obj = Circle(circle_to_draw.point, circle_to_draw.radius)
                 if circle_to_draw.highlight:
                     obj.setOutline(color = highlight_color)
+                    if circle_to_draw.filled:
+                        obj.setFill(highlight_color if circle_to_draw.fill_border else background_color)
                 else:
                     obj.setOutline(color = background_color)
+                    if circle_to_draw.filled:
+                        obj.setFill(background_color if circle_to_draw.fill_border else highlight_color)
+                obj.setWidth(circle_to_draw.thickness)
                 drawobjs.append(obj)
             if draw_call.__class__.__name__ == "udraw_Pixel":
                 pixel_to_draw : udraw_Pixel = draw_call

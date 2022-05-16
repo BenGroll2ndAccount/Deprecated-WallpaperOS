@@ -36,7 +36,7 @@ class uDOT(uNODE):
         own_draw_calls = []
         if NotifyService.get("debug.widget-draw_constraints"):
             own_draw_calls.append(udraw_Rectangle(pointA = self.constraint.pointA, pointB = self.constraint.pointB, is_debug = True))
-        own_draw_calls.append(udraw_Circle(point = self.constraint.center, radius=self.constraint.width / 2, highlight=self.highlight))
+        own_draw_calls.append(udraw_Circle(point = self.constraint.center, radius=self.constraint.width / 2, highlight=self.highlight, thickness = self.thickness, filled = self.filled, fill_border=self.fill_border))
         if self.child != None:
             child_calls : list = self.child.draw()
         else:
