@@ -177,7 +177,13 @@ class NOTIFIER():
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/widgetsettingsdefault.json", "r") as jfile:
             settings = json.loads(jfile.read())
         return settings
-
+    
+    def writeNewWidgetSettings(self, widgetname, settingsdict):
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:
+            file = json.loads(jfile.read())
+        file[self.get("ram.currently_loaded_layout")]["widget-cluster-map"][widgetname]["parameters"]["settings"] = settingsdict
+        with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "w") as jfile:
+            json.dump(file, jfile)
 
 global NotifyService
 NotifyService : NOTIFIER = NOTIFIER()

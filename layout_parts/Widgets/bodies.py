@@ -86,13 +86,14 @@ class BODIES():
                                 level = 3,
                                 flex = 3,
                                 parentwidget=parentwidget,
-                                funcname="SETTINGS.Saved",
+                                funcname="SETTINGS.SAVE",
                                 child=uCARD(
-                                    filled = True,
+                                    filled = parentwidget.hasSomethingChanged,
                                     fill_match_border=True,
                                     highlight=True,
-                                    rounding = 5,
-                                    child = uLABEL("SAVE", highlight = False)
+                                    rounding = 15,
+                                    thickness = 3,
+                                    child = uLABEL("SAVE", highlight = not parentwidget.hasSomethingChanged)
                                 ))
                             ),
                             uEMPTY(flex = 2),

@@ -7,19 +7,16 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
-
+import json
 
 
 class uCCSETTINGS(uPOPUP):
     @tlog
     def __init__(self, parentwidget):
         self.parentwidget = parentwidget
-        # DUMMY
-        self.current_page = 0
-        self.total_pages = 2
         self.body = uEMPTY()
-        #self.body = BODIES.ControlCenterSettingsPanel(self.parentwidget, data = __uCCSETTINGSdata(0, 0, 1, {}))
         self.__node_init__(listening=[], level = 0)
+        self.hasSomethingChanged = False
         
     def load_data(self):
         widgetdata = NotifyService.layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"]
@@ -59,11 +56,23 @@ class uCCSETTINGS(uPOPUP):
         self.body.constrainmod(self.constraint)
         NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
+    def saveDataToFile(self):
+        returndict = {}
+        for page in self.data.pagedata:
+            for entry in page:
+                returndict[entry["name"]] = entry["value"]
+        layoutdata = NotifyService.layoutdata
+        layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"] = returndict
+        print(layoutdata)
+        NotifyService.writeNewWidgetSettings(self.parentwidget.widgetname, returndict)
+
+
     def notify(self, string:str):
         origstring = string
         string = '%s' % string  
         print("@Begin notify @CCenterSettings : " + string)
         if string.startswith("SETTING."):
+            self.hasSomethingChanged = True
             string = string.split(".")
             name = string[1]
             operation = string[2]
@@ -82,11 +91,22 @@ class uCCSETTINGS(uPOPUP):
             self.data = olddata.copy
             #Body Update
         if origstring.startswith("SETTING.") or origstring == "init":
-            self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
-            self.body.constrainmod(self.constraint)
-            NotifyService.register_event("redraw", self.parentwidget.widgetname)
-            print("@end notify @CCenter : " + str(self.data.pagedata))
-            first_box_funcname = self.body.child.children[1].children[0].children[1].child.onlyOnPress[0]
-            second_box_funcname = self.body.child.children[1].children[1].children[1].child.onlyOnPress[0]
-            print("@end notify @CCenter : First box funcname: " + first_box_funcname)
-            print("@end notify @CCenter : Second box funcname: " + second_box_funcname)
+            self.updatebody()
+
+        if origstring.startswith("SETTINGS."):
+            command = origstring.split(".")[1]
+            if command == "PAGEFWD":
+                if self.data.current_page < self.data.maxpages:
+                    self.data.current_page = self.data.current_page + 1
+                    print(self.data)
+                    print("HALLO")
+                    self.updatebody()
+            if command == "PAGEBWD":
+                if self.data.current_page > 0:
+                    self.data.current_page = self.data.current_page - 1
+                    print(self.data)
+                    self.updatebody()
+            if command == "SAVE":
+                self.saveDataToFile()
+                self.hasSomethingChanged = False
+                self.updatebody()

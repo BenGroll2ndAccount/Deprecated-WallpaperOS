@@ -14,6 +14,38 @@
             "access" : "page",
             "type" : "list<str>",
             "value" : []
+        },
+        "test" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
+        },
+        "test2" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
+        },
+        "test3" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
+        },
+        "test4" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
+        },
+        "test5" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
+        },
+        "test6" : {
+            "access" : "page",
+            "type" : "checkbox",
+            "value" : []
         }
+        
     }
 }
+

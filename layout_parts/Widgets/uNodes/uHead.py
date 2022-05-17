@@ -33,7 +33,7 @@ class uHEAD(uNODE):
 
     @tlog
     def notify(self, name : str, value):
-        #print(name)
+        print(name)
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
