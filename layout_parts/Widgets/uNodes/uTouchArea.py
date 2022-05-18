@@ -31,7 +31,7 @@ class uTOUCHAREA(uNODE):
             if self.onlyOnPress[0] == "CCenterOpenSettings":
                 self.parentwidget.notify("touched.CCenterOpenSettings", None)
             if self.onlyOnPress[0] == "SETTINGS.DISCARD":
-                self.parentwidget.notify("touched.POPUP.DISCARD", None)
+                self.parentwidget.parentwidget.notify("touched.POPUP.DISCARD", None)
             if self.onlyOnPress[0].startswith("SETTINGS."):
                 self.parentwidget.notify('%s' % self.onlyOnPress[0] )
             if self.onlyOnPress[0].startswith("SETTING."):
