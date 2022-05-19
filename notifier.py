@@ -92,9 +92,12 @@ class NOTIFIER():
             setattr(self, "Listeners_tasks.per_day", [])
  
         if "event" in filenames:
-            available_events = ["touching", "redraw"]
+            available_events = ["touching", "redraw", "reload_layout"]
             for event in available_events:
                 setattr(self, "Subscribers_" + event, [])
+
+    def trigger_layout_reload(self):
+        self.Subscribers_reload_layout[0].notify("reload_layout")
 
     def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)

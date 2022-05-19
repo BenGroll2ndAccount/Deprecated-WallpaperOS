@@ -56,7 +56,6 @@ class uHEAD(uNODE):
                 self.popup = uCCSETTINGS(self)
                 self.popup.assign_depth(0)
                 self.constrainmod()
-                NotifyService.register_event("redraw", self.widgetname)
 
             elif name.split(".")[1] == "POPUP":
                 if name.split(".")[2] == "DISCARD":
@@ -64,6 +63,7 @@ class uHEAD(uNODE):
                     self.controlcenterOpenButton.level = 1
                     self.popup = None
                     self.constrainmod()
+                    NotifyService.trigger_layout_reload()
                     NotifyService.register_event("redraw", self.widgetname)
                 
                     

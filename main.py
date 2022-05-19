@@ -14,6 +14,8 @@ class OS():
         self.displayController = DISPLAY()
         self.get_timing()
         NotifyService.subscribe_to_event(self, "redraw")
+        NotifyService.subscribe_to_event(self, "reload_layout")
+
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
         self.currently_drawn_calls = self.drawAll()
@@ -170,6 +172,8 @@ class OS():
     def notify(self, name, *args):
         if name == "event.redraw":
             self.redraw(args[0] if len(args) > 0 else None)
+        else:
+            self.displayController.load_layout(NotifyService.get("ram.currently_loaded_layout"))
     @tlog
     def draw(self, widget):
         display = self.displayController
@@ -194,6 +198,4 @@ class OS():
             drawcalls[widget.widgetname] = self.draw(widget)
         return drawcalls
 
-setattr(NotifyService, "os", OS())
-
-#Rectangle(Point(0.0, 0.0), Point(1760.0, 88.0)), Rectangle(Point(1707.2, 1003.2), Point(1742.4, 1038.4))
+NotifyService.os = OS()
