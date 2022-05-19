@@ -34,9 +34,12 @@ class BODIES():
             child=uPBOX(
                 modV = 80,
                 modH = 70,
-                hAlign="start",
                 child = uROW(
-                    children=[uEMPTY(),BODIES.ControlCenterOpenSettingsButton(parentwidget), getattr(BODIES, "ControlCenterBarContent" + parentwidget.widgetname.split("_")[0])(parentwidget)],
+                    divider_thickness=1,
+                    seperator=20,
+                    spacing="start",
+                    include_sides=False,
+                    children=[BODIES.ControlCenterOpenSettingsButton(parentwidget), getattr(BODIES, "ControlCenterBarContent" + parentwidget.widgetname.split("_")[0])(parentwidget)],
 
                 )
             )
@@ -151,9 +154,31 @@ class BODIES():
             divider_thickness=1,
             children = buildSettingsEntrys(parentwidget=parentwidget, data=data, pagenumber = data.current_page)
             )
+            
+    ####
+    #### Widget Specific Bar Contents
+    ####
+    
 
     def ControlCenterBarContentCalendar(parentwidget):
-        return uEMPTY(flex = 0)
+        return uROW(
+            spacing="end",
+            include_sides=True,
+            seperator=20,
+            children = [
+                uTOUCHAREA(
+                    funcname="CCenterNewTask",
+                    level = 1,
+                    parentwidget=parentwidget,
+                    child=uCARD(
+                        thickness=4,
+                        rounding=15,
+                        filled = False,
+                        child = uLABEL("+Task")
+                    )
+                )
+            ]
+        )
 
     
 

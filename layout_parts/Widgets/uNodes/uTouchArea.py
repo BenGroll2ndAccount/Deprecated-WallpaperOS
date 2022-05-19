@@ -37,6 +37,9 @@ class uTOUCHAREA(uNODE):
             if self.onlyOnPress[0].startswith("SETTING."):
                 print("@Toucharea, Notify sent:"  + '%s' % self.onlyOnPress[0])
                 self.parentwidget.notify('%s' % self.onlyOnPress[0] )
+            if self.onlyOnPress[0].startswith("CCenterNewTask"):
+                self.parentwidget.notify("touched." + '%s' % self.onlyOnPress[0], None)
+
     @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy

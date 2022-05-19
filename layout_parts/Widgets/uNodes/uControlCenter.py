@@ -23,7 +23,6 @@ class uControlCenter(uNODE):
     def update_status(self):
         self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + self.status)(self.parentwidget)
         self.constrainmod(self.constraint.copy)
-
         NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
     @tlog

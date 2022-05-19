@@ -169,6 +169,26 @@ class NOTIFIER():
             listening : list = getattr(self, "Listeners_" + name.split(".")[0] + "_" + name.split(".")[1])
             listening.remove(listener)
 
+    def subscribe_to_keyboard(self, obj):
+        self.keyboardlistener = obj
+
+    def startkeyboardlistening(self, os):
+        while True:
+            mouse = os.displayController.wallpaper.checkMouse()
+            if mouse != None:
+                NotifyService.register_event("touching", [mouse.x, mouse.y])
+            key = os.displayController.wallpaper.checkKey()
+            if key != None:
+                self.keyboardlistener.notify("keyboard_" + key)
+
+    def resumeMainKeyLoop(self):
+        self.keyboardlistener = self.os
+
+
+
+
+    
+
     @property
     def layoutdata(self):
         with open(str(os.path.dirname(os.path.abspath(__file__))) + r"/layouts.json", "r") as jfile:

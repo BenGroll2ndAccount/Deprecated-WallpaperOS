@@ -33,10 +33,12 @@ class uHEAD(uNODE):
 
     @tlog
     def notify(self, name : str, value):
-        print(name)
+        
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
+            elif name.split(".")[1] == "CCenterNewTask":
+                print("Open New Task Window")
             elif name.split(".")[1] == "CCenter":
                 if self.controlcenter == None:
                     self.controlcenterOpenButton.level = 2
@@ -56,7 +58,7 @@ class uHEAD(uNODE):
                 self.popup = uCCSETTINGS(self)
                 self.popup.assign_depth(0)
                 self.constrainmod()
-
+            
             elif name.split(".")[1] == "POPUP":
                 if name.split(".")[2] == "DISCARD":
                     print("Closed Popup!")

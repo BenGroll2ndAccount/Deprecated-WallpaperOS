@@ -26,6 +26,7 @@ class uPOPUP(uNODE):
     def miscmod(self):
         return self.body.miscmod()
 
+
     @tlog
     def draw(self):
         own_draw_calls = []

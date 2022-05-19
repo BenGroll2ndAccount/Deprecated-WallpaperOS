@@ -63,7 +63,6 @@ class uCCSETTINGS(uPOPUP):
                 returndict[entry["name"]] = entry["value"]
         layoutdata = NotifyService.layoutdata
         layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"] = returndict
-        print(layoutdata)
         NotifyService.writeNewWidgetSettings(self.parentwidget.widgetname, returndict)
 
 
@@ -107,6 +106,7 @@ class uCCSETTINGS(uPOPUP):
                     print(self.data)
                     self.updatebody()
             if command == "SAVE":
-                self.saveDataToFile()
-                self.hasSomethingChanged = False
-                self.updatebody()
+                if self.hasSomethingChanged:
+                    self.saveDataToFile()
+                    self.parentwidget.notify("touched.POPUP.DISCARD", None) 
+

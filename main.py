@@ -19,24 +19,8 @@ class OS():
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
         self.currently_drawn_calls = self.drawAll()
-        while True:
-            mouse = self.displayController.wallpaper.checkMouse()
-            if mouse != None:
-                NotifyService.register_event("touching", [mouse.x, mouse.y])
-            key = self.displayController.wallpaper.checkKey()
-            if key != None:
-                if key == "q":
-                    exit()
-                elif key == "l":
-                    self.displayController.load_layout("Preset Layout 1")
-                elif key == "c":
-                    NotifyService.reloadcache()
-                elif key == "t":
-                    for widget in self.displayController.currently_loaded_widgets:
-                        widget.output()
-                    
-                elif key == "d":
-                    self.redraw()
+        NotifyService.subscribe_to_keyboard(self)
+        NotifyService.startkeyboardlistening(self)
     
     @tlog
     def get_timing(self):
@@ -169,11 +153,27 @@ class OS():
 
 
     @tlog
-    def notify(self, name, *args):
+    def notify(self, name : str, *args):
         if name == "event.redraw":
             self.redraw(args[0] if len(args) > 0 else None)
-        else:
+        elif name == "event.reload_layout":
             self.displayController.load_layout(NotifyService.get("ram.currently_loaded_layout"))
+        elif name.startswith("keyboard"):
+            key = name.split("_")[1]
+            if key == "q":
+                exit()
+            elif key == "l":
+                self.displayController.load_layout("Preset Layout 1")
+            elif key == "c":
+                NotifyService.reloadcache()
+            elif key == "t":
+                for widget in self.displayController.currently_loaded_widgets:
+                    widget.output()    
+            elif key == "d":
+                self.redraw()
+    
+    
+    
     @tlog
     def draw(self, widget):
         display = self.displayController
