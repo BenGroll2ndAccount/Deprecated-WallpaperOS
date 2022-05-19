@@ -36,15 +36,14 @@ class BODIES():
                 modH = 70,
                 hAlign="start",
                 child = uROW(
-                    children=[uEMPTY(),BODIES.ControlCenterOpenSettingsButton(parentwidget)],
+                    children=[uEMPTY(),BODIES.ControlCenterOpenSettingsButton(parentwidget), getattr(BODIES, "ControlCenterBarContent" + parentwidget.widgetname.split("_")[0])(parentwidget)],
 
                 )
             )
         )
 
     def ControlCenterOpenSettingsButton(parentwidget):
-        return uRECT(
-            child = uTOUCHAREA(
+        return uTOUCHAREA(
             level=1,
             parentwidget=parentwidget,
             funcname="CCenterOpenSettings",
@@ -60,7 +59,7 @@ class BODIES():
                     )
                 )
             )
-        )
+        
 
     def ControlCenterSettingsPanel(parentwidget, data : uCCSETTINGSdata):
         return uCARD(
@@ -152,6 +151,10 @@ class BODIES():
             divider_thickness=1,
             children = buildSettingsEntrys(parentwidget=parentwidget, data=data, pagenumber = data.current_page)
             )
+
+    def ControlCenterBarContentCalendar(parentwidget):
+        return uEMPTY(flex = 0)
+
     
 
     def Calendar(parentwidget):

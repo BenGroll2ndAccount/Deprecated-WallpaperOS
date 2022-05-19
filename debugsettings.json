@@ -7,7 +7,7 @@
     "display-dark_color" : "Gray10",
     "display-light_color" : "Gray75",
     "widget-draw_constraints" : false,
-    "widget-draw-touch-areas" : true,
+    "widget-draw-touch-areas" : false,
     "widget-constraint_color" : "red",
     "widget-toucharea_color" : "blue",
     "widget-header_thickness_in_clusters" : 1,
