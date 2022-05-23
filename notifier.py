@@ -43,6 +43,7 @@ class NOTIFIER():
     def __init__(self):
         self.allowed_prefixes = ["user", "layout", "debug", "ram", "timing", "tasks", "event"]
         self.all_filenames_for_cache = ["usersettings", "debugsettings", "ramdata", "timing", "tasks", "event"]
+        self.notTouchedListeners = []
         self.loadcache(self.all_filenames_for_cache)
 
     def reloadcache(self):
@@ -102,12 +103,14 @@ class NOTIFIER():
     def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)
         if name == "touching":
-            print("----------------")
             affected_listeners = []
             for listener in listeners:
                 touchpoint : uPoint = uPoint(x = args[0][0], y = args[0][1])
                 if listener.affected_by_touch(point=touchpoint):
                     affected_listeners.append(listener)
+            for notListener in self.notTouchedListeners:
+                if notListener not in affected_listeners:
+                    notListener.notify("event.touchedOutside")
             if len(affected_listeners) > 0:
                 highest_level_listener = affected_listeners[0]
                 for listener in affected_listeners:
@@ -119,6 +122,11 @@ class NOTIFIER():
             for listener in listeners:
                 listener.notify("event." + name, *args)
 
+    def subscribeIfTouchedOutSide(self, obj):
+        self.notTouchedListeners.append(obj)
+    
+    def unsubscribeIfTouchedOutSide(self, obj):
+        self.notTouchedListeners.remove(obj)
 
     def subscribe_to_event(self, subscriber, eventname):
         slist = getattr(self, "Subscribers_" + eventname)
@@ -170,6 +178,8 @@ class NOTIFIER():
             listening.remove(listener)
 
     def subscribe_to_keyboard(self, obj):
+        if obj.__class__.__name__ == "OS":
+            self.os = obj
         self.keyboardlistener = obj
 
     def startkeyboardlistening(self, os):
@@ -178,16 +188,11 @@ class NOTIFIER():
             if mouse != None:
                 NotifyService.register_event("touching", [mouse.x, mouse.y])
             key = os.displayController.wallpaper.checkKey()
-            if key != None:
+            if key != None and key != "":
                 self.keyboardlistener.notify("keyboard_" + key)
 
     def resumeMainKeyLoop(self):
         self.keyboardlistener = self.os
-
-
-
-
-    
 
     @property
     def layoutdata(self):

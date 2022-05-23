@@ -1,4 +1,6 @@
 from layout_parts.Widgets.uNodes.uPopups.uCCenterSettingsPanel import uCCSETTINGS
+from layout_parts.Widgets.uNodes.uPopups.uTaskCreationHeaderQuestion import uTASKCREATIONPANELHEADERQUESTION
+from layout_parts.Widgets.uNodes.uPopups.uTaskCreationPanel import uTASKCREATIONPANEL
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
@@ -38,7 +40,11 @@ class uHEAD(uNODE):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
             elif name.split(".")[1] == "CCenterNewTask":
-                print("Open New Task Window")
+                if self.popup == None:
+                    self.popup = uTASKCREATIONPANELHEADERQUESTION(self)
+                    self.popup.assign_depth(0)
+                    self.constrainmod()
+                    NotifyService.register_event("redraw")
             elif name.split(".")[1] == "CCenter":
                 if self.controlcenter == None:
                     self.controlcenterOpenButton.level = 2

@@ -61,14 +61,16 @@ class uConstrain():
             return True
 
 class Task():
-    def __init__(self, title : str, date : str = None, time : str = None, endtime : str = None, category : str = None, description : str = None, key : str = ""):
+    def __init__(self, title : str, creation : str = None, date : str = None, time : str = None, endtime : str = None, tags : list = None, description : str = None, key : str = ""):
         self.date = date
         self.time = time
-        self.category = category
+        self.tags = tags
         self.title = title
         self.description = description
         self.endtime = endtime
         self.key = key
+        self.title = title
+        self.creation = creation
 
 class uCCSETTINGSdata():
     def __init__(self, current_page, maxpages, max_items_per_page, pagedata):

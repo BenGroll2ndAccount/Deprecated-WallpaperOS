@@ -17,6 +17,7 @@ class uCCSETTINGS(uPOPUP):
         self.body = uEMPTY()
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
+        self.load_data()
         
     def load_data(self):
         widgetdata = NotifyService.layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"]

@@ -1,0 +1,9 @@
+graphics.py Keymap
+
+Letters = Letters
+Return = "Return"
+WINDOWS = "WIN_L"
+SPACE = "space"
+"." = "period"	
+"," = "comma"
+shift = 

@@ -198,4 +198,4 @@ class OS():
             drawcalls[widget.widgetname] = self.draw(widget)
         return drawcalls
 
-NotifyService.os = OS()
+setattr(NotifyService, "os", OS())

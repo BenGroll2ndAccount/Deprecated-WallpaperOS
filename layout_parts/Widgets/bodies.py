@@ -1,3 +1,4 @@
+from matplotlib.pyplot import fill
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uDot import uDOT
@@ -148,6 +149,37 @@ class BODIES():
                 ]
             )
         )
+
+    def AddNewTaskPopupPanel(self, parentwidget, taskdata : Task):
+        return uCARD(
+            filled = True,
+            highlight = True,
+            thickness = 4,
+            fill_match_border = False,
+            child = uCOLUMN(
+                divider_thickness=4,
+                children=[
+                    uROW(
+                        children=[
+                            uLABEL(taskdata.title),
+                            uRECT(
+                                flex = 0.2,
+                                child = uPBOX(
+                                    modH = 90,
+                                    modV = 90,
+                                    child = uCARD(
+                                        filled = True,
+                                        rounding = 10,
+                                        highlight = True
+                                    )
+                                )
+                            )
+                        ]
+                    )
+                ]
+            )
+        )
+
     def ControlCenterSettingsContent(parentwidget, data : uCCSETTINGSdata):
         return uCOLUMN(
             flex = data.max_items_per_page,
