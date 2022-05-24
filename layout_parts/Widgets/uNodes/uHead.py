@@ -35,7 +35,6 @@ class uHEAD(uNODE):
 
     @tlog
     def notify(self, name : str, value):
-        
         if name.startswith("touched"):
             if name.split(".")[1] == "Task":
                 print("Task Opened")
@@ -73,7 +72,10 @@ class uHEAD(uNODE):
                     self.constrainmod()
                     NotifyService.trigger_layout_reload()
                     NotifyService.register_event("redraw", self.widgetname)
-                
+        elif name.split("_")[0] == "OpenTaskCreationPanel":
+            self.popup = uTASKCREATIONPANEL(parentwidget=self, tasktitle = name.split("_")[1])
+            self.constrainmod()
+            NotifyService.register_event("redraw", self.widgetname) 
                     
 
 

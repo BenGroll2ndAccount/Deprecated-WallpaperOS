@@ -1,3 +1,4 @@
+from email import header
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uControllerNodes import uCHECKBOX
@@ -8,6 +9,8 @@ from layout_parts.Widgets.uNodes.uTextBox import uTEXTBOX
 
 from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
+from layout_parts.Widgets.uNodes.uPopups.uTaskCreationPanel import uTASKCREATIONPANEL
+
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
@@ -20,7 +23,7 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
     @tlog
     def __init__(self, parentwidget):
-        self.parentwidget = parentwidget
+        self.parentwidget  = parentwidget
         self.body = uPBOX(
             modH = 70,
             modV = 50,
@@ -41,7 +44,7 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
                                     uTEXTBOX(funcname = "EnteredTitle", rounding = 10, thickness = 3, level = 2),
                                     uPBOX(
                                         uCHECKBOX(
-                                        widget_to_notify=parentwidget,
+                                        widget_to_notify=self,
                                         initial_status=False,
                                         name = "NameSubmitted",
                                         level = 4,
@@ -61,3 +64,8 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
         )
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
+
+    def notify(self, info):
+        if info == "NameSubmitted":
+            headertitle = self.body.child.child.children[1].child.children[0].text
+            self.parentwidget.notify("OpenTaskCreationPanel_" + headertitle, None)

@@ -14,10 +14,11 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTEXTBOX(uNODE):
     @tlog
-    def __init__(self, funcname : str = None, rounding : int = None, thickness : int = None, level : int = 0, flex : int = 1):
+    def __init__(self, funcname : str = None, rounding : int = None, thickness : int = None, level : int = 0, flex : int = 1, parentwidget = None):
         self.funcname = funcname
         self.rounding = rounding
         self.thickness = thickness
+        self.parentwidget = parentwidget
         self.text = "..."
         self.level = level
         self.flex = flex
@@ -25,7 +26,6 @@ class uTEXTBOX(uNODE):
         self.buildChild(textcontent=self.text)
 
     def notify(self, string):
-        print(string)
         if string == "TextBoxClicked":
             if not self.open:
                 self.open = True

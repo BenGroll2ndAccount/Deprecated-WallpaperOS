@@ -12,9 +12,9 @@ import json
 
 class uTASKCREATIONPANEL(uPOPUP):
     @tlog
-    def __init__(self, parentwidget):
+    def __init__(self, parentwidget, tasktitle : str):
         self.parentwidget = parentwidget
-        self.body = BODIES.AddNewTaskPopupPanel(self, Task())
+        self.body = BODIES.AddNewTaskPopupPanel(self, parentwidget = self, taskdata = Task(title = tasktitle))
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
 

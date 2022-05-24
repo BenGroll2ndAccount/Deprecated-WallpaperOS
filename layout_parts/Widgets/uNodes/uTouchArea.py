@@ -40,6 +40,8 @@ class uTOUCHAREA(uNODE):
                 self.parentwidget.notify("touched." + '%s' % self.onlyOnPress[0], None)
             if self.onlyOnPress[0] == "TextBoxClicked":
                 self.parentwidget.notify("TextBoxClicked")
+            if self.onlyOnPress[0] == "NameSubmitted.Flip":
+                self.parentwidget.notify("NameSubmitted")
 
     @tlog
     def constrainmod(self, value : uConstrain):
