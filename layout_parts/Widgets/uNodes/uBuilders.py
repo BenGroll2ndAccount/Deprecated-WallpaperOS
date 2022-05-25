@@ -144,7 +144,7 @@ def buildTaskCreationElements(taskdata : Task, parentwidget):
         children = [
         uLABEL("(Start-) Time"),
         uPBOX(
-            uTEXTBOX(funcname = "starttimePicker", parentwidget=parentwidget),
+            uTEXTBOX(funcname = "timePicker", parentwidget=parentwidget),
             modH = 90,
             modV = 80
             )]
@@ -153,7 +153,7 @@ def buildTaskCreationElements(taskdata : Task, parentwidget):
         children = [
         uLABEL("(End-) Time"),
         uPBOX(
-            uTEXTBOX(funcname = "endtimePicker", parentwidget=parentwidget),
+            uTEXTBOX(funcname = "endPicker", parentwidget=parentwidget),
             modH = 90,
             modV = 80
             )]
@@ -162,7 +162,7 @@ def buildTaskCreationElements(taskdata : Task, parentwidget):
         children = [
         uLABEL("Description"),
         uPBOX(
-            uTEXTBOX(funcname = "endtimePicker", parentwidget=parentwidget),
+            uTEXTBOX(funcname = "descriptionPicker", parentwidget=parentwidget),
             modH = 90,
             modV = 80
         )]

@@ -1,4 +1,3 @@
-from email import header
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uControllerNodes import uCHECKBOX
@@ -24,7 +23,7 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
     @tlog
     def __init__(self, parentwidget):
         NotifyService.subscribeIfTouchedOutSide(self)
-        self.parentwidget  = parentwidget
+        self.parentwidget = parentwidget
         self.body = uCARD(
                 filled = True,
                 highlight = True, 

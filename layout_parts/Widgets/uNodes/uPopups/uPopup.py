@@ -46,3 +46,8 @@ class uPOPUP(uNODE):
     def assign_depth(self, value):
         self.depth = value
         self.body.assign_depth(value + 1)
+
+    @tlog
+    def close(self):
+        NotifyService.unsubscribeIfTouchedOutSide(self)
+        del self

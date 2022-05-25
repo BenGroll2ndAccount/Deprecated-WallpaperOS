@@ -103,6 +103,7 @@ class NOTIFIER():
     def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)
         if name == "touching":
+            print("##################")
             affected_listeners = []
             for listener in listeners:
                 touchpoint : uPoint = uPoint(x = args[0][0], y = args[0][1])

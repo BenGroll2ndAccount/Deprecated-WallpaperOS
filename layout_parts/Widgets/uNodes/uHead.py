@@ -71,13 +71,12 @@ class uHEAD(uNODE):
             elif name.split(".")[1] == "POPUP":
                 if name.split(".")[2] == "DISCARD":
                     self.controlcenterOpenButton.level = 1
-                    save = self.popup
-                    NotifyService.unsubscribeIfTouchedOutSide(self.popup)
-                    self.popup = None   
-                    del(save)
+                    del self.popup.body
+                    self.popup.close()
+                    self.popup = None
                     self.constrainmod()
-                    NotifyService.trigger_layout_reload()
-                    NotifyService.register_event("redraw", self.widgetname)
+                    #NotifyService.trigger_layout_reload()
+                    #NotifyService.register_event("redraw", self.widgetname)
         elif name.split("_")[0] == "OpenTaskCreationPanel":
             self.popup = uTASKCREATIONPANEL(parentwidget=self, tasktitle = name.split("_")[1])
             self.constrainmod()

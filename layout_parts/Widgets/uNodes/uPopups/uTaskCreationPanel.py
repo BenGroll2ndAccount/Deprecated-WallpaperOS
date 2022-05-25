@@ -7,20 +7,20 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
-import json
 
 
 class uTASKCREATIONPANEL(uPOPUP):
     @tlog
     def __init__(self, parentwidget, tasktitle : str):
         self.parentwidget = parentwidget
+        self.taskdata = Task(title = tasktitle)
         self.body = BODIES.AddNewTaskPopupPanel(self, parentwidget = self, taskdata = Task(title = tasktitle))
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
         NotifyService.subscribeIfTouchedOutSide(self)
 
     def updatebody(self):
-        self.body = BODIES.AddNewTaskPopupPanel(parentwidget = self)
+        self.body = BODIES.AddNewTaskPopupPanel(parentwidget = self, taskdata=self.taskdata)
         self.body.constrainmod(self.constraint)
         NotifyService.register_event("redraw", self.parentwidget.widgetname)
 
@@ -29,4 +29,8 @@ class uTASKCREATIONPANEL(uPOPUP):
 
 
     def notify(self, string:str):
-        raise NotImplementedError
+        if string.startswith("Textbox_"):
+            textboxname = string.split("_")[1]
+            textboxvalue = string.split("_")[2]
+            print(textboxname)
+
