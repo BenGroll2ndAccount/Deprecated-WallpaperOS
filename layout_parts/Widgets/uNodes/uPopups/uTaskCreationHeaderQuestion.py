@@ -38,7 +38,7 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
                         uPBOX(
                             uROW(
                                 children=[
-                                    uTEXTBOX(funcname = "EnteredTitle", rounding = 10, thickness = 3, level = 2),
+                                    uTEXTBOX(funcname = "EnteredTitle", rounding = 10, thickness = 3, level = 2, parentwidget = self),
                                     uPBOX(
                                         uCHECKBOX(
                                         widget_to_notify=self,

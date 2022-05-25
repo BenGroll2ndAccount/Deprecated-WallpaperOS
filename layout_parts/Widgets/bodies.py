@@ -175,7 +175,8 @@ class BODIES():
                                 )
                             )
                         ]
-                    )
+                    ),
+                    buildTaskCreationElements(taskdata=taskdata, parentwidget=parentwidget)
                 ]
             )
         )

@@ -17,6 +17,7 @@ class uTASKCREATIONPANEL(uPOPUP):
         self.body = BODIES.AddNewTaskPopupPanel(self, parentwidget = self, taskdata = Task(title = tasktitle))
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
+        NotifyService.subscribeIfTouchedOutSide(self)
 
     def updatebody(self):
         self.body = BODIES.AddNewTaskPopupPanel(parentwidget = self)

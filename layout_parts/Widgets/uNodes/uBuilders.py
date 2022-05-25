@@ -1,3 +1,4 @@
+from layout_parts.Widgets.uNodes.uTextBox import uTEXTBOX
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
@@ -123,7 +124,55 @@ def build_controller_for_setting(parentwidget, data : dict):
     else:
         return uEMPTY()
 
-def buildTaskCreationElements(taskdata, parentwidget):
-    pass
+def buildTaskCreationElements(taskdata : Task, parentwidget):
+    returnwidget = uCOLUMN(
+        flex = 4,
+        divider_thickness=2,
+        children = []
+    )
+    widgets = []
+    widgets.append(uROW(
+        children = [
+        uLABEL("Date"),
+        uPBOX(
+            uTEXTBOX(funcname = "datePicker", parentwidget=parentwidget),
+            modH = 90,
+            modV = 80
+            )]
+    ))
+    widgets.append(uROW(
+        children = [
+        uLABEL("(Start-) Time"),
+        uPBOX(
+            uTEXTBOX(funcname = "starttimePicker", parentwidget=parentwidget),
+            modH = 90,
+            modV = 80
+            )]
+    ))
+    widgets.append(uROW(
+        children = [
+        uLABEL("(End-) Time"),
+        uPBOX(
+            uTEXTBOX(funcname = "endtimePicker", parentwidget=parentwidget),
+            modH = 90,
+            modV = 80
+            )]
+    ))
+    widgets.append(uROW(
+        children = [
+        uLABEL("Description"),
+        uPBOX(
+            uTEXTBOX(funcname = "endtimePicker", parentwidget=parentwidget),
+            modH = 90,
+            modV = 80
+        )]
+    ))
+    widgets.append(uROW(
+        children = [
+        uLABEL("Tags"),
+        uLABEL("N/I")]
+    ))
+    returnwidget.children = widgets
+    return returnwidget
 
 

@@ -14,7 +14,7 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTEXTBOX(uNODE):
     @tlog
-    def __init__(self, funcname : str = None, rounding : int = None, thickness : int = None, level : int = 0, flex : int = 1, parentwidget = None):
+    def __init__(self, funcname : str = None, rounding : int = 5, thickness : int = 4, level : int = 0, flex : int = 1, parentwidget = None):
         self.funcname = funcname
         self.rounding = rounding
         self.thickness = thickness
@@ -53,6 +53,7 @@ class uTEXTBOX(uNODE):
                 NotifyService.register_event("redraw")
             else:
                 self.text = self.text + string.split("_")[1]
+                self.parentwidget.notify("Textbox_" + self.funcname + "_" + self.text)
                 self.buildChild(self.text)
                 self.constrainmod(self.constraint.copy)
                 NotifyService.register_event("redraw")
