@@ -17,7 +17,7 @@ class uCCSETTINGS(uPOPUP):
         self.body = uEMPTY()
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
-        self.load_data()
+        NotifyService.subscribeIfTouchedOutSide(self)
         
     def load_data(self):
         widgetdata = NotifyService.layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"]
@@ -50,7 +50,8 @@ class uCCSETTINGS(uPOPUP):
                     total_idx += 1
             pages.append(pagedata)
         self.data = uCCSETTINGSdata(current_page=1, maxpages = pages_required, max_items_per_page=settings_per_page, pagedata = pages)
-        self.notify("init")
+        self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
+
 
     def updatebody(self):
         self.body = BODIES.ControlCenterSettingsPanel(self, data=self.data)
@@ -90,9 +91,8 @@ class uCCSETTINGS(uPOPUP):
                 olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = not olddata.pagedata[correct_pageidx][correct_settingidx]["value"]
             self.data = olddata.copy
             #Body Update
-        if origstring.startswith("SETTING.") or origstring == "init":
+        if origstring.startswith("SETTING."):
             self.updatebody()
-
         if origstring.startswith("SETTINGS."):
             command = origstring.split(".")[1]
             if command == "PAGEFWD":
@@ -104,10 +104,11 @@ class uCCSETTINGS(uPOPUP):
             if command == "PAGEBWD":
                 if self.data.current_page > 0:
                     self.data.current_page = self.data.current_page - 1
-                    print(self.data)
                     self.updatebody()
             if command == "SAVE":
                 if self.hasSomethingChanged:
                     self.saveDataToFile()
                     self.parentwidget.notify("touched.POPUP.DISCARD", None) 
+        if origstring == "event.touchedOutside":
+            self.parentwidget.notify("touched.POPUP.DISCARD", None)
 

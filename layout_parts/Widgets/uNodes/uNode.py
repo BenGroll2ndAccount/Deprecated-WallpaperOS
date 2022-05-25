@@ -87,7 +87,7 @@ class uNODE():
                 return
 
 
-    def affected_by_touch(self, touchPoint : uPoint):
-        return touchPoint.isInArea(self.constraint.copy)
+    def affected_by_touch(self, point : uPoint):
+        return point.isInArea(self.constraint.copy)
 
 

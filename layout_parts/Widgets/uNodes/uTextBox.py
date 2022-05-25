@@ -33,7 +33,7 @@ class uTEXTBOX(uNODE):
                 NotifyService.subscribe_to_keyboard(self)
                 self.child.child.thickness += 1
                 NotifyService.register_event("redraw")
-                self.text = ""
+                self.text = " "
         elif string == "event.touchedOutside":
             if self.open:
                 self.open = False
@@ -56,13 +56,6 @@ class uTEXTBOX(uNODE):
                 self.buildChild(self.text)
                 self.constrainmod(self.constraint.copy)
                 NotifyService.register_event("redraw")
-
-
-
-        
-
-
-        
 
     def buildChild(self, textcontent):
         self.child = uTOUCHAREA(

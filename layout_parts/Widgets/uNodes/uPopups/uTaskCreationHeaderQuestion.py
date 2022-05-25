@@ -23,12 +23,9 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
     @tlog
     def __init__(self, parentwidget):
+        NotifyService.subscribeIfTouchedOutSide(self)
         self.parentwidget  = parentwidget
-        self.body = uPBOX(
-            modH = 70,
-            modV = 50,
-            vAlign="end",
-            child = uCARD(
+        self.body = uCARD(
                 filled = True,
                 highlight = True, 
                 fill_match_border = False,
@@ -56,16 +53,21 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
                                 ],
                             ),
                             modH = 95,
-                            modV = 70
+                            modV = 50,
+                            flex = 3,
                         )
                     ]
                 )
             )
-        )
+        
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
 
     def notify(self, info):
+        self.textboxreference = self.body.child.children[1].child.children[0]
         if info == "NameSubmitted":
-            headertitle = self.body.child.child.children[1].child.children[0].text
+            headertitle = self.textboxreference.text
             self.parentwidget.notify("OpenTaskCreationPanel_" + headertitle, None)
+        if info == "event.touchedOutside":
+            print("Still HERE!")
+            self.parentwidget.notify("touched.POPUP.DISCARD", None)

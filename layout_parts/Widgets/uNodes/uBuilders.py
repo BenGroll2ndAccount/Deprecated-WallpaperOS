@@ -97,9 +97,15 @@ def CalendarEntrys(date : str, parentwidget):
 def buildSettingsEntrys(parentwidget, data : uCCSETTINGSdata, pagenumber):
     returnlist = [uEMPTY() for i in range(data.max_items_per_page)]
     for item in range(len(data.pagedata[pagenumber - 1])):
+        words = data.pagedata[pagenumber - 1][item]["name"].split("_")
+        labelname = ""
+        for word in words:
+            labelname = labelname + " " +  word.capitalize()
+
+
         returnlist[item] = uROW(
             children = [
-                uLABEL(data.pagedata[pagenumber - 1][item]["name"]),
+                uLABEL(labelname),
                 build_controller_for_setting(parentwidget, data = data.pagedata[pagenumber - 1][item])
             ]
         )

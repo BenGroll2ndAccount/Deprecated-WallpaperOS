@@ -52,6 +52,8 @@ class uHEAD(uNODE):
                     self.controlcenter.status = "Base"
                     self.constrainmod()
                     self.controlcenter.update_status()
+                    NotifyService.register_event("redraw", self.parentwidget.widgetname)
+
                 else:
                     if self.popup == None:
                         self.controlcenterOpenButton.level = 1
@@ -61,14 +63,18 @@ class uHEAD(uNODE):
             elif name.split(".")[1] == "CCenterOpenSettings":
                 self.controlcenterOpenButton.level = 1
                 self.popup = uCCSETTINGS(self)
-                self.popup.assign_depth(0)
                 self.constrainmod()
-            
+                self.popup.assign_depth(0)
+                self.popup.load_data()
+                self.constrainmod()
+                NotifyService.register_event("redraw", self.widgetname)
             elif name.split(".")[1] == "POPUP":
                 if name.split(".")[2] == "DISCARD":
-                    print("Closed Popup!")
                     self.controlcenterOpenButton.level = 1
-                    self.popup = None
+                    save = self.popup
+                    NotifyService.unsubscribeIfTouchedOutSide(self.popup)
+                    self.popup = None   
+                    del(save)
                     self.constrainmod()
                     NotifyService.trigger_layout_reload()
                     NotifyService.register_event("redraw", self.widgetname)
@@ -143,11 +149,18 @@ class uHEAD(uNODE):
         self.childs_constraint = new_constraint.copy
         self.child.constrainmod(new_constraint.copy)
         if self.popup != None:
-            settings_constraint = new_constraint.copy
-            settings_constraint.pointA.x += __CLUSTERRESOLUTION__
-            settings_constraint.pointA.y += __CLUSTERRESOLUTION__
-            settings_constraint.pointB.x -= __CLUSTERRESOLUTION__
-            self.popup.constrainmod(settings_constraint.copy)
+            if self.popup.__class__.__name__ != "uTASKCREATIONPANELHEADERQUESTION":
+                settings_constraint = new_constraint.copy
+                settings_constraint.pointA.x += __CLUSTERRESOLUTION__
+                settings_constraint.pointA.y += __CLUSTERRESOLUTION__
+                settings_constraint.pointB.x -= __CLUSTERRESOLUTION__
+                self.popup.constrainmod(settings_constraint.copy)
+            else:
+                settings_constraint = new_constraint.copy
+                settings_constraint.pointA.x += 5 * __CLUSTERRESOLUTION__
+                settings_constraint.pointA.y += 5 * __CLUSTERRESOLUTION__
+                settings_constraint.pointB.x -= 5 * __CLUSTERRESOLUTION__
+                self.popup.constrainmod(settings_constraint.copy)
             
 
     @tlog

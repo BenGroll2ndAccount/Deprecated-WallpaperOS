@@ -124,6 +124,7 @@ class NOTIFIER():
 
     def subscribeIfTouchedOutSide(self, obj):
         self.notTouchedListeners.append(obj)
+        self.subscribe_to_event(obj, "touching")
     
     def unsubscribeIfTouchedOutSide(self, obj):
         self.notTouchedListeners.remove(obj)
