@@ -80,7 +80,7 @@ class OS():
                     obj.setOutline(color = background_color)
                     if circle_to_draw.filled:
                         obj.setFill(background_color if circle_to_draw.fill_border else highlight_color)
-                obj.setWidth(circle_to_draw.thickness)
+                obj.setWidth(circle_to_draw.thickness * (NotifyService.get("debug.display-cluster_resolution") / 88))
                 drawobjs.append(obj)
             if draw_call.__class__.__name__ == "udraw_Pixel":
                 pixel_to_draw : udraw_Pixel = draw_call
@@ -88,7 +88,7 @@ class OS():
             elif draw_call.__class__.__name__ == "udraw_Rectangle":
                 rectangle : udraw_Rectangle = draw_call
                 if rectangle.rounding > 0:
-                    obj = RoundedRectangle(p1 = rectangle.pointA.to_point(), p2 = rectangle.pointB.to_point(), radius=rectangle.rounding)
+                    obj = RoundedRectangle(p1 = rectangle.pointA.to_point(), p2 = rectangle.pointB.to_point(), radius=rectangle.rounding * (NotifyService.get("debug.display-cluster_resolution") / 88))
                 else:
                     obj = Rectangle(p1 = Point(x = rectangle.pointA.x, y = rectangle.pointA.y), p2 = Point(x = rectangle.pointB.x, y = rectangle.pointB.y))
                 if rectangle.filled:
@@ -104,12 +104,14 @@ class OS():
                     else:
                         obj.setFill(background_color)
                         obj.setOutline(background_color)
-                obj.setWidth(rectangle.thickness)
+                obj.setWidth(rectangle.thickness * (NotifyService.get("debug.display-cluster_resolution") / 88))
                 if rectangle.is_debug:
                     obj.setOutline(color=NotifyService.get("debug.widget-constraint_color"))
+                    obj.setWidth(1)
                     constraints.append(obj)
                 elif rectangle.is_touch_debug:
                     obj.setOutline(color=NotifyService.get("debug.widget-toucharea_color"))
+                    obj.setWidth(1)
                     touch_areas.append(obj)
                 else:
                     drawobjs.append(obj)
@@ -147,6 +149,7 @@ class OS():
                         obj.setFill(background_color)
                     else:
                         obj.setFill(highlight_color)
+                obj.setWidth(call.thickness * (NotifyService.get("debug.display-cluster_resolution") / 88))
                 drawobjs.append(obj)
         return {"constraints" : constraints, "objs" : drawobjs, "touch" : touch_areas}
 

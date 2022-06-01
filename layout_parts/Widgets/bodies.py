@@ -151,7 +151,7 @@ class BODIES():
 
     def AddNewTaskPopupPanel(self, parentwidget, taskdata : Task):
         return uCARD(
-            filled = False,
+            filled = True,
             highlight = True,
             thickness = 4,
             fill_match_border = False,

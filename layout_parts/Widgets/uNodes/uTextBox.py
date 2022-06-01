@@ -8,8 +8,7 @@ from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTEXTBOX(uNODE):
@@ -24,8 +23,15 @@ class uTEXTBOX(uNODE):
         self.flex = flex
         self.open = False
         self.buildChild(textcontent=self.text)
-    @tlog
-    def notify_TextBoxClicked(self):
+
+    def notify_Keyboard(self, key):
+        if len(key) == 1:
+            self.text = self.text + key
+        elif key == "Return":
+            self.notify_TouchedOutside()
+
+    @n
+    def notify_TextBox(self):
         if not self.open:
             self.open = True
             NotifyService.subscribeIfTouchedOutSide(self)
@@ -33,7 +39,7 @@ class uTEXTBOX(uNODE):
             self.child.child.thickness += 1
             NotifyService.register_event("redraw")
             self.text = " "
-    @tlog
+    @n
     def notify_TouchedOutside(self):
         self.open = False
         NotifyService.unsubscribeIfTouchedOutSide(self)
