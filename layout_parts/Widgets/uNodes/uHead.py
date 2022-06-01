@@ -6,8 +6,7 @@ from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text, udraw_Polygon
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import tlog, n
 from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uControlCenter import uControlCenter
@@ -15,7 +14,6 @@ from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
 from notifier import NotifyService
 
 class uHEAD(uNODE):
-    @tlog
     def __init__(self, anchor : uPoint ,width : int, height : int, body : uNODE, header : str = None, headercontent : str = None, flex = 1, headershape : str = "rect", parentwidget = None, settings = None):
         self.anchor : uPoint = anchor
         self.width : int = width  
@@ -33,55 +31,59 @@ class uHEAD(uNODE):
         self.headercontent : str = headercontent
         self.__node_init__(listening=[], level = 0)
 
-    @tlog
-    def notify(self, name : str, value):
-        if name.startswith("touched"):
-            if name.split(".")[1] == "Task":
-                print("Task Opened")
-            elif name.split(".")[1] == "CCenterNewTask":
-                if self.popup == None:
-                    self.popup = uTASKCREATIONPANELHEADERQUESTION(self)
-                    self.popup.assign_depth(0)
-                    self.constrainmod()
-                    NotifyService.register_event("redraw")
-            elif name.split(".")[1] == "CCenter":
-                if self.controlcenter == None:
-                    self.controlcenterOpenButton.level = 2
-                    self.controlcenter = uControlCenter(self)
-                    self.controlcenter.assign_depth(0)
-                    self.controlcenter.status = "Base"
-                    self.constrainmod()
-                    self.controlcenter.update_status()
-                    NotifyService.register_event("redraw", self.parentwidget.widgetname)
+    @n
+    def notify_Touched(self):
+        pass
 
-                else:
-                    if self.popup == None:
-                        self.controlcenterOpenButton.level = 1
-                        self.controlcenter = None
-                        self.constrainmod()
-                        NotifyService.register_event("redraw", self.widgetname)
-            elif name.split(".")[1] == "CCenterOpenSettings":
-                self.controlcenterOpenButton.level = 1
-                self.popup = uCCSETTINGS(self)
-                self.constrainmod()
-                self.popup.assign_depth(0)
-                self.popup.load_data()
-                self.constrainmod()
-                NotifyService.register_event("redraw", self.widgetname)
-            elif name.split(".")[1] == "POPUP":
-                if name.split(".")[2] == "DISCARD":
-                    self.controlcenterOpenButton.level = 1
-                    del self.popup.body
-                    self.popup.close()
-                    self.popup = None
-                    self.constrainmod()
-                    #NotifyService.trigger_layout_reload()
-                    #NotifyService.register_event("redraw", self.widgetname)
-        elif name.split("_")[0] == "OpenTaskCreationPanel":
-            self.popup = uTASKCREATIONPANEL(parentwidget=self, tasktitle = name.split("_")[1])
+    @n
+    def notify_OpenTask(self, key):
+        pass
+
+    @n
+    def notify_CCenterNewTask(self):
+        if self.popup == None:
+            self.popup = uTASKCREATIONPANELHEADERQUESTION(parentwidget = self)
+            self.popup.assign_depth(0)
             self.constrainmod()
-            NotifyService.register_event("redraw", self.widgetname) 
-                    
+            NotifyService.register_event("redraw")
+    @n
+    def notify_OpenCCenter(self):
+        if self.controlcenter == None:
+            self.controlcenterOpenButton.level=2
+            self.controlcenter = uControlCenter(parentwidget = self)
+            self.controlcenter.assign_depth(0)
+            self.controlcenter.status = "Base"
+            self.controlcenter.update()
+            self.constrainmod()
+            NotifyService.register_event("redraw", self.widgetname)
+    @n
+    def notify_CloseCCenter(self):
+        if self.popup == None:
+            self.controlcenterOpenButton.level = 1
+            self.controlcenter = None
+            self.constrainmod()
+            NotifyService.register_event("redraw", self.widgetname)
+    @n
+    def notify_CCenterOpenSettings(self):
+        self.controlcenterOpenButton.level = 1
+        self.popup = uCCSETTINGS(self)
+        self.constrainmod()
+        self.popup.assign_depth(0)
+        self.popup.load_data()
+        self.constrainmod()
+        NotifyService.register_event("redraw", self.widgetname)
+    @n
+    def notify_DiscardPopup(self):
+        self.controlcenterOpenButton.level = 1
+        del self.popup.body
+        self.popup.close()
+        self.popup = None
+        self.constrainmod()
+    @n
+    def notify_OpenTaskCreationPanel(self, tasktitle):
+        self.popup = uTASKCREATIONPANEL(parentwidget=self, tasktitle = tasktitle)
+        self.constrainmod()
+        NotifyService.register_event("redraw", self.widgetname) 
 
 
 
@@ -209,3 +211,8 @@ class uHEAD(uNODE):
             outlist.append(call)
         
         return outlist
+
+
+    def passTreeData(self, widgetname):
+        self.head = self
+        self.child.passTreeData(head = self, widgetname = widgetname)

@@ -1,20 +1,23 @@
 {
-    "display-cluster_resolution" : 88,
+    "display-cluster_resolution" : 44,
     "display-show_widget_color" : false,
     "display-show_enabled_clusters" : false,
     "display-show_cluster_coordinates" : false,
     "display-show_display_boundaries" : false,
-    "display-dark_color" : "Gray10",
-    "display-light_color" : "Gray75",
+
     "widget-draw_constraints" : false,
     "widget-draw-touch-areas" : false,
-    "widget-constraint_color" : "red",
-    "widget-toucharea_color" : "blue",
     "widget-header_thickness_in_clusters" : 1,
     "widget-controlcenter-thickness-in-clusters" : 1,
-    "ll-draw_rect_rounding_oct" : false,
-    "widget-log_any_function_call" : true,
+    "widget-log_any_function_call" : false,
+    "widget-log_notifications" : true,
     "widget-output_widget_tree" : false,
-    "ll-point-poly-detection-reference-offset-x" : 32768
-    
+    "widget-constraint_color" : "red",
+    "widget-toucharea_color" : "blue",
+
+    "ll-draw_rect_rounding_oct" : false,
+    "ll-point-poly-detection-reference-offset-x" : 32768,
+
+    "display-dark_color" : "Gray10",
+    "display-light_color" : "Gray75"
 }

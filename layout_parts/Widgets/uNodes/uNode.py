@@ -40,9 +40,7 @@ class uNODE():
             return
         
 
-    @abstractmethod
-    def notify(self, name, value):
-        pass
+
 
     @abstractmethod
     def constrainmod(self, value):
@@ -91,3 +89,6 @@ class uNODE():
         return point.isInArea(self.constraint.copy)
 
 
+    def passTreeData(self, head, widgetname):
+        self.head = head
+        self.widgetname = widgetname

@@ -15,7 +15,6 @@ class OS():
         self.get_timing()
         NotifyService.subscribe_to_event(self, "redraw")
         NotifyService.subscribe_to_event(self, "reload_layout")
-
         get_weeks_earliest_and_latest_time()
         self.displayController.load_layout("Preset Layout 1")
         self.currently_drawn_calls = self.drawAll()
@@ -151,27 +150,27 @@ class OS():
                 drawobjs.append(obj)
         return {"constraints" : constraints, "objs" : drawobjs, "touch" : touch_areas}
 
+    @tlog
+    def notify_Event_redraw(self, *args):
+        self.redraw(args[0] if len(args) > 0 else None)
 
     @tlog
-    def notify(self, name : str, *args):
-        if name == "event.redraw":
-            self.redraw(args[0] if len(args) > 0 else None)
-        elif name == "event.reload_layout":
-            self.displayController.load_layout(NotifyService.get("ram.currently_loaded_layout"))
-        elif name.startswith("keyboard"):
-            key = name.split("_")[1]
-            if key == "q":
-                exit()
-            elif key == "l":
-                self.displayController.load_layout("Preset Layout 1")
-            elif key == "c":
-                NotifyService.reloadcache()
-            elif key == "t":
-                for widget in self.displayController.currently_loaded_widgets:
-                    widget.output()    
-            elif key == "d":
-                self.redraw()
-    
+    def notify_Event_reload_layout(self):
+        self.displayController.load_layout(NotifyService.get("ram.currently_loaded_layout"))
+
+    @tlog
+    def notify_Keyboard(self, key):
+        if key == "q":
+            exit()
+        elif key == "l":
+            self.displayController.load_layout("Preset Layout 1")
+        elif key == "c":
+            NotifyService.reloadcache()
+        elif key == "t":
+            for widget in self.displayController.currently_loaded_widgets:
+                widget.output()    
+        elif key == "d":
+            self.notify_Event_redraw()
     
     
     @tlog

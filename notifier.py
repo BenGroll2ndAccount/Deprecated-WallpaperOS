@@ -98,7 +98,7 @@ class NOTIFIER():
                 setattr(self, "Subscribers_" + event, [])
 
     def trigger_layout_reload(self):
-        self.Subscribers_reload_layout[0].notify("reload_layout")
+        self.Subscribers_reload_layout[0].notify_Event_reload_layout()
 
     def register_event(self, name : str, *args):
         listeners = getattr(self, "Subscribers_" + name)
@@ -111,17 +111,17 @@ class NOTIFIER():
                     affected_listeners.append(listener)
             for notListener in self.notTouchedListeners:
                 if notListener not in affected_listeners:
-                    notListener.notify("event.touchedOutside")
+                    notListener.notify_TouchedOutside()
             if len(affected_listeners) > 0:
                 highest_level_listener = affected_listeners[0]
                 for listener in affected_listeners:
                     if listener.level > highest_level_listener.level:
                         highest_level_listener = listener
-                highest_level_listener.notify("event." + name)
-            
+                highest_level_listener.notify_Touched()
+                    
         if name == "redraw":
             for listener in listeners:
-                listener.notify("event." + name, *args)
+                listener.notify_Event_redraw(*args)
 
     def subscribeIfTouchedOutSide(self, obj):
         self.notTouchedListeners.append(obj)
@@ -147,7 +147,7 @@ class NOTIFIER():
         if prefix not in self.allowed_prefixes:
             raise ValueError(prefix + " not in allowed prefixes.")
         for listener in getattr(self, "Listeners_" + prefix + "_" + suffix):
-            listener.notify(name, value)
+            listener.notify_ValChange(name, value)
         if prefix == "user":
             jset("usersettings", name, value)
         if name == "ramdata.widget_request_redraw":
@@ -191,7 +191,7 @@ class NOTIFIER():
                 NotifyService.register_event("touching", [mouse.x, mouse.y])
             key = os.displayController.wallpaper.checkKey()
             if key != None and key != "":
-                self.keyboardlistener.notify("keyboard_" + key)
+                self.keyboardlistener.notify_Keyboard(key)
 
     def resumeMainKeyLoop(self):
         self.keyboardlistener = self.os

@@ -1,15 +1,21 @@
-def isValidDate(input : str):
-    if not len(input.split(".")) == 3:
-        return False
-    if len(input.split(".")[0]) != 2:
-        return False
-    if len(input.split(".")[1]) != 2:
-        return False
-    if len(input.split(".")[2]) != 4:
-        return False
-    if int(input.split(".")[0]) > 31 or int(input.split(".")[0]) < 1:
-        return False
-    if int(input.split(".")[1]) > 12 or int(input.split(".")[1]) < 1:
-        return False
-    return True
+from inspect import stack
+def n(func):
+    def func_wrapper(*args, **kwargs):
+        print("@" + func.__name__+ " : " + str(func.__globals__["__name__"]) + " x ")
+        return func(*args, **kwargs)
+    return func_wrapper
+
+
+@n
+def testNotify(a, b, c):
+    print(str(a), str(b), str(c))
+
+class foo():
+    @n
+    def lol(self):
+        testNotify(1,2,3)
+
+
+bar = foo()
+bar.lol()
 

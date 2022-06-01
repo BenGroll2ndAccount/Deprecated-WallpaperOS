@@ -2,8 +2,7 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle, udraw_Text
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import *
 import pretty as pretty
 from notifier import NotifyService
 
@@ -27,8 +26,8 @@ class uLABEL(uNODE):
             self.__node_init__(listening = [])
        
         
-    @tlog
-    def notify(self, name, value):
+    @n
+    def notify_VarChange(self, name, value):
         if name == self.varname:
             self.text = self.formatt(name, value)
             NotifyService.change("ram.widget_request_redraw", True)

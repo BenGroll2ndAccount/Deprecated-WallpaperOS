@@ -13,8 +13,7 @@ from layout_parts.Widgets.uNodes.uPopups.uTaskCreationPanel import uTASKCREATION
 from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import *
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 
@@ -62,11 +61,12 @@ class uTASKCREATIONPANELHEADERQUESTION(uPOPUP):
         self.__node_init__(listening=[], level = 0)
         self.hasSomethingChanged = False
 
-    def notify(self, info):
+    @n
+    def notify_NameSubmitted(self):
         self.textboxreference = self.body.child.children[1].child.children[0]
-        if info == "NameSubmitted":
-            headertitle = self.textboxreference.text
-            self.parentwidget.notify("OpenTaskCreationPanel_" + headertitle, None)
-        if info == "event.touchedOutside":
-            print("Still HERE!")
-            self.parentwidget.notify("touched.POPUP.DISCARD", None)
+        headertitle = self.textboxreference.text
+        self.parentwidget.notify_OpenTaskCreationPanel(headertitle)
+
+    @n
+    def notify_TouchedOutside(self):
+        self.parentwidget.notify_DiscardPopup()

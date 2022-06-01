@@ -3,8 +3,7 @@ from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import *
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 
@@ -27,10 +26,8 @@ class uTASKCREATIONPANEL(uPOPUP):
     def saveDataToFile(self):
         raise NotImplementedError
 
+    @n
+    def notify_TextBox(self, name, value):
+        print(name)
 
-    def notify(self, string:str):
-        if string.startswith("Textbox_"):
-            textboxname = string.split("_")[1]
-            textboxvalue = string.split("_")[2]
-            print(textboxname)
 

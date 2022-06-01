@@ -12,9 +12,6 @@ class uEMPTY(uNODE):
         self.flex = flex
         self.__node_init__(listening=[], level = level)
 
-    @tlog
-    def notify(self, name, value):
-        pass
 
     @tlog
     def constrainmod(self, value : uConstrain):

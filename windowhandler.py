@@ -100,10 +100,6 @@ class DISPLAY():
         print(">>>Created Window<<<", end="")
         return
 
-    def notify(self, name, value):
-        if name == "ram.widget_request_redraw":
-            if value == True:
-                self.redraw()
     @tlog
     def load_layout(self, name:str):
         t = time.time()

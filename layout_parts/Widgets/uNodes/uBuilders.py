@@ -110,7 +110,7 @@ def buildSettingsEntrys(parentwidget, data : uCCSETTINGSdata, pagenumber):
                 build_controller_for_setting(parentwidget, data = data.pagedata[pagenumber - 1][item])
             ]
         )
-    parentwidget.notify("update")
+
     return returnlist
 
 def build_controller_for_setting(parentwidget, data : dict):

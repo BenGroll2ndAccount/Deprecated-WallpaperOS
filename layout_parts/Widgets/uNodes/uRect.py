@@ -11,10 +11,6 @@ class uRECT(uNODE):
         self.flex = flex
 
     @tlog
-    def notify(self, name, value):
-        pass
-
-    @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
         if self.child != None:

@@ -2,7 +2,7 @@ from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.uHead import uHEAD
 import time
 from layout_parts.Widgets.bodies import BODIES
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 from notifier import NotifyService
 
@@ -27,9 +27,9 @@ class WIDGET():
         self.finish(self.settings, self.clusters[0].anchor)
         return
 
-    def notify(self, name : str, value):
-        if name.startswith("touched"):
-            self.head.notify(name=name, value=value)
+    @n
+    def notify_Touched(self):
+        self.head.notify_Touched()
 
     @property
     def drawcalls(self):
@@ -51,17 +51,24 @@ class WIDGET():
             self.head.popup.output()
         print("----------------------")
 
+
     @tlog
     def finish(self, settings, anchor:uPoint):
-        self.head.passWidgetData(settings)
         wait = self.head.assign_depth(0)
         wait = self.head.constrainmod()
+        wait = self.passTreeData()
+
         if NotifyService.get("debug.widget-output_widget_tree"):
             self.output()
         else:
             print(self.widgetname + " (" + str(self.head.anchor.x) + "|" + str(self.head.anchor.y) + ")", end = "")
             print("*collapsed*")
+
+
+
     @tlog
     def constraincheck(self):
         return self.head.constraincheck(self.head.constraint, 0)
 
+    def passTreeData(self):
+        self.head.passTreeData(widgetname = self.widgetname)

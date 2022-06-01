@@ -17,10 +17,6 @@ class uCARD(uNODE):
         self.__node_init__(listening=listening, level = level)
 
     @tlog
-    def notify(self, name, value):
-        pass
-
-    @tlog
     def constrainmod(self, value : uConstrain):
         self.constraint = value.copy
         if self.child != None:

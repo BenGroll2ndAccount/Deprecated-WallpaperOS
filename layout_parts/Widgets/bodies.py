@@ -1,4 +1,3 @@
-from matplotlib.pyplot import fill
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uColumn import uCOLUMN
 from layout_parts.Widgets.uNodes.uDot import uDOT

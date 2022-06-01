@@ -24,39 +24,22 @@ class uTEXTBOX(uNODE):
         self.flex = flex
         self.open = False
         self.buildChild(textcontent=self.text)
-
-    def notify(self, string):
-        if string == "TextBoxClicked":
-            if not self.open:
-                self.open = True
-                NotifyService.subscribeIfTouchedOutSide(self)
-                NotifyService.subscribe_to_keyboard(self)
-                self.child.child.thickness += 1
-                NotifyService.register_event("redraw")
-                self.text = " "
-        elif string == "event.touchedOutside":
-            if self.open:
-                self.open = False
-                NotifyService.unsubscribeIfTouchedOutSide(self)
-                NotifyService.resumeMainKeyLoop()
-                self.child.child.thickness -= 1
-                NotifyService.register_event("redraw")
-
-        elif string.split("_")[0] == "keyboard":
-            if string.split("_")[1] == "Return":
-                self.open = False
-                NotifyService.unsubscribeIfTouchedOutSide(self)
-                NotifyService.resumeMainKeyLoop()
-                self.child.child.thickness -= 1
-                self.buildChild(self.text)
-                self.constrainmod(self.constraint.copy)
-                NotifyService.register_event("redraw")
-            else:
-                self.text = self.text + string.split("_")[1]
-                self.parentwidget.notify("Textbox_" + self.funcname + "_" + self.text)
-                self.buildChild(self.text)
-                self.constrainmod(self.constraint.copy)
-                NotifyService.register_event("redraw")
+    @tlog
+    def notify_TextBoxClicked(self):
+        if not self.open:
+            self.open = True
+            NotifyService.subscribeIfTouchedOutSide(self)
+            NotifyService.subscribe_to_keyboard(self)
+            self.child.child.thickness += 1
+            NotifyService.register_event("redraw")
+            self.text = " "
+    @tlog
+    def notify_TouchedOutside(self):
+        self.open = False
+        NotifyService.unsubscribeIfTouchedOutSide(self)
+        NotifyService.resumeMainKeyLoop()
+        self.child.child.thickness -= 1
+        NotifyService.register_event("redraw")
 
     def buildChild(self, textcontent):
         self.child = uTOUCHAREA(

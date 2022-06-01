@@ -8,7 +8,6 @@ from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
 
 class uTOUCHAREA(uNODE):
-    @tlog
     def __init__(self, child : uNODE = None, level : int = 0, flex = 1, parentwidget = None, funcname : str = "", args = None, kwargs = None):
         self.flex = flex
         self.child = child
@@ -16,32 +15,30 @@ class uTOUCHAREA(uNODE):
         self.onlyOnPress = (funcname, args, kwargs)
         NotifyService.subscribe_to_event(self, "touching")
         self.__node_init__(listening=[], level = level)
-        if funcname.startswith("SETTING."):
-            print("@init TouchArea: " + funcname)
 
     @tlog
-    def notify(self, name, *args, **kwargs):
-        if name == "event.touching":
-            if self.onlyOnPress[0] == "Task":
-                self.parentwidget.notify("touched.Task", self.onlyOnPress[1][0])
-            if self.onlyOnPress[0] == "CCenter":
-                self.parentwidget.notify("touched.CCenter", None)
-            if self.onlyOnPress[0] == "Header":
-                self.parentwidget.notify("touched.Header", None)
-            if self.onlyOnPress[0] == "CCenterOpenSettings":
-                self.parentwidget.notify("touched.CCenterOpenSettings", None)
-            if self.onlyOnPress[0] == "SETTINGS.DISCARD":
-                self.parentwidget.parentwidget.notify("touched.POPUP.DISCARD", None)
-            if self.onlyOnPress[0].startswith("SETTINGS."):
-                self.parentwidget.notify('%s' % self.onlyOnPress[0] )
-            if self.onlyOnPress[0].startswith("SETTING."):
-                self.parentwidget.notify('%s' % self.onlyOnPress[0] )
-            if self.onlyOnPress[0].startswith("CCenterNewTask"):
-                self.parentwidget.notify("touched." + '%s' % self.onlyOnPress[0], None)
-            if self.onlyOnPress[0] == "TextBoxClicked":
-                self.parentwidget.notify("TextBoxClicked")
-            if self.onlyOnPress[0] == "NameSubmitted.Flip":
-                self.parentwidget.notify("NameSubmitted")
+    def notify_Touched(self):
+        print(self.onlyOnPress)
+        if self.onlyOnPress[0] == "Task":
+            self.parentwidget.notify_OpenTask(self.onlyOnPress[1][0])
+        if self.onlyOnPress[0] == "CCenter":
+            self.parentwidget.notify_OpenCCenter()
+        if self.onlyOnPress[0] == "Header":
+            self.parentwidget.notify_Touched()
+        if self.onlyOnPress[0] == "CCenterOpenSettings":
+            self.parentwidget.notify_CCenterOpenSettings()
+        if self.onlyOnPress[0] == "SETTINGS.DISCARD":
+            self.parentwidget.parentwidget.notify_DiscardPopup()
+        if self.onlyOnPress[0].startswith("SETTINGS."):
+            self.parentwidget.notify_Settings('%s' % self.onlyOnPress[0][9:])
+        if self.onlyOnPress[0].startswith("SETTING."):
+            self.parentwidget.notify_Setting('%s' % self.onlyOnPress[0][8:])
+        if self.onlyOnPress[0].startswith("CCenterNewTask"):
+            self.parentwidget.notify_CCenterNewTask()
+        if self.onlyOnPress[0] == "TextBoxClicked":
+            self.parentwidget.notify_TextBox()
+        if self.onlyOnPress[0] == "NameSubmitted.Flip":
+            self.parentwidget.notify_NameSubmitted()
 
     @tlog
     def constrainmod(self, value : uConstrain):

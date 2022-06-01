@@ -14,15 +14,9 @@ class uControlCenter(uNODE):
         self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + self.status)(parentwidget)
         self.__node_init__(listening=[], level = 0)
         
-
     @tlog
-    def notify(self, name, value):
-        pass
-
-    @tlog
-    def update_status(self):
+    def update(self):
         self.body = getattr(BODIES, "ControlCenter" + self.parentwidget.widgetname.split("_")[0] + self.status)(self.parentwidget)
-        self.constrainmod(self.constraint.copy)
 
     @tlog
     def constrainmod(self, value : uConstrain):

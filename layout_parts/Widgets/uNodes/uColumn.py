@@ -31,9 +31,7 @@ class uCOLUMN(uNODE):
         else:
             self.children = children
         self.__node_init__(listening=listening, level = 0)
-    @tlog
-    def notify(name, value):
-        raise NotImplementedError
+
 
     @tlog
     def constrainmod(self, value : uConstrain):

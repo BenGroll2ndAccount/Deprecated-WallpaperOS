@@ -3,8 +3,7 @@ from notifier import NotifyService
 from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import log, n, tlog
 from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 import json
@@ -67,48 +66,36 @@ class uCCSETTINGS(uPOPUP):
         layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"] = returndict
         NotifyService.writeNewWidgetSettings(self.parentwidget.widgetname, returndict)
 
+    @n
+    def notify_Setting(self, name, operation):
+        olddata = self.data.copy
+        correct_pageidx = 0
+        correct_settingidx = 0
+        for pageidx in range(len(olddata.pagedata)):
+            for settingidx in range(len(olddata.pagedata[pageidx])):
+                if olddata.pagedata[pageidx][settingidx]["name"] == name:
+                    correct_pageidx = pageidx
+                    correct_settingidx = settingidx
+        if operation == "Flip":
+            olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = not olddata.pagedata[correct_pageidx][correct_settingidx]["value"]
+        self.data = olddata.copy
+        #Body Update
+        self.updatebody()
 
-    def notify(self, string:str):
-        origstring = string
-        string = '%s' % string  
-        print("@Begin notify @CCenterSettings : " + string)
-        if string.startswith("SETTING."):
-            self.hasSomethingChanged = True
-            string = string.split(".")
-            name = string[1]
-            operation = string[2]
-            olddata = self.data.copy
-            #print(olddata.pagedata)
-            #print(name)
-            correct_pageidx = 0
-            correct_settingidx = 0
-            for pageidx in range(len(olddata.pagedata)):
-                for settingidx in range(len(olddata.pagedata[pageidx])):
-                    if olddata.pagedata[pageidx][settingidx]["name"] == name:
-                        correct_pageidx = pageidx
-                        correct_settingidx = settingidx
-            if operation == "Flip":
-                olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = not olddata.pagedata[correct_pageidx][correct_settingidx]["value"]
-            self.data = olddata.copy
-            #Body Update
-        if origstring.startswith("SETTING."):
+    @n
+    def notify_PageFWD(self):
+        if self.data.current_page < self.data.maxpages:
+            self.data.current_page = self.data.current_page + 1
             self.updatebody()
-        if origstring.startswith("SETTINGS."):
-            command = origstring.split(".")[1]
-            if command == "PAGEFWD":
-                if self.data.current_page < self.data.maxpages:
-                    self.data.current_page = self.data.current_page + 1
-                    print(self.data)
-                    print("HALLO")
-                    self.updatebody()
-            if command == "PAGEBWD":
-                if self.data.current_page > 0:
-                    self.data.current_page = self.data.current_page - 1
-                    self.updatebody()
-            if command == "SAVE":
-                if self.hasSomethingChanged:
-                    self.saveDataToFile()
-                    self.parentwidget.notify("touched.POPUP.DISCARD", None) 
-        if origstring == "event.touchedOutside":
-            self.parentwidget.notify("touched.POPUP.DISCARD", None)
 
+    @n
+    def notify_PageBWD(self):
+        if self.data.current_page > 0:
+            self.data.current_page = self.data.current_page - 1
+            self.updatebody()
+
+    @n
+    def notify_SAVE(self):
+        if self.hasSomethingChanged:
+            self.saveDataToFile()
+            self.parentwidget.notify_DiscardPopup()

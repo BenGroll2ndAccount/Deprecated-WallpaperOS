@@ -4,8 +4,6 @@ from layout_parts.Widgets.uNodes.unode_util.udrawcalls import udraw_Rectangle
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
-
-
 from notifier import NotifyService
 
 class uPBOX(uNODE):
@@ -24,9 +22,7 @@ class uPBOX(uNODE):
         self.hAlign : str = hAlign
         self.__node_init__(listening=listening, level = 0)
 
-    @tlog
-    def notify(self, name, value):
-        pass
+
 
     @tlog
     def constrainmod(self, value : uConstrain):
