@@ -15,6 +15,7 @@ import datetime
 
 
 
+
 def cCALENDAR_COLUMN_TIME_MARKER(weekday : int = None):
     weekday_real = NotifyService.get("timing.weekday")
     if weekday_real == weekday:

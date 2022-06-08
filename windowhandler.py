@@ -3,36 +3,11 @@ from graphics import GraphWin, Point, Rectangle, Text
 import os
 from layout_parts.Widgets.WIDGET import WIDGET
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.helperclasses import * 
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 from notifier import NotifyService
 import time
-
-
-
-
-
-class Cluster():
-    def __init__(self, anchor : Point, end : Point, display_number : int, x : int, y : int):
-        self.row = y
-        self.column = x
-        self.anchor = anchor
-        self.end = end
-        self.display_number = display_number
-
-    def out(self):
-        return "(" + str(self.anchor.y) + "|" + str(self.anchor.x) + ")-(" + str(self.end.y) + "|" + str(self.end.x) + ")"
-
-    @property
-    def gridcoords(self):
-        return str(self.row) + "|" + str(self.column)
-
-    def giveWidget(self, obj):
-        self.widget = obj
-
-    @property
-    def rect(self):
-        output = Rectangle(p1=self.anchor, p2=self.end)
-        output.setFill("blue")
-        return output
 
 
 
@@ -47,7 +22,7 @@ class DISPLAY():
                 if len(row) > width:
                     width = len(row)
         cluster_resolution = NotifyService.get("debug.display-cluster_resolution")
-        self.wallpaper = GraphWin("WallPaper", width=width * cluster_resolution, height=height * cluster_resolution)
+        self.wallpaper = GraphWin("WallPaper", width=width * cluster_resolution, height=height * cluster_resolution, autoflush = NotifyService.get("debug.display-autoflush"))
         isDarkMode = NotifyService.get("user.darkmode")
         light_color = NotifyService.get("debug.display-light_color")
         dark_color = NotifyService.get("debug.display-dark_color")

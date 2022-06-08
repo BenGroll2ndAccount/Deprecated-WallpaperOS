@@ -8,6 +8,7 @@ from rounded_rectangle import RoundedRectangle
 import datetime
 from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
+
 class OS():
     def __init__(self):
         #Initialize big size Window
@@ -55,6 +56,7 @@ class OS():
                     widget_to_redraw = widget
             new_draw_objs = self.draw(widget_to_redraw)
             self.currently_drawn_calls[widgetname] = new_draw_objs
+            update()
 
 
     @tlog

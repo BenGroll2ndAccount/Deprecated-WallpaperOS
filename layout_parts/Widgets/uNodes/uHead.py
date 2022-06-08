@@ -11,6 +11,8 @@ from layout_parts.Widgets.uNodes.uLabel import uLABEL
 from layout_parts.Widgets.uNodes.uCard import uCARD
 from layout_parts.Widgets.uNodes.uControlCenter import uControlCenter
 from layout_parts.Widgets.uNodes.uPopups.uPopup import uPOPUP
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 from notifier import NotifyService
 
 class uHEAD(uNODE):
@@ -48,21 +50,21 @@ class uHEAD(uNODE):
             NotifyService.register_event("redraw")
     @n
     def notify_OpenCCenter(self):
-        if self.controlcenter == None:
-            self.controlcenterOpenButton.level=2
-            self.controlcenter = uControlCenter(parentwidget = self)
-            self.controlcenter.assign_depth(0)
-            self.controlcenter.status = "Base"
-            self.controlcenter.update()
-            self.constrainmod()
-            NotifyService.register_event("redraw", self.widgetname)
+        self.controlcenterOpenButton.level=2
+        self.controlcenter = uControlCenter(parentwidget = self)
+        self.controlcenter.assign_depth(0)
+        self.controlcenter.status = "Base"
+        self.controlcenter.update()
+        self.constrainmod()
+        NotifyService.register_event("redraw", self.widgetname)
+
     @n
     def notify_CloseCCenter(self):
-        if self.popup == None:
-            self.controlcenterOpenButton.level = 1
-            self.controlcenter = None
-            self.constrainmod()
-            NotifyService.register_event("redraw", self.widgetname)
+        self.controlcenterOpenButton.level = 1
+        del self.controlcenter
+        self.controlcenter = None
+        self.constrainmod()
+        NotifyService.register_event("redraw", self.widgetname)
     @n
     def notify_CCenterOpenSettings(self):
         self.controlcenterOpenButton.level = 1
@@ -75,12 +77,15 @@ class uHEAD(uNODE):
     @n
     def notify_DiscardPopup(self):
         self.controlcenterOpenButton.level = 1
-        del self.popup.body
         self.popup.close()
+        del(self.popup)
         self.popup = None
         self.constrainmod()
+        NotifyService.register_event("redraw", self.widgetname)
+
     @n
     def notify_OpenTaskCreationPanel(self, tasktitle):
+        self.popup.close()
         self.popup = uTASKCREATIONPANEL(parentwidget=self, tasktitle = tasktitle)
         self.constrainmod()
         NotifyService.register_event("redraw", self.widgetname) 

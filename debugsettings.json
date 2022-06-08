@@ -4,7 +4,7 @@
     "display-show_enabled_clusters" : false,
     "display-show_cluster_coordinates" : false,
     "display-show_display_boundaries" : false,
-
+    "display-autoflush" : false,
     "widget-draw_constraints" : false,
     "widget-draw-touch-areas" : false,
     "widget-header_thickness_in_clusters" : 1,

@@ -25,7 +25,6 @@ def n(func):
     def func_wrapper(*args, **kwargs):
         result = func(*args, **kwargs)
         caller = stack()[1].function
-        print(func.__name__)
         if NotifyService.get("debug.widget-log_notifications") : print("@" + str(func.__globals__["__name__"]) + " : " + func.__name__ + "(*args = " + str(args) + ", **kwargs = " + str(kwargs) + ")\n")
         return result
     return func_wrapper

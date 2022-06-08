@@ -3,6 +3,10 @@ import json
 import os
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 
+
+
+
+
 def jget(filename : str, setting_name : str):
     with open(str(os.path.dirname(os.path.abspath(__file__)))+ r"/" + filename + ".json", "r") as jfile:
         try:
@@ -112,13 +116,13 @@ class NOTIFIER():
             for notListener in self.notTouchedListeners:
                 if notListener not in affected_listeners:
                     notListener.notify_TouchedOutside()
+                    return
             if len(affected_listeners) > 0:
                 highest_level_listener = affected_listeners[0]
                 for listener in affected_listeners:
                     if listener.level > highest_level_listener.level:
                         highest_level_listener = listener
                 highest_level_listener.notify_Touched()
-                    
         if name == "redraw":
             for listener in listeners:
                 listener.notify_Event_redraw(*args)
@@ -129,6 +133,7 @@ class NOTIFIER():
     
     def unsubscribeIfTouchedOutSide(self, obj):
         self.notTouchedListeners.remove(obj)
+        print("NOTTOUCHEDOUTSIDESUBSCRIBERS: " + str(self.notTouchedListeners))
 
     def subscribe_to_event(self, subscriber, eventname):
         slist = getattr(self, "Subscribers_" + eventname)

@@ -1,5 +1,30 @@
 from layout_parts.Widgets.uNodes.unode_util.uexceptions import *
+
 from graphics import *
+
+class Cluster():
+    def __init__(self, anchor : Point, end : Point, display_number : int, x : int, y : int):
+        self.row = y
+        self.column = x
+        self.anchor = anchor
+        self.end = end
+        self.display_number = display_number
+
+    def out(self):
+        return "(" + str(self.anchor.y) + "|" + str(self.anchor.x) + ")-(" + str(self.end.y) + "|" + str(self.end.x) + ")"
+
+    @property
+    def gridcoords(self):
+        return str(self.row) + "|" + str(self.column)
+
+    def giveWidget(self, obj):
+        self.widget = obj
+
+    @property
+    def rect(self):
+        output = Rectangle(p1=self.anchor, p2=self.end)
+        output.setFill("blue")
+        return output
 
 class uPoint():
     def __init__(self, x : int, y : int):

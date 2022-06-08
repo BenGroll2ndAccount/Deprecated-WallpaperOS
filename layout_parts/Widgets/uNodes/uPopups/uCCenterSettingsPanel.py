@@ -5,8 +5,7 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log, n, tlog
 from layout_parts.Widgets.bodies import BODIES
-from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
-import json
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 
 class uCCSETTINGS(uPOPUP):
@@ -65,6 +64,8 @@ class uCCSETTINGS(uPOPUP):
         layoutdata = NotifyService.layoutdata
         layoutdata["widget-cluster-map"][self.parentwidget.widgetname]["parameters"]["settings"] = returndict
         NotifyService.writeNewWidgetSettings(self.parentwidget.widgetname, returndict)
+        self.parentwidget.notify_CloseCCenter()
+        NotifyService.trigger_layout_reload()
 
     @n
     def notify_Setting(self, name, operation):
@@ -80,6 +81,7 @@ class uCCSETTINGS(uPOPUP):
             olddata.pagedata[correct_pageidx][correct_settingidx]["value"] = not olddata.pagedata[correct_pageidx][correct_settingidx]["value"]
         self.data = olddata.copy
         #Body Update
+        self.hasSomethingChanged = True
         self.updatebody()
 
     @n
@@ -99,3 +101,7 @@ class uCCSETTINGS(uPOPUP):
         if self.hasSomethingChanged:
             self.saveDataToFile()
             self.parentwidget.notify_DiscardPopup()
+
+    @n
+    def notify_Touched(self):
+        self.parentwidget.notify_DiscardPopup()

@@ -6,6 +6,8 @@ from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import Task
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 
 class uTOUCHAREA(uNODE):
     def __init__(self, child : uNODE = None, level : int = 0, flex = 1, parentwidget = None, funcname : str = "", args = None, kwargs = None):
@@ -18,11 +20,13 @@ class uTOUCHAREA(uNODE):
 
     @tlog
     def notify_Touched(self):
-        print(self.onlyOnPress)
         if self.onlyOnPress[0] == "Task":
             self.parentwidget.notify_OpenTask(self.onlyOnPress[1][0])
         if self.onlyOnPress[0] == "CCenter":
-            self.parentwidget.notify_OpenCCenter()
+            if self.parentwidget.controlcenter == None:
+                self.parentwidget.notify_OpenCCenter()
+            else:
+                self.parentwidget.notify_CloseCCenter()
         if self.onlyOnPress[0] == "Header":
             self.parentwidget.notify_Touched()
         if self.onlyOnPress[0] == "CCenterOpenSettings":
@@ -30,9 +34,9 @@ class uTOUCHAREA(uNODE):
         if self.onlyOnPress[0] == "SETTINGS.DISCARD":
             self.parentwidget.parentwidget.notify_DiscardPopup()
         if self.onlyOnPress[0].startswith("SETTINGS."):
-            self.parentwidget.notify_Settings('%s' % self.onlyOnPress[0][9:])
+            getattr(self.parentwidget, "notify_" + self.onlyOnPress[0].split(".")[1])()
         if self.onlyOnPress[0].startswith("SETTING."):
-            self.parentwidget.notify_Setting('%s' % self.onlyOnPress[0][8:])
+            self.parentwidget.notify_Setting('%s' % self.onlyOnPress[0].split(".")[1], self.onlyOnPress[0].split(".")[2])
         if self.onlyOnPress[0].startswith("CCenterNewTask"):
             self.parentwidget.notify_CCenterNewTask()
         if self.onlyOnPress[0] == "TextBoxClicked":

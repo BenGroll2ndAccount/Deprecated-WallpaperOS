@@ -4,6 +4,8 @@ from layout_parts.Widgets.uNodes.uPBox import uPBOX
 from layout_parts.Widgets.uNodes.uRect import uRECT
 from layout_parts.Widgets.uNodes.uEmpty import uEMPTY
 from layout_parts.Widgets.uNodes.uTouchArea import uTOUCHAREA
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 
 def uCHECKBOX(widget_to_notify, initial_status : bool, name : str, level : int):
     return uRECT(uTOUCHAREA(

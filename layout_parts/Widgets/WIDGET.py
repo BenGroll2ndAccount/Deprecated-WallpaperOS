@@ -5,6 +5,8 @@ from layout_parts.Widgets.bodies import BODIES
 from layout_parts.Widgets.uNodes.unode_util.decorators import *
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import uPoint
 from notifier import NotifyService
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 
 class WIDGET():
     def __init__(self, clusters : list, header : str, headercontent : str = None, headershape : str = "rect", settings : dict = None, number : int = None, widgetname : str = "Dummy"):

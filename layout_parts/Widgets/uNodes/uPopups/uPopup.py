@@ -2,8 +2,8 @@ from layout_parts.Widgets.uNodes.uNode import uNODE
 from notifier import NotifyService
 from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
-from layout_parts.Widgets.uNodes.unode_util.decorators import log
-from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.decorators import log, tlog, n
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
 
 class uPOPUP(uNODE):
 
@@ -49,5 +49,8 @@ class uPOPUP(uNODE):
 
     @tlog
     def close(self):
+        print(">>Popup.py popup closed")
         NotifyService.unsubscribeIfTouchedOutSide(self)
-        del self
+    @n 
+    def notify_TouchedOutside(self):
+        self.parentwidget.notify_DiscardPopup()

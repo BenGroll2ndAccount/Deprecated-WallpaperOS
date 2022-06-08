@@ -4,6 +4,8 @@ from layout_parts.Widgets.uNodes.unode_util.helperclasses import *
 from layout_parts.Widgets.uNodes.unode_util.udrawcalls import *
 from layout_parts.Widgets.uNodes.unode_util.decorators import log
 from layout_parts.Widgets.uNodes.unode_util.decorators import tlog
+from layout_parts.Widgets.uNodes.unode_util.helperfunctions import *
+
 class uCARD(uNODE):
     @tlog
     def __init__(self, child : uNODE = None,rounding : int = 0, filled : bool = True, fill_match_border : bool = True, highlight : bool = True, thickness : int = 1,  listening : list = None, level : int = 0, flex = 1):
